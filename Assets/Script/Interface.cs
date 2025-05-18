@@ -1,0 +1,22 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public interface ICharacterState<T> : ICharacterState where T : ICharacterState<T> { }
+public interface ICharacterState
+{
+    void OnStateEnter() { }
+    void OnStateFixedUpdate() { }
+    void OnStateExit() { }
+    void OnTriggerEnter(Collider other) { }
+    void OnTriggerStay(Collider other) { }
+    void OnTriggerExit(Collider other) { }
+}
+
+public interface ICharacterStateFactory<TClass, TEnum>
+    where TClass : class
+    where TEnum : Enum
+{
+    ICharacterState CreateState(TClass classType, TEnum enumType);
+}

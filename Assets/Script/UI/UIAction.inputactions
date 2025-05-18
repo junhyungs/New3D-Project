@@ -1,0 +1,65 @@
+{
+    "name": "UIAction",
+    "maps": [
+        {
+            "name": "UI",
+            "id": "ec9465a1-10ad-43bf-ab8d-c261cc87eb54",
+            "actions": [
+                {
+                    "name": "UpDownNavigate",
+                    "type": "Button",
+                    "id": "61f8024d-57d6-4b50-b65f-d5fbd9bc8eed",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "8ffeea52-d41a-48fd-b388-952ffdf76f43",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "347c1500-5dbb-46ee-a372-9ccc0a63f580",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UpDownNavigate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3e54cea5-0645-4eb0-ab45-a8da50c85f00",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UpDownNavigate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ce4b08b9-8c10-4ec6-ac8b-7df371a95295",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
