@@ -14,11 +14,6 @@ public class SaveManager : Singleton<SaveManager>
     //    return false;
     //}
 
-    public Data LoadData(string dataName)
-    {
-        return new Data();
-    }
-
     public async Task<PlayerSaveData> LoadPlayerSaveDataAsync(int index)
     {
         string filePath = Application.persistentDataPath + "PlayerData" + index + ".json";
@@ -30,7 +25,7 @@ public class SaveManager : Singleton<SaveManager>
 
             return saveData;
         }
-        catch (Exception ex)
+        catch
         {
             return null; 
         }
