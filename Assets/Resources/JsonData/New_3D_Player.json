@@ -1,0 +1,13 @@
+[
+  {
+    "Id": "Player",
+    "Date": "",
+    "Power": "1",
+    "Speed": "5",
+    "RollSpeed": "5",
+    "LadderSpeed": "5",
+    "SpeedChangeValue": "100",
+    "SpeedOffSet": "0.1",
+    "Health": "4"
+  }
+]

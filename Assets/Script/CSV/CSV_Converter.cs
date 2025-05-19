@@ -65,6 +65,8 @@ public class CSV_Converter : MonoBehaviour
 
     public string GetCSVPath()
     {
-        return Path.Combine(Application.dataPath, DataPath, FileName);
+        var path = Path.Combine(Application.dataPath, DataPath, FileName + ".csv").Replace("\\", "/");
+
+        return path;
     }
 }

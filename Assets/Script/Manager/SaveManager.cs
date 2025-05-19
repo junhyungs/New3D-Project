@@ -9,14 +9,28 @@ using System;
 
 public class SaveManager : Singleton<SaveManager>
 {
-    //public async Task<bool> SaveData(Data data)
-    //{
-    //    return false;
-    //}
+    public static int SaveIndex;
+
+    public void SavePlayerData(PlayerSaveData playerSaveData)
+    {
+        string date = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+        playerSaveData.Date = date;
+
+        string json = JsonConvert.SerializeObject(playerSaveData, Formatting.Indented);
+
+        string directoryPath = Path.Combine(Application.persistentDataPath, "SavePlayerData");
+        if(!Directory.Exists(directoryPath))
+            Directory.CreateDirectory(directoryPath);
+
+        string path = Path.Combine(directoryPath, $"PlayerData{SaveIndex}.json");
+        File.WriteAllText(path, json);
+
+        Debug.Log("SavePlayerData");
+    }
 
     public async Task<PlayerSaveData> LoadPlayerSaveDataAsync(int index)
     {
-        string filePath = Application.persistentDataPath + "PlayerData" + index + ".json";
+        string filePath = Path.Combine(Application.persistentDataPath, "SavePlayerData", $"PlayerData{index}.json");
 
         try
         {

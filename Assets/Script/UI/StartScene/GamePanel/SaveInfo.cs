@@ -1,15 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using GameData;
-using UnityEngine.UI;
-using System.Threading.Tasks;
 using System;
 
 public class SaveInfo : MonoBehaviour
 {
     [Header("DataInfoText"), SerializeField] private TextMeshProUGUI _datainfoText;
+    [Header("SaveIndex"), SerializeField] private int _saveIndex;
 
     private Action _onClick;
 
@@ -17,6 +14,12 @@ public class SaveInfo : MonoBehaviour
     {
         _datainfoText.text = playerSaveData == null? "새로운 게임" : playerSaveData.Date;
         OneTimeAction(() => DataManager.Instance.AddToPlayerData(playerSaveData));
+    }
+
+    public void OnClickStartGame()
+    {
+        SaveManager.SaveIndex = _saveIndex;
+        _onClick.Invoke();
     }
 
     private void OneTimeAction(Action addToPlayerData)
@@ -29,10 +32,5 @@ public class SaveInfo : MonoBehaviour
         };
 
         _onClick += oneTimeAction;
-    }
-
-    public void OnClickStartGame()
-    {
-        _onClick.Invoke();
     }
 }

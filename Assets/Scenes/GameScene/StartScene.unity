@@ -964,6 +964,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _datainfoText: {fileID: 578266289}
+  _saveIndex: 1
 --- !u!114 &1092592353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1162,7 +1163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 876e260231f03e649b8663616b532e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FileName: TestCSV
+  FileName: 
 --- !u!4 &1282372244
 Transform:
   m_ObjectHideFlags: 0
@@ -1728,6 +1729,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _datainfoText: {fileID: 752775657}
+  _saveIndex: 0
 --- !u!1 &1807621373
 GameObject:
   m_ObjectHideFlags: 0
@@ -2047,6 +2049,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _datainfoText: {fileID: 1440675417}
+  _saveIndex: 2
 --- !u!114 &2053068588
 MonoBehaviour:
   m_ObjectHideFlags: 0

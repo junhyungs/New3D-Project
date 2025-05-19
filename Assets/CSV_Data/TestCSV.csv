@@ -1,2 +1,0 @@
-ID,Name,Power,Speed,RollSpeed,LadderSpeed,SpeedChangeValue,SpeedOffSet,Gravity,Health
-P101,player,1,7,15,5,100,0.1,-9.81,4

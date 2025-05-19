@@ -10,5 +10,10 @@ namespace EnumCollection
         Move,
         Roll
     }
+
+    public enum JsonData
+    {
+        New_3D_Player
+    }
 }
 
