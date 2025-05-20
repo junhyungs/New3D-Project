@@ -1,24 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.EventSystems;
-using StartSceneUI;
 using GameData;
+using StartSceneUI;
+using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class GameMenu : MenuUI
 {
-    [Header("SaveInfo"), SerializeField] private SaveInfo[] _saveInfos;
-
-    public int SaveInfoLength => _saveInfos.Length;
-
-    public void SetSaveInfo(PlayerSaveData[] playerSaveDatas)
-    {
-        for(int i = 0; i < _saveInfos.Length; i++)
-        {
-            _saveInfos[i].SetInfo(playerSaveDatas[i]);
-        }
-    }
+    [Header("SaveInfoView"), SerializeField] private SaveInfoView[] _saveInfos;
 
     private void OnEnable()
     {
@@ -40,6 +29,25 @@ public class GameMenu : MenuUI
     public override void OnDisableUI()
     {
         base.OnDisableUI();
+    }
+
+    private async void Start()
+    {
+        await InitializeGameMenuAsync();
+    }
+
+    private async Task InitializeGameMenuAsync()
+    {
+        var loadCount = _saveInfos.Length;
+        var task = new Task<PlayerSaveData>[loadCount];
+
+        for (int i = 0; i < loadCount; i++)
+            task[i] = SaveManager.Instance.LoadPlayerSaveDataAsync(i);
+
+        PlayerSaveData[] savePlayerData = await Task.WhenAll(task);
+
+        for (int i = 0; i < loadCount; i++)
+            UIManager.Instance.TriggerUIEvent(_saveInfos[i].EventKey, savePlayerData[i]);
     }
 
     public override void CallBackContext(InputAction.CallbackContext context)

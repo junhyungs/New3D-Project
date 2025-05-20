@@ -808,8 +808,8 @@ MonoBehaviour:
     type: 3}
   _saveInfos:
   - {fileID: 1800009850}
-  - {fileID: 1092592352}
-  - {fileID: 2053068587}
+  - {fileID: 1092592356}
+  - {fileID: 2053068591}
 --- !u!1 &944206340
 GameObject:
   m_ObjectHideFlags: 0
@@ -923,7 +923,7 @@ GameObject:
   - component: {fileID: 1092592355}
   - component: {fileID: 1092592354}
   - component: {fileID: 1092592353}
-  - component: {fileID: 1092592352}
+  - component: {fileID: 1092592356}
   m_Layer: 5
   m_Name: SaveFile (1)
   m_TagString: Untagged
@@ -951,20 +951,6 @@ RectTransform:
   m_AnchoredPosition: {x: 850, y: -390}
   m_SizeDelta: {x: 1500, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1092592352
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1092592350}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a12db50ae68ec4447be42c992477e42b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _datainfoText: {fileID: 578266289}
-  _saveIndex: 1
 --- !u!114 &1092592353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1009,8 +995,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1092592352}
-        m_TargetAssemblyTypeName: SaveInfo, Assembly-CSharp
+      - m_Target: {fileID: 1092592356}
+        m_TargetAssemblyTypeName: SaveInfoView, Assembly-CSharp
         m_MethodName: OnClickStartGame
         m_Mode: 1
         m_Arguments:
@@ -1059,6 +1045,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1092592350}
   m_CullTransparentMesh: 1
+--- !u!114 &1092592356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092592350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 283a2b0146b032942adc2f0ac4ef2a80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _saveIndex: 1
+  _eventKey: 1
+  _dateText: {fileID: 578266289}
 --- !u!1 &1224160560
 GameObject:
   m_ObjectHideFlags: 0
@@ -1134,51 +1135,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1224160560}
   m_CullTransparentMesh: 1
---- !u!1 &1282372242
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1282372244}
-  - component: {fileID: 1282372243}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1282372243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1282372242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 876e260231f03e649b8663616b532e15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FileName: 
---- !u!4 &1282372244
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1282372242}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 956.0001, y: 528.8446, z: 5.2634954}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1440675415
 GameObject:
   m_ObjectHideFlags: 0
@@ -1705,7 +1661,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1800009850}
-        m_TargetAssemblyTypeName: SaveInfo, Assembly-CSharp
+        m_TargetAssemblyTypeName: SaveInfoView, Assembly-CSharp
         m_MethodName: OnClickStartGame
         m_Mode: 1
         m_Arguments:
@@ -1725,11 +1681,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1800009845}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a12db50ae68ec4447be42c992477e42b, type: 3}
+  m_Script: {fileID: 11500000, guid: 283a2b0146b032942adc2f0ac4ef2a80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _datainfoText: {fileID: 752775657}
   _saveIndex: 0
+  _eventKey: 0
+  _dateText: {fileID: 752775657}
 --- !u!1 &1807621373
 GameObject:
   m_ObjectHideFlags: 0
@@ -2008,7 +1965,7 @@ GameObject:
   - component: {fileID: 2053068590}
   - component: {fileID: 2053068589}
   - component: {fileID: 2053068588}
-  - component: {fileID: 2053068587}
+  - component: {fileID: 2053068591}
   m_Layer: 5
   m_Name: SaveFile (2)
   m_TagString: Untagged
@@ -2036,20 +1993,6 @@ RectTransform:
   m_AnchoredPosition: {x: 850, y: -650}
   m_SizeDelta: {x: 1500, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2053068587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2053068585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a12db50ae68ec4447be42c992477e42b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _datainfoText: {fileID: 1440675417}
-  _saveIndex: 2
 --- !u!114 &2053068588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2094,8 +2037,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2053068587}
-        m_TargetAssemblyTypeName: SaveInfo, Assembly-CSharp
+      - m_Target: {fileID: 2053068591}
+        m_TargetAssemblyTypeName: SaveInfoView, Assembly-CSharp
         m_MethodName: OnClickStartGame
         m_Mode: 1
         m_Arguments:
@@ -2144,6 +2087,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2053068585}
   m_CullTransparentMesh: 1
+--- !u!114 &2053068591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2053068585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 283a2b0146b032942adc2f0ac4ef2a80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _saveIndex: 2
+  _eventKey: 2
+  _dateText: {fileID: 1440675417}
 --- !u!4 &1079046716443670
 Transform:
   m_ObjectHideFlags: 0
@@ -91985,4 +91943,3 @@ SceneRoots:
   - {fileID: 543450653046650385}
   - {fileID: 2038436413}
   - {fileID: 2031941917}
-  - {fileID: 1282372244}

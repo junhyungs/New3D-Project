@@ -15,5 +15,12 @@ namespace EnumCollection
     {
         New_3D_Player
     }
+
+    public enum UIEvent
+    {
+        SaveInfoSlot_1,
+        SaveInfoSlot_2,
+        SaveInfoSlot_3,
+    }
 }
 

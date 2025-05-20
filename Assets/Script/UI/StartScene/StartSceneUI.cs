@@ -16,25 +16,6 @@ namespace StartSceneUI
         public MainMenu MainMenu => _mainMenu;
         public GameMenu GameMenu => _gameMenu;
         public OptionMenu OptionMenu => _optionMenu;
-
-        private async void Start()
-        {
-            await InitializeGameMenuAsync();
-        }
-
-        private async Task InitializeGameMenuAsync()
-        {
-            var loadCount = _gameMenu.SaveInfoLength;
-            var task = new Task<PlayerSaveData>[loadCount];
-
-            for (int i = 0; i < loadCount; i++)
-            {
-                task[i] = SaveManager.Instance.LoadPlayerSaveDataAsync(i);
-            }
-
-            PlayerSaveData[] savePlayerData = await Task.WhenAll(task);
-            _gameMenu.SetSaveInfo(savePlayerData);
-        }
     }
 
     public class MenuUI : MonoBehaviour
