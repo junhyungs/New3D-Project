@@ -7,6 +7,18 @@ namespace GameData
     [System.Serializable]
     public class Data { }
 
+    public class ScreenResolutionData : Data
+    {
+        public int Width { get; set; }
+        public int Height { get; set; }
+
+        public ScreenResolutionData(int width, int height)
+        {
+            Width = width;
+            Height = height;
+        }
+    }
+
     public class PlayerSaveData : Data
     {
         public string Id { get; set; }

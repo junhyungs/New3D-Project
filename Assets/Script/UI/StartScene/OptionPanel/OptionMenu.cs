@@ -1,18 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using StartSceneUI;
+using UnityEngine.InputSystem;
 
-public class OptionMenu : MonoBehaviour
+public class OptionMenu : MenuUI
 {
-    // Start is called before the first frame update
-    void Start()
+    private ScreenResolution _screenResolution;
+
+    private void Start()
     {
-        
+        _screenResolution = new ScreenResolution();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        
+        OnEnableUI();
+    }
+
+    private void OnDisable()
+    {
+        OnDisableUI();
+    }
+
+    public override void CallBackContext(InputAction.CallbackContext context)
+    {
+        _uiReference.MainMenu.gameObject.SetActive(true);
+        gameObject.SetActive(false);
     }
 }

@@ -24,7 +24,7 @@ namespace StartSceneUI
 
         protected UIReference _uiReference;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             _uiReference = transform.GetComponentInParent<UIReference>();
         }

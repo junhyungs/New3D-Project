@@ -13,7 +13,8 @@ namespace EnumCollection
 
     public enum JsonData
     {
-        New_3D_Player
+        New_3D_Player,
+        New_3D_ScreenResolution
     }
 
     public enum UIEvent
