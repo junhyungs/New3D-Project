@@ -9,6 +9,16 @@ public class GameMenu : MenuUI
 {
     [Header("SaveInfoView"), SerializeField] private SaveInfoView[] _saveInfos;
 
+    private void Awake()
+    {
+        UIManager.Instance.RegisterUI(gameObject.name, gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        UIManager.Instance.UnRegisterUI(gameObject.name);
+    }
+
     private void OnEnable()
     {
         OnEnableUI();

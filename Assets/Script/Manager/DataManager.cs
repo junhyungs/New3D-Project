@@ -27,6 +27,13 @@ public class DataManager : Singleton<DataManager>
         return null;
     }
 
+    public async Task LoadAllData()
+    {
+        Debug.Log("StartLoadAllData");
+        await Task.Delay(3000);
+        Debug.Log("EndLoadAllData");
+    }
+
     #region Player
     public void AddToPlayerData(PlayerSaveData playerSaveData)
     {
