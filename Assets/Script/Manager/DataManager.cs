@@ -84,6 +84,25 @@ public class DataManager : Singleton<DataManager>
         TryAddData(id, data);
     }
     #endregion
+    #region Resolution
+    public List<(int, int)> LoadResolutionData()
+    {
+        var dataList = new List<(int, int)>();
+        var jsonName = JsonData.New_3D_ScreenResolution.ToString();
+        var jsonData = Resources.Load<TextAsset>($"JsonData/{jsonName}");
+
+        JArray jArray = JArray.Parse(jsonData.text);
+        foreach (var itme in jArray)
+        {
+            int width = ParseInt(itme["Width"]);
+            int height = ParseInt(itme["Height"]);
+
+            dataList.Add((width, height));
+        }
+
+        return dataList;
+    }
+    #endregion
 
     private string ParseString(JToken jToken)
     {
