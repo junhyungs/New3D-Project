@@ -12,8 +12,9 @@ public class MainMenu : MenuUI
     private Dictionary<GameObject, Menu> _menuDictionary;
     private GameObject _currentUI;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         OnAwakeMainMenu();
     }
 

@@ -9,8 +9,9 @@ public class GameMenu : MenuUI
 {
     [Header("SaveInfoView"), SerializeField] private SaveInfoView[] _saveInfos;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         UIManager.Instance.RegisterUI(gameObject.name, gameObject);
     }
 
@@ -34,11 +35,6 @@ public class GameMenu : MenuUI
         base.OnEnableUI();
 
         EventSystem.current.SetSelectedGameObject(_saveInfos[0].gameObject);
-    }
-
-    public override void OnDisableUI()
-    {
-        base.OnDisableUI();
     }
 
     private async void Start()
