@@ -80,7 +80,7 @@ public class DataManager : Singleton<DataManager>
         data.SetPlayerData(id, power, speed, rollSpeed, ladder,
             changeValue, speedOffSet, health);
 
-        SaveManager.Instance.SavePlayerData(data);
+        //SaveManager.Instance.SavePlayerData(data);
         TryAddData(id, data);
     }
     #endregion
