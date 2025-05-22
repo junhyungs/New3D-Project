@@ -43,7 +43,9 @@ namespace State
                 case E_PlayerState.Move:
                     return new Move(classType);
                 case E_PlayerState.Roll:
-                    return null;
+                    return new Roll(classType);
+                case E_PlayerState.Falling:
+                    return new Falling(classType);
                 default:
                     throw new ArgumentException();
             }

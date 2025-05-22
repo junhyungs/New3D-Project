@@ -8,7 +8,8 @@ namespace EnumCollection
     {
         Idle,
         Move,
-        Roll
+        Roll,
+        Falling
     }
 
     public enum Key

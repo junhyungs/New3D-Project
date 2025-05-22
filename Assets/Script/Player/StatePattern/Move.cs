@@ -38,7 +38,7 @@ namespace PlayerComponent
 
         protected override void InputCheck()
         {
-            
+            IsFalling(E_PlayerState.Falling);
         }
 
         private void Movement()

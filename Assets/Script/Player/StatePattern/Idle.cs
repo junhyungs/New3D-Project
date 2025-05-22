@@ -9,20 +9,14 @@ namespace PlayerComponent
     {
         public Idle(Player player) : base(player) { }
         
-        public void OnStateEnter()
-        {
-
-        }
+        public void OnStateEnter() { }
 
         public void OnStateFixedUpdate()
         {
             InputCheck();
         }
 
-        public void OnStateExit()
-        {
-
-        }
+        public void OnStateExit() { }
 
         protected override void InputCheck()
         {
