@@ -10,21 +10,17 @@ namespace PlayerComponent
     {
         private CharacterStateMachine<Player, E_PlayerState, PlayerStateFactory> _stateMachine;
 
-        private void Awake()
-        {
-            InitializeOnAwake();
-        }
-
-        private void InitializeOnAwake()
-        {
-            var player = GetComponent<Player>();
-
-            _stateMachine = new CharacterStateMachine<Player, E_PlayerState, PlayerStateFactory>();
-            _stateMachine.CreateState(player);
-        }
-
         private void Start()
         {
+            InitializeOnStart();
+        }
+
+        private void InitializeOnStart()
+        {
+            var player = GetComponent<Player>();
+            _stateMachine = new CharacterStateMachine<Player, E_PlayerState, PlayerStateFactory>();
+
+            _stateMachine.CreateState(player);
             _stateMachine.StartState(E_PlayerState.Idle);
         }
 
@@ -36,6 +32,11 @@ namespace PlayerComponent
         public void ChangeState(E_PlayerState nextState)
         {
             _stateMachine.ChangeState(nextState);
+        }
+
+        public ICharacterState GetCurrentState()
+        {
+            return _stateMachine.GetCurrentState(); 
         }
     }
 }

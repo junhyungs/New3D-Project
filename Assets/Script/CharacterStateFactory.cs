@@ -46,6 +46,8 @@ namespace State
                     return new Roll(classType);
                 case E_PlayerState.Falling:
                     return new Falling(classType);
+                case E_PlayerState.RollSlash:
+                    return new RollSlash(classType);
                 default:
                     throw new ArgumentException();
             }

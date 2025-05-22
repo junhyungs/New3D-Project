@@ -1,19 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace PlayerComponent
 {
     public class Player : MonoBehaviour
     {
-        public float Radius { get; set; } = 0.5f;
-        private void OnDrawGizmos()
-        {
-            if (!Application.isPlaying)
-                return;
+        public PlayerInputHandler InputHandler { get; private set; }        
+        public PlayerStateTransitionHandler StateHandler { get; private set; }
 
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, Radius);
+        private void Awake()
+        {
+            InitializeOnAwakePlayer();
+        }
+
+        private void InitializeOnAwakePlayer()
+        {
+            var stateMachine = GetComponent<PlayerStateMachine>();
+
+            InputHandler = new PlayerInputHandler(this);
+            StateHandler = new PlayerStateTransitionHandler(stateMachine, InputHandler);
         }
     }
 }

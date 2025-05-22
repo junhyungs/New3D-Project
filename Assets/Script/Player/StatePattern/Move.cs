@@ -20,20 +20,10 @@ namespace PlayerComponent
         private float _targetRotation;
         private float _rotationVelocity;
 
-        public void OnStateEnter()
-        {
-
-        }
-
         public void OnStateFixedUpdate()
         {
             InputCheck();
             Movement();
-        }
-
-        public void OnStateExit()
-        {
-
         }
 
         protected override void InputCheck()
@@ -45,14 +35,14 @@ namespace PlayerComponent
         {
             _targetSpeed = _data.Speed;
 
-            if(_inputHandler.MoveVector == Vector2.zero)
+            if(_stateHandler.MoveVector == Vector2.zero)
             {
                 _targetSpeed = 0f;
                 _speedChangeValue = 5f;
 
                 if(_currentSpeed == _targetSpeed)
                 {
-                    _stateMachine.ChangeState(E_PlayerState.Idle);
+                    _stateHandler.ChangeState(E_PlayerState.Idle);
                     return;
                 }
             }
@@ -74,7 +64,7 @@ namespace PlayerComponent
             else
                 _currentSpeed = _targetSpeed;
 
-            Vector3 direction = new Vector3(_inputHandler.MoveVector.x, 0f, _inputHandler.MoveVector.y).normalized;
+            Vector3 direction = new Vector3(_stateHandler.MoveVector.x, 0f, _stateHandler.MoveVector.y).normalized;
             if(direction != Vector3.zero)
             {
                 _targetRotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;

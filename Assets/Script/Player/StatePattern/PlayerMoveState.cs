@@ -29,11 +29,7 @@ namespace PlayerComponent
         protected void IsFalling(E_PlayerState state)
         {
             bool isGround = Physics.CheckSphere(_playerTransform.position, _checkSphereRadius, _ground);
-
-            if (state == E_PlayerState.Falling && !isGround)
-                _stateMachine.ChangeState(E_PlayerState.Falling);
-            else if (state == E_PlayerState.Idle && isGround)
-                _stateMachine.ChangeState(E_PlayerState.Idle);
+            _stateHandler.IsFalling(state, isGround);
         }
     }
 }

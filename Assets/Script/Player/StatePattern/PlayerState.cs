@@ -11,22 +11,20 @@ namespace PlayerComponent
     {
         public PlayerState(Player player)
         {
-            _player = player;
-            _stateMachine = player.GetComponent<PlayerStateMachine>();
-
-            InitializeInputHandler(player);
+            GetComponent(player);
             SetPlayerData();
         }
 
         protected Player _player;
-        protected PlayerStateMachine _stateMachine;
+        protected PlayerStateTransitionHandler _stateHandler;
         protected PlayerInputHandler _inputHandler;
         protected PlayerSaveData _data;
 
-        private void InitializeInputHandler(Player player)
+        private void GetComponent(Player player)
         {
-            var playerInput = player.GetComponent<PlayerInput>();
-            _inputHandler = new PlayerInputHandler(playerInput);
+            _player = player;
+            _inputHandler = player.InputHandler;
+            _stateHandler = player.StateHandler;
         }
 
         private void SetPlayerData()

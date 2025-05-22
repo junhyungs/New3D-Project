@@ -9,6 +9,7 @@ namespace EnumCollection
         Idle,
         Move,
         Roll,
+        RollSlash,
         Falling
     }
 
