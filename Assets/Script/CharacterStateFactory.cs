@@ -41,7 +41,7 @@ namespace State
                 case E_PlayerState.Idle:
                     return new Idle(classType);
                 case E_PlayerState.Move:
-                    return null;
+                    return new Move(classType);
                 case E_PlayerState.Roll:
                     return null;
                 default:

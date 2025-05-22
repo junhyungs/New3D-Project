@@ -11,6 +11,11 @@ namespace EnumCollection
         Roll
     }
 
+    public enum Key
+    {
+        Player,
+    }
+
     public enum JsonData
     {
         New_3D_Player,
