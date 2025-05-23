@@ -26,6 +26,11 @@ namespace PlayerComponent
             Movement();
         }
 
+        public void OnStateExit()
+        {
+            _rigidBody.velocity = Vector3.zero;
+        }
+
         private void Movement()
         {
             _targetSpeed = _data.Speed;
