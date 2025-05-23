@@ -21,7 +21,7 @@ namespace PlayerComponent
                 Movement();
             }
             else
-                _stateHandler.ChangeState(E_PlayerState.Idle);
+                ChangeState();
         }
     }
 }

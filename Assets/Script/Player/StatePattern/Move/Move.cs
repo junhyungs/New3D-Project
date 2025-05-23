@@ -22,13 +22,8 @@ namespace PlayerComponent
 
         public void OnStateFixedUpdate()
         {
-            InputCheck();
-            Movement();
-        }
-
-        protected override void InputCheck()
-        {
             IsFalling(E_PlayerState.Falling);
+            Movement();
         }
 
         private void Movement()

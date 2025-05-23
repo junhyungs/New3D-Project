@@ -40,3 +40,8 @@ public interface IInteractionGameObject : IInteraction
 {
 
 }
+
+public interface ITakeDamage
+{
+    void TakeDamage(float damage);
+}
