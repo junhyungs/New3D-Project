@@ -39,10 +39,11 @@ public class Ladder : MonoBehaviour, IInteractionGameObject
         if (player == null)
             return;
 
-        player.StateHandler.ToClimbingState((_worldLowPositionY, _worldHighPositionY));
+        var ladderSize = (_worldLowPositionY,  _worldHighPositionY);
+        player.StateHandler.ToClimbingState(ladderSize);
         player.transform.SetParent(transform);
         player.transform.localPosition = Vector3.zero;
-        player.transform.localRotation = Quaternion.identity;
+        player.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
     }
 
     private void OnDrawGizmos()

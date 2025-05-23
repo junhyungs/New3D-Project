@@ -1,2 +1,2 @@
 Id,Date,Power,Speed,RollSpeed,LadderSpeed,SpeedChangeValue,SpeedOffSet,Health
-Player,,1,5,5,5,100,0.1,4
+Player,,1,5,5,2,100,0.1,4

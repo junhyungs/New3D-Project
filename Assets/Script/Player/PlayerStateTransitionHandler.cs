@@ -83,7 +83,7 @@ namespace PlayerComponent
             ChangeState(E_PlayerState.RollSlash);
         }
 
-        public void ToClimbingState((float, float) ladderSize)
+        public void ToClimbingState((float lowPoint, float highPoint) ladderSize)
         {
             var currentState = _stateMachine.GetCurrentState();
             if (currentState is Climbing)
