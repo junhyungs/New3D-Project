@@ -10,7 +10,8 @@ namespace EnumCollection
         Move,
         Roll,
         RollSlash,
-        Falling
+        Falling,
+        Climbing
     }
 
     public enum Key

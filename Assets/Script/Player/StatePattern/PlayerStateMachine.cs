@@ -38,6 +38,12 @@ namespace PlayerComponent
         {
             return _stateMachine.GetCurrentState(); 
         }
+
+        public T GetState<T>(E_PlayerState stateName) where T : PlayerState
+        {
+            var state = _stateMachine.GetState(stateName);
+            return state is T targetState ? targetState : null;
+        }
     }
 }
 

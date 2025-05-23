@@ -1,5 +1,6 @@
 using PlayerComponent;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,9 +13,12 @@ public class PlayerInputHandler
     }
 
     private PlayerInput _input;
+    private List<Action> _unbindActions = new List<Action>();
+
     public event Action RollEvent;
     public event Action RollSlashEvent;
     public event Action<Vector2> MoveEvent;
+    public event Action InteractionEvent;
 
     private void BindAction()
     {
@@ -24,7 +28,23 @@ public class PlayerInputHandler
 
         _input.actions["Roll"].started += OnRoll;
         _input.actions["RollSlash"].started += OnRollSlash;
-        
+        _input.actions["Interaction"].started += OnInteraction;
+
+        _unbindActions.Add(() => _input.actions["Move"].started -= OnMove);
+        _unbindActions.Add(() => _input.actions["Move"].performed -= OnMove);
+        _unbindActions.Add(() => _input.actions["Move"].canceled -= OnMove);
+
+        _unbindActions.Add(() => _input.actions["Roll"].started -= OnRoll);
+        _unbindActions.Add(() => _input.actions["RollSlash"].started -= OnRollSlash);
+        _unbindActions.Add(() => _input.actions["Interaction"].started -= OnInteraction);
+    }
+
+    public void UnBindAction()
+    {
+        foreach (var action in _unbindActions)
+            action.Invoke();
+
+        _unbindActions.Clear();
     }
 
     private void OnMove(InputAction.CallbackContext context)
@@ -40,5 +60,10 @@ public class PlayerInputHandler
     private void OnRollSlash(InputAction.CallbackContext context)
     {
         RollSlashEvent.Invoke();
+    }
+
+    private void OnInteraction(InputAction.CallbackContext context)
+    {
+        InteractionEvent.Invoke();
     }
 }

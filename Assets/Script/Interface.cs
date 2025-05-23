@@ -20,3 +20,23 @@ public interface ICharacterStateFactory<TClass, TEnum>
 {
     ICharacterState CreateState(TClass classType, TEnum enumType);
 }
+
+public interface IInteraction
+{
+    void Interact();
+}
+
+public interface IInteractionItem : IInteraction
+{
+
+}
+
+public interface IInteractionDialog : IInteraction
+{
+
+}
+
+public interface IInteractionGameObject : IInteraction
+{
+
+}
