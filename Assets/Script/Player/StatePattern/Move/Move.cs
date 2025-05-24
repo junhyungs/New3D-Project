@@ -38,18 +38,13 @@ namespace PlayerComponent
             if(_stateHandler.MoveVector == Vector2.zero)
             {
                 _targetSpeed = 0f;
-                _speedChangeValue = 5f;
 
                 if(_currentSpeed == _targetSpeed)
                 {
+                    _animator.SetFloat(_moveValue, 0f);
                     _stateHandler.ChangeState(E_PlayerState.Idle);
                     return;
                 }
-            }
-            else
-            {
-                if (_speedChangeValue != _data.SpeedChangeValue)
-                    _speedChangeValue = Mathf.Lerp(_speedChangeValue, _data.SpeedChangeValue, Time.fixedDeltaTime);
             }
 
             var currentHorizontalSpeed = new Vector3(_rigidBody.velocity.x, 0f, _rigidBody.velocity.z).magnitude;

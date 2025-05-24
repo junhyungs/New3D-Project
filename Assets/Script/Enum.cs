@@ -11,7 +11,8 @@ namespace EnumCollection
         Roll,
         RollSlash,
         Falling,
-        Climbing
+        Climbing,
+        Attack
     }
 
     public enum Key

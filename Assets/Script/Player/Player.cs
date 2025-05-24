@@ -27,7 +27,7 @@ namespace PlayerComponent
         private void InitializeOnAwakePlayer()
         {
             StateMachine = GetComponent<PlayerStateMachine>();
-
+            
             InputHandler = new PlayerInputHandler(this);
             StateHandler = new PlayerStateTransitionHandler(StateMachine, InputHandler);
             Interaction = new PlayerInteraction(this, _interactionInfo);

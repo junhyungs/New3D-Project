@@ -31,12 +31,6 @@ namespace PlayerComponent
             _direction = _playerTransform.forward.normalized;
             _animator.SetTrigger(parameter);
         }
-
-        protected void ChangeState()
-        {
-            var nextState = _stateHandler.MoveVector != Vector2.zero ? E_PlayerState.Move : E_PlayerState.Idle;
-            _stateHandler.ChangeState(nextState);
-        }
     }
 }
 

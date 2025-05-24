@@ -8,6 +8,7 @@ public interface ICharacterState
 {
     void OnStateEnter() { }
     void OnStateFixedUpdate() { }
+    void OnStateUpdate() { }
     void OnStateExit() { }
     void OnTriggerEnter(Collider other) { }
     void OnTriggerStay(Collider other) { }

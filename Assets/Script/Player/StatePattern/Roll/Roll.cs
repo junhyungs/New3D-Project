@@ -21,7 +21,7 @@ namespace PlayerComponent
                 Movement();
             }
             else
-                ChangeState();
+                _stateHandler.ChangeIdleORMoveState();
         }
     }
 }

@@ -23,6 +23,11 @@ namespace State
             _state.OnStateFixedUpdate();
         }
 
+        public void Update()
+        {
+            _state.OnStateUpdate();
+        }
+
         public void OnTriggerEnter(Collider other)
         {
             _state.OnTriggerEnter(other);

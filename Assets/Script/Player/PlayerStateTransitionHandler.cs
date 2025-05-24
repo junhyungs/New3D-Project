@@ -25,10 +25,12 @@ namespace PlayerComponent
             handler.MoveEvent += SetVector2;
             handler.RollEvent += ToRollState;
             handler.RollSlashEvent += ToRollSlashState;
+            handler.SlashEvent += ToAttackState;
 
             _unregisterActions.Add(() => handler.MoveEvent -= SetVector2);
             _unregisterActions.Add(() => handler.RollEvent -= ToRollState);
             _unregisterActions.Add(() => handler.RollSlashEvent -= ToRollSlashState);
+            _unregisterActions.Add(() => handler.SlashEvent -= ToAttackState);
         }
 
         public void UnRegisterEvent()
@@ -57,6 +59,14 @@ namespace PlayerComponent
                 _stateMachine.ChangeState(E_PlayerState.Move);
         }
 
+        public void ChangeIdleORMoveState()
+        {
+            var nextState = MoveVector != Vector2.zero ?
+                E_PlayerState.Move : E_PlayerState.Idle;
+
+            _stateMachine.ChangeState(nextState);
+        }
+
         public void IsFalling(E_PlayerState state, bool isGround)
         {
             if(state == E_PlayerState.Falling && !isGround)
@@ -67,17 +77,15 @@ namespace PlayerComponent
 
         public void ToRollState()
         {
-            var currentState = _stateMachine.GetCurrentState();
-            if (currentState is Roll)
+            if (!IsState<Roll>())
                 return;
-
+            
             ChangeState(E_PlayerState.Roll);
         }
 
         public void ToRollSlashState()
         {
-            var currentState = _stateMachine.GetCurrentState();
-            if (currentState is RollSlash)
+            if (!IsState<RollSlash>())
                 return;
 
             ChangeState(E_PlayerState.RollSlash);
@@ -85,8 +93,7 @@ namespace PlayerComponent
 
         public void ToClimbingState((float lowPoint, float highPoint) ladderSize)
         {
-            var currentState = _stateMachine.GetCurrentState();
-            if (currentState is Climbing)
+            if (!IsState<Climbing>())
                 return;
 
             var climbing = _stateMachine.GetState<Climbing>(E_PlayerState.Climbing);
@@ -94,6 +101,29 @@ namespace PlayerComponent
                 climbing.SetLadderSize(ladderSize);
 
             ChangeState(E_PlayerState.Climbing);
+        }
+
+        public void ToAttackState()
+        {
+            if (!IsState<Attack>())
+            {
+                var attack = _stateMachine.GetState<Attack>(E_PlayerState.Attack);
+                if(attack != null) //TODO 광클 시 부하가 있을 수 있으므로 나중에 캐싱하는 방향으로.
+                    attack.SetClick(true);
+
+                return;
+            }
+
+            ChangeState(E_PlayerState.Attack); 
+        }
+
+        private bool IsState<T>() where T : PlayerState
+        {
+            var currentState = _stateMachine.GetCurrentState();
+            if (currentState is T)
+                return false;
+
+            return true;
         }
     }
 }

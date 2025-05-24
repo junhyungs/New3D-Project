@@ -27,7 +27,7 @@ namespace PlayerComponent
             }
 
             if (AnimationStop)
-                ChangeState();
+                _stateHandler.ChangeIdleORMoveState();
         }
     }
 }

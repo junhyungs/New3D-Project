@@ -29,6 +29,11 @@ namespace PlayerComponent
             _stateMachine.FixedUpdate();
         }
 
+        private void Update()
+        {
+            _stateMachine.Update();
+        }
+
         public void ChangeState(E_PlayerState nextState)
         {
             _stateMachine.ChangeState(nextState);

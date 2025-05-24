@@ -50,6 +50,8 @@ namespace State
                     return new RollSlash(classType);
                 case E_PlayerState.Climbing:
                     return new Climbing(classType);
+                case E_PlayerState.Attack:
+                    return new Attack(classType);
                 default:
                     throw new ArgumentException();
             }
