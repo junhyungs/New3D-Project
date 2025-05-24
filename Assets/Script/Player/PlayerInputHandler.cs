@@ -19,6 +19,7 @@ public class PlayerInputHandler
     public event Action RollSlashEvent;
     public event Action<Vector2> MoveEvent;
     public event Action InteractionEvent;
+    public event Action SlashEvent;
 
     private void BindAction()
     {
@@ -29,6 +30,7 @@ public class PlayerInputHandler
         _input.actions["Roll"].started += OnRoll;
         _input.actions["RollSlash"].started += OnRollSlash;
         _input.actions["Interaction"].started += OnInteraction;
+        _input.actions["Slash"].started += OnSlash;
 
         _unbindActions.Add(() => _input.actions["Move"].started -= OnMove);
         _unbindActions.Add(() => _input.actions["Move"].performed -= OnMove);
@@ -37,6 +39,7 @@ public class PlayerInputHandler
         _unbindActions.Add(() => _input.actions["Roll"].started -= OnRoll);
         _unbindActions.Add(() => _input.actions["RollSlash"].started -= OnRollSlash);
         _unbindActions.Add(() => _input.actions["Interaction"].started -= OnInteraction);
+        _unbindActions.Add(() => _input.actions["Slash"].started -= OnSlash);
     }
 
     public void UnBindAction()
@@ -65,5 +68,10 @@ public class PlayerInputHandler
     private void OnInteraction(InputAction.CallbackContext context)
     {
         InteractionEvent.Invoke();
+    }
+
+    private void OnSlash(InputAction.CallbackContext context)
+    {
+        SlashEvent.Invoke();
     }
 }

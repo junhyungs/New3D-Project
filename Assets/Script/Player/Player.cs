@@ -9,7 +9,7 @@ namespace PlayerComponent
 
         public PlayerInputHandler InputHandler { get; private set; }        
         public PlayerStateTransitionHandler StateHandler { get; private set; }
-        public PlayerStateMachine StateMachine { get; private set; }
+        public PlayerStateMachine StateMachine { get; private set; } //삭제 보류.
         public PlayerInteraction Interaction { get; private set; }
 
         private void Awake()
