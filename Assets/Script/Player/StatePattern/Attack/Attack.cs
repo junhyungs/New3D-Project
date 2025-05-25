@@ -18,8 +18,8 @@ namespace PlayerComponent
 
         public void OnStateEnter()
         {
+            ClickTriggerAttack(_attack);
             _lastClickTime = Time.time;
-            _animator.SetTrigger(_attack);
         }
 
         public void OnStateUpdate()
@@ -39,8 +39,8 @@ namespace PlayerComponent
             {
                 if (Time.time - _lastClickTime >= NextCombo)
                 {
-                    _animator.SetTrigger(_attack);
-         
+                    ClickTriggerAttack(_attack);
+
                     _lastClickTime = Time.time;
                     _isClick = false;
                 }

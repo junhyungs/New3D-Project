@@ -1,9 +1,4 @@
 using GameData;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem;
-using EnumCollection;
 
 namespace PlayerComponent
 {
@@ -19,12 +14,14 @@ namespace PlayerComponent
         protected PlayerStateTransitionHandler _stateHandler;
         protected PlayerInputHandler _inputHandler;
         protected PlayerSaveData _data;
+        protected PlayerPlane _plane;
 
         private void GetComponent(Player player)
         {
             _player = player;
             _inputHandler = player.InputHandler;
             _stateHandler = player.StateHandler;
+            _plane = player.Plane;
         }
 
         private void SetPlayerData()
