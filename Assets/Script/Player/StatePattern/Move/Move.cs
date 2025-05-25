@@ -19,6 +19,7 @@ namespace PlayerComponent
         private float _speedChangeValue;
         private float _targetRotation;
         private float _rotationVelocity;
+
         public void OnStateFixedUpdate()
         {
             IsFalling(E_PlayerState.Falling);
@@ -41,7 +42,7 @@ namespace PlayerComponent
 
                 if(_currentSpeed == _targetSpeed)
                 {
-                    _stateHandler.ChangeState(E_PlayerState.Idle);
+                    _stateHandler.ChangeIdleORMoveState();
                     return;
                 }
             }

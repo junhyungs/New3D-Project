@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EnumCollection;
 using System;
+using System.Linq;
 
 namespace PlayerComponent
 {
@@ -12,11 +13,14 @@ namespace PlayerComponent
             PlayerInputHandler inputHandler)
         {
             _stateMachine = stateMachine;
+            _transitionList = new PlayerTransitionList(_stateMachine);
+
             RegisterEvent(inputHandler);
         }
 
         private PlayerStateMachine _stateMachine;
         private List<Action> _unregisterActions = new List<Action>();
+        private PlayerTransitionList _transitionList;
 
         public Vector2 MoveVector { get; private set; }
 
@@ -43,20 +47,9 @@ namespace PlayerComponent
             _unregisterActions.Clear();
         }
 
-        public void ChangeState(E_PlayerState state)
-        {
-            _stateMachine.ChangeState(state);
-        }
-
         public void SetVector2(Vector2 vector)
         {
             MoveVector = vector;
-        }
-
-        public void IdleToMoveState()
-        {
-            if (MoveVector != Vector2.zero)
-                _stateMachine.ChangeState(E_PlayerState.Move);
         }
 
         public void ChangeIdleORMoveState()
@@ -77,7 +70,7 @@ namespace PlayerComponent
 
         public void ToRollState()
         {
-            if (!IsState<Roll>())
+            if (!EqualsCurrentState<Roll>())
                 return;
             
             ChangeState(E_PlayerState.Roll);
@@ -85,7 +78,7 @@ namespace PlayerComponent
 
         public void ToRollSlashState()
         {
-            if (!IsState<RollSlash>())
+            if (!EqualsCurrentState<RollSlash>())
                 return;
 
             ChangeState(E_PlayerState.RollSlash);
@@ -93,10 +86,10 @@ namespace PlayerComponent
 
         public void ToClimbingState((float lowPoint, float highPoint) ladderSize)
         {
-            if (!IsState<Climbing>())
+            if (!EqualsCurrentState<Climbing>())
                 return;
 
-            var climbing = _stateMachine.GetState<Climbing>(E_PlayerState.Climbing);
+            var climbing = _stateMachine.GetState(E_PlayerState.Climbing) as Climbing;
             if (climbing != null)
                 climbing.SetLadderSize(ladderSize);
 
@@ -105,9 +98,9 @@ namespace PlayerComponent
 
         public void ToAttackState()
         {
-            if (!IsState<Attack>())
+            if (!EqualsCurrentState<Attack>())
             {
-                var attack = _stateMachine.GetState<Attack>(E_PlayerState.Attack);
+                var attack = _stateMachine.GetState(E_PlayerState.Attack) as Attack;
                 if(attack != null) //TODO 광클 시 부하가 있을 수 있으므로 나중에 캐싱하는 방향으로.
                     attack.SetClick(true);
 
@@ -117,13 +110,21 @@ namespace PlayerComponent
             ChangeState(E_PlayerState.Attack); 
         }
 
-        private bool IsState<T>() where T : PlayerState
+        private bool EqualsCurrentState<T>() where T : PlayerState
         {
             var currentState = _stateMachine.GetCurrentState();
             if (currentState is T)
                 return false;
 
             return true;
+        }
+
+        private void ChangeState(E_PlayerState state)
+        {
+            if (!_transitionList.CanChange(state))
+                return;
+
+            _stateMachine.ChangeState(state);
         }
     }
 }

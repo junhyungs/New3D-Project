@@ -6,7 +6,7 @@ using State;
 
 namespace PlayerComponent
 {
-    public class PlayerStateMachine : MonoBehaviour
+    public class PlayerStateMachine : MonoBehaviour, IGetState<E_PlayerState>
     {
         private CharacterStateMachine<Player, E_PlayerState, PlayerStateFactory> _stateMachine;
 
@@ -44,10 +44,14 @@ namespace PlayerComponent
             return _stateMachine.GetCurrentState(); 
         }
 
-        public T GetState<T>(E_PlayerState stateName) where T : PlayerState
+        public E_PlayerState GetCurrentStateType()
         {
-            var state = _stateMachine.GetState(stateName);
-            return state is T targetState ? targetState : null;
+            return _stateMachine.GetCurrentStateType();
+        }
+
+        public ICharacterState GetState(E_PlayerState stateName)
+        {
+            return _stateMachine.GetState(stateName);
         }
     }
 }

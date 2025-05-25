@@ -15,6 +15,13 @@ public interface ICharacterState
     void OnTriggerExit(Collider other) { }
 }
 
+public interface IGetState<T> where T : Enum
+{
+    ICharacterState GetCurrentState();
+    ICharacterState GetState(T stateName);
+    T GetCurrentStateType();
+}
+
 public interface ICharacterStateFactory<TClass, TEnum>
     where TClass : class
     where TEnum : Enum

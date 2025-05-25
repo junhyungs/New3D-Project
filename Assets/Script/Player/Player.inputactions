@@ -61,12 +61,12 @@
                 },
                 {
                     "name": "ChargeSlash",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "aa55185d-7971-4a18-b8f3-5f8d38fd9263",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -182,9 +182,9 @@
                 },
                 {
                     "name": "",
-                    "id": "5278e12c-bf48-445f-94bf-bd81b2c329ac",
+                    "id": "a63f0451-a198-4c0f-b876-8cca82fe1156",
                     "path": "<Keyboard>/leftShift",
-                    "interactions": "Hold",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "ChargeSlash",

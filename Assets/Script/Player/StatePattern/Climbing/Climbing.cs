@@ -88,7 +88,7 @@ namespace PlayerComponent
                 yield return waitForFixedUpdate;
             }
 
-            _stateHandler.ChangeState(E_PlayerState.Idle);
+            _stateHandler.ChangeIdleORMoveState();
         }
 
         public void SetLadderSize((float lowPoint, float highPoint) ladderSize)

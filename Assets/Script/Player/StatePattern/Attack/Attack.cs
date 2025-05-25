@@ -11,6 +11,7 @@ namespace PlayerComponent
         
         private readonly int _attack = Animator.StringToHash("Attack");
         public float NextCombo { get; set; } = 0.4f;
+
         private float _lastClickTime;
         private float _changeTime;
 
