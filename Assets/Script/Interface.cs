@@ -8,6 +8,7 @@ public interface ICharacterState
 {
     void OnStateEnter() { }
     void OnStateFixedUpdate() { }
+    void OnStateUpdate() { }
     void OnStateExit() { }
     void OnTriggerEnter(Collider other) { }
     void OnTriggerStay(Collider other) { }
@@ -19,4 +20,29 @@ public interface ICharacterStateFactory<TClass, TEnum>
     where TEnum : Enum
 {
     ICharacterState CreateState(TClass classType, TEnum enumType);
+}
+
+public interface IInteraction
+{
+    void Interact();
+}
+
+public interface IInteractionItem : IInteraction
+{
+
+}
+
+public interface IInteractionDialog : IInteraction
+{
+
+}
+
+public interface IInteractionGameObject : IInteraction
+{
+
+}
+
+public interface ITakeDamage
+{
+    void TakeDamage(float damage);
 }

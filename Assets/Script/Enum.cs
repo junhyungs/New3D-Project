@@ -8,7 +8,16 @@ namespace EnumCollection
     {
         Idle,
         Move,
-        Roll
+        Roll,
+        RollSlash,
+        Falling,
+        Climbing,
+        Attack
+    }
+
+    public enum Key
+    {
+        Player,
     }
 
     public enum JsonData

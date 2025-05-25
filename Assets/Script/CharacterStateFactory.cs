@@ -41,9 +41,17 @@ namespace State
                 case E_PlayerState.Idle:
                     return new Idle(classType);
                 case E_PlayerState.Move:
-                    return null;
+                    return new Move(classType);
                 case E_PlayerState.Roll:
-                    return null;
+                    return new Roll(classType);
+                case E_PlayerState.Falling:
+                    return new Falling(classType);
+                case E_PlayerState.RollSlash:
+                    return new RollSlash(classType);
+                case E_PlayerState.Climbing:
+                    return new Climbing(classType);
+                case E_PlayerState.Attack:
+                    return new Attack(classType);
                 default:
                     throw new ArgumentException();
             }
