@@ -53,7 +53,7 @@ namespace PlayerComponent
                 
                 if(_changeTime > 0.65f)
                 {
-                    _stateHandler.ChangeState(E_PlayerState.Idle);
+                    _stateHandler.ChangeIdleORMoveState();
                 }
             }
         }
