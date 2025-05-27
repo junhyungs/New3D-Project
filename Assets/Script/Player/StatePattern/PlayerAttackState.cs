@@ -20,7 +20,7 @@ namespace PlayerComponent
             _playerTransform = player.transform;
         }
 
-        private void LookAtCursor()
+        protected void LookAtCursor()
         {
             Vector3 lookPos = new Vector3(_plane.Point.x,
                 _playerTransform.position.y, _plane.Point.z);
@@ -28,12 +28,6 @@ namespace PlayerComponent
             var distance = Vector3.Distance(_playerTransform.position, lookPos);
             if(distance > 0.1f)
                 _playerTransform.LookAt(lookPos);
-        }
-
-        protected void ClickTriggerAttack(int parameter)
-        {
-            LookAtCursor();
-            _animator.SetTrigger(parameter);
         }
     }
 }

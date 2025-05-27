@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 public class PlayerInputHandler
 {
@@ -32,7 +33,7 @@ public class PlayerInputHandler
         _input.actions["RollSlash"].started += OnRollSlash;
         _input.actions["Interaction"].started += OnInteraction;
         _input.actions["Slash"].started += OnSlash;
-        _input.actions["ChargeSlash"].started += OnChargeSlash;
+        _input.actions["ChargeSlash"].performed += OnChargeSlash;
         _input.actions["ChargeSlash"].canceled += OnChargeSlash;
 
         _unbindActions.Add(() => _input.actions["Move"].started -= OnMove);
@@ -44,7 +45,7 @@ public class PlayerInputHandler
         _unbindActions.Add(() => _input.actions["Interaction"].started -= OnInteraction);
         _unbindActions.Add(() => _input.actions["Slash"].started -= OnSlash);
 
-        _unbindActions.Add(() => _input.actions["ChargeSlash"].started -= OnChargeSlash);
+        _unbindActions.Add(() => _input.actions["ChargeSlash"].performed -= OnChargeSlash);
         _unbindActions.Add(() => _input.actions["ChargeSlash"].canceled -= OnChargeSlash);
     }
 
@@ -83,6 +84,6 @@ public class PlayerInputHandler
 
     private void OnChargeSlash(InputAction.CallbackContext context)
     {
-        ChargeSlashEvent.Invoke(context.ReadValue<bool>());
+        ChargeSlashEvent.Invoke(context.ReadValueAsButton());
     }
 }

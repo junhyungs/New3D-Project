@@ -27,8 +27,8 @@ public abstract class TransitionList<T> where T : Enum
     public bool CanChange(T next)
     {
         var key = _getState.GetCurrentStateType();
-        if (_transitionDictionary.TryGetValue(key, out HashSet<T> stateList))
-            return stateList.Contains(next);
+        if (_transitionDictionary.TryGetValue(key, out HashSet<T> stateSet))
+            return stateSet.Contains(next);
 
         Debug.Log("TransitionList TryGetValue Error");
         return false;
@@ -50,7 +50,8 @@ namespace PlayerComponent
                 E_PlayerState.RollSlash,
                 E_PlayerState.Attack,
                 E_PlayerState.Climbing,
-                E_PlayerState.Falling);
+                E_PlayerState.Falling,
+                E_PlayerState.ChargeAttack);
 
             AddDictionary(E_PlayerState.Move,
                 E_PlayerState.Idle,
@@ -58,7 +59,8 @@ namespace PlayerComponent
                 E_PlayerState.RollSlash,
                 E_PlayerState.Attack,
                 E_PlayerState.Falling,
-                E_PlayerState.Climbing);
+                E_PlayerState.Climbing,
+                E_PlayerState.ChargeAttack);
 
             AddDictionary(E_PlayerState.Roll,
                 E_PlayerState.Idle,
@@ -77,6 +79,11 @@ namespace PlayerComponent
                 E_PlayerState.Move);
 
             AddDictionary(E_PlayerState.Attack,
+                E_PlayerState.Idle,
+                E_PlayerState.Move,
+                E_PlayerState.Roll);
+
+            AddDictionary(E_PlayerState.ChargeAttack,
                 E_PlayerState.Idle,
                 E_PlayerState.Move,
                 E_PlayerState.Roll);

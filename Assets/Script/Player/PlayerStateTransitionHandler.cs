@@ -30,11 +30,13 @@ namespace PlayerComponent
             handler.RollEvent += ToRollState;
             handler.RollSlashEvent += ToRollSlashState;
             handler.SlashEvent += ToAttackState;
+            handler.ChargeSlashEvent += ToChargeAttackState;
 
             _unregisterActions.Add(() => handler.MoveEvent -= SetVector2);
             _unregisterActions.Add(() => handler.RollEvent -= ToRollState);
             _unregisterActions.Add(() => handler.RollSlashEvent -= ToRollSlashState);
             _unregisterActions.Add(() => handler.SlashEvent -= ToAttackState);
+            _unregisterActions.Add(() => handler.ChargeSlashEvent -= ToChargeAttackState);
         }
 
         public void UnRegisterEvent()
@@ -70,7 +72,7 @@ namespace PlayerComponent
 
         public void ToRollState()
         {
-            if (!EqualsCurrentState<Roll>())
+            if (EqualsCurrentState<Roll>())
                 return;
             
             ChangeState(E_PlayerState.Roll);
@@ -78,7 +80,7 @@ namespace PlayerComponent
 
         public void ToRollSlashState()
         {
-            if (!EqualsCurrentState<RollSlash>())
+            if (EqualsCurrentState<RollSlash>())
                 return;
 
             ChangeState(E_PlayerState.RollSlash);
@@ -86,7 +88,7 @@ namespace PlayerComponent
 
         public void ToClimbingState((float lowPoint, float highPoint) ladderSize)
         {
-            if (!EqualsCurrentState<Climbing>())
+            if (EqualsCurrentState<Climbing>())
                 return;
 
             var climbing = _stateMachine.GetState(E_PlayerState.Climbing) as Climbing;
@@ -98,7 +100,7 @@ namespace PlayerComponent
 
         public void ToAttackState()
         {
-            if (!EqualsCurrentState<Attack>())
+            if (EqualsCurrentState<Attack>())
             {
                 var attack = _stateMachine.GetState(E_PlayerState.Attack) as Attack;
                 if(attack != null) //TODO 광클 시 부하가 있을 수 있으므로 나중에 캐싱하는 방향으로.
@@ -110,13 +112,34 @@ namespace PlayerComponent
             ChangeState(E_PlayerState.Attack); 
         }
 
+        public void ToChargeAttackState(bool pressed)
+        {
+            if (pressed)
+            {
+                var state = _stateMachine.GetState(E_PlayerState.ChargeAttack);
+                if (state is ChargeAttack chargeAttack)
+                {
+                    chargeAttack.Pressed = pressed;
+                    ChangeState(E_PlayerState.ChargeAttack);
+                }
+            }
+            else
+            {
+                var currentState = _stateMachine.GetCurrentState();
+                if (currentState is ChargeAttack chargeAttack)
+                {
+                    chargeAttack.Pressed = pressed;
+                }
+            }
+        }
+
         private bool EqualsCurrentState<T>() where T : PlayerState
         {
             var currentState = _stateMachine.GetCurrentState();
             if (currentState is T)
-                return false;
+                return true;
 
-            return true;
+            return false;
         }
 
         private void ChangeState(E_PlayerState state)

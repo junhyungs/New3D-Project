@@ -52,6 +52,8 @@ namespace State
                     return new Climbing(classType);
                 case E_PlayerState.Attack:
                     return new Attack(classType);
+                case E_PlayerState.ChargeAttack:
+                    return new ChargeAttack(classType);
                 default:
                     throw new ArgumentException();
             }

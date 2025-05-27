@@ -61,11 +61,11 @@
                 },
                 {
                     "name": "ChargeSlash",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "aa55185d-7971-4a18-b8f3-5f8d38fd9263",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold(duration=1)",
                     "initialStateCheck": true
                 }
             ],
