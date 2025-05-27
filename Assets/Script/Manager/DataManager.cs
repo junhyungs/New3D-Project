@@ -54,7 +54,7 @@ public class DataManager : Singleton<DataManager>
             return;
         }
 
-        var key = playerSaveData.Id;
+        var key = playerSaveData.ID;
         TryAddData(key, playerSaveData);
     }
 
@@ -67,20 +67,29 @@ public class DataManager : Singleton<DataManager>
        
         var item = jsonArray[0];
 
-        string id = ParseString(item["Id"]);
+        string id = ParseString(item["ID"]);
         int power = ParseInt(item["Power"]);
         float speed = ParseFloat(item["Speed"]);
         float rollSpeed = ParseFloat(item["RollSpeed"]);
         float ladder = ParseFloat(item["LadderSpeed"]);
         float changeValue = ParseFloat(item["SpeedChangeValue"]);
         float speedOffSet = ParseFloat(item["SpeedOffSet"]);
+        float dashDistance = ParseFloat(item["DashDistance"]);
         int health = ParseInt(item["Health"]);
 
-        PlayerSaveData data = new PlayerSaveData();
-        data.SetPlayerData(id, power, speed, rollSpeed, ladder,
-            changeValue, speedOffSet, health);
+        PlayerConstantData constantData = new PlayerConstantData(
+            rollSpeed, ladder, changeValue, speedOffSet, dashDistance);
 
-        //SaveManager.Instance.SavePlayerData(data);
+        PlayerSaveData data = new PlayerSaveData()
+        {
+            ID = id,
+            Power = power,
+            Speed = speed,
+            Health = health,
+            ConstantData = constantData
+        };
+        
+        //SaveManager.Instance.SavePlayerData(data); 주석 마지막에 풀어줘야함.
         TryAddData(id, data);
     }
     #endregion

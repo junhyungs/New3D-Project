@@ -21,27 +21,31 @@ namespace GameData
 
     public class PlayerSaveData : Data
     {
-        public string Id { get; set; }
+        public string ID { get; set; }
         public string Date { get; set; }
         public int Power {  get; set; }
         public float Speed { get; set; }
+        public int Health { get; set; }
+
+        public PlayerConstantData ConstantData { get; set; }
+    }
+
+    public class PlayerConstantData : Data
+    {
         public float RollSpeed { get; set; }
         public float LadderSpeed { get; set; }
         public float SpeedChangeValue { get; set; }
         public float SpeedOffSet { get; set; }
-        public int Health { get; set; }
+        public float DashSpeed { get; set; }
 
-        public void SetPlayerData(string id, int power, float speed,
-            float rollSpeed, float ladderSpeed, float speedChangeValue, float speedOffSet, int health)
+        public PlayerConstantData(float rollSpeed, float ladderSpeed,
+            float speedChangeValue, float speedOffSet, float dashDistance)
         {
-            Id=id;
-            Power=power;
-            Speed=speed;
-            RollSpeed=rollSpeed;
-            LadderSpeed=ladderSpeed;
-            SpeedChangeValue=speedChangeValue;
-            SpeedOffSet=speedOffSet;
-            Health=health;
+            RollSpeed = rollSpeed;
+            LadderSpeed = ladderSpeed;
+            SpeedChangeValue = speedChangeValue;
+            SpeedOffSet = speedOffSet;
+            DashSpeed = dashDistance;
         }
     }
 }
