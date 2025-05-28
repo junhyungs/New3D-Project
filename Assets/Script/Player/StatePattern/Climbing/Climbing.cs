@@ -60,7 +60,7 @@ namespace PlayerComponent
         private void ClimbMovement()
         {
             var moveDirection = new Vector3(0f, _stateHandler.MoveVector.y, 0f);
-            var moveVector = _rigidBody.position + moveDirection * _data.LadderSpeed * Time.fixedDeltaTime;
+            var moveVector = _rigidBody.position + moveDirection * _constantData.LadderSpeed * Time.fixedDeltaTime;
 
             _rigidBody.MovePosition(moveVector);
             _animator.SetFloat(_climbValue, moveDirection.y);
@@ -79,16 +79,16 @@ namespace PlayerComponent
             _animator.SetBool(_isClimb, false);
 
             var waitForFixedUpdate = new WaitForFixedUpdate();
-            while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.85)  
+            while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime <= 0.85f)  
             {
                 Vector3 moveDirection = new Vector3(0f, 0f, direction).normalized;
-                Vector3 moveVector = moveDirection * _data.LadderSpeed * Time.fixedDeltaTime;    
+                Vector3 moveVector = moveDirection * _constantData.LadderSpeed * Time.fixedDeltaTime;    
                
                 _rigidBody.MovePosition(_rigidBody.position + moveVector);
                 yield return waitForFixedUpdate;
             }
 
-            _stateHandler.ChangeState(E_PlayerState.Idle);
+            _stateHandler.ChangeIdleORMoveState();
         }
 
         public void SetLadderSize((float lowPoint, float highPoint) ladderSize)

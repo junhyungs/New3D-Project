@@ -12,10 +12,27 @@ namespace PlayerComponent
         }
 
         protected Animator _animator;
+        protected MonoBehaviour _monobehaviour;
+        protected Rigidbody _rigidbody;
+        protected Transform _playerTransform;
+        
 
         private void Initialize(Player player)
         {
             _animator = player.GetComponentInChildren<Animator>();
+            _rigidbody = player.GetComponent<Rigidbody>();
+            _monobehaviour = player;
+            _playerTransform = player.transform;
+        }
+
+        protected void LookAtCursor()
+        {
+            Vector3 lookPos = new Vector3(_plane.Point.x,
+                _playerTransform.position.y, _plane.Point.z);
+
+            var distance = Vector3.Distance(_playerTransform.position, lookPos);
+            if(distance > 0.1f)
+                _playerTransform.LookAt(lookPos);
         }
     }
 }

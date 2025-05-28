@@ -1,13 +1,13 @@
 [
   {
-    "Id": "Player",
-    "Date": "",
+    "ID": "Player",
     "Power": "1",
     "Speed": "5",
+    "Health": "4",
     "RollSpeed": "5",
-    "LadderSpeed": "2",
+    "LadderSpeed": "5",
     "SpeedChangeValue": "100",
     "SpeedOffSet": "0.1",
-    "Health": "4"
+    "DashSpeed": "2.5"
   }
 ]

@@ -24,7 +24,7 @@ namespace PlayerComponent
         public void OnStateFixedUpdate()
         {
             IsFalling(E_PlayerState.Falling);
-            _stateHandler.IdleToMoveState();
+            _stateHandler.ChangeIdleORMoveState();
         }
     }
 }

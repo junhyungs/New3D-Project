@@ -11,6 +11,7 @@ namespace PlayerComponent
         public PlayerStateTransitionHandler StateHandler { get; private set; }
         public PlayerStateMachine StateMachine { get; private set; } //삭제 보류.
         public PlayerInteraction Interaction { get; private set; }
+        public PlayerPlane Plane { get; private set; }
 
         private void Awake()
         {
@@ -27,6 +28,7 @@ namespace PlayerComponent
         private void InitializeOnAwakePlayer()
         {
             StateMachine = GetComponent<PlayerStateMachine>();
+            Plane = GetComponent<PlayerPlane>();
             
             InputHandler = new PlayerInputHandler(this);
             StateHandler = new PlayerStateTransitionHandler(StateMachine, InputHandler);

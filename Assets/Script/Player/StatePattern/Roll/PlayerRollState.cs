@@ -22,7 +22,7 @@ namespace PlayerComponent
 
         protected void Movement()
         {
-            Vector3 rollVector = _direction * _data.RollSpeed * Time.fixedDeltaTime;
+            Vector3 rollVector = _direction * _constantData.RollSpeed * Time.fixedDeltaTime;
             _rigidBody.MovePosition(_rigidBody.position + rollVector);
         }
 

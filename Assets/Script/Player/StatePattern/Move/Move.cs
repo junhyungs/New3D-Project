@@ -9,7 +9,7 @@ namespace PlayerComponent
     {
         public Move(Player player) : base(player)
         {
-            _speedChangeValue = _data.SpeedChangeValue;
+            _speedChangeValue = _constantData.SpeedChangeValue;
         }
 
         private readonly int _moveValue = Animator.StringToHash("MoveValue");
@@ -19,6 +19,7 @@ namespace PlayerComponent
         private float _speedChangeValue;
         private float _targetRotation;
         private float _rotationVelocity;
+
         public void OnStateFixedUpdate()
         {
             IsFalling(E_PlayerState.Falling);
@@ -41,21 +42,21 @@ namespace PlayerComponent
 
                 if(_currentSpeed == _targetSpeed)
                 {
-                    _stateHandler.ChangeState(E_PlayerState.Idle);
+                    _stateHandler.ChangeIdleORMoveState();
                     return;
                 }
             }
             else
             {
-                if(_speedChangeValue != _data.SpeedChangeValue)
+                if(_speedChangeValue != _constantData.SpeedChangeValue)
                 {
-                    _speedChangeValue = Mathf.Lerp(_speedChangeValue, _data.SpeedChangeValue, Time.fixedDeltaTime);
+                    _speedChangeValue = Mathf.Lerp(_speedChangeValue, _constantData.SpeedChangeValue, Time.fixedDeltaTime);
                 }
             }
 
                 var currentHorizontalSpeed = new Vector3(_rigidBody.velocity.x, 0f, _rigidBody.velocity.z).magnitude;
-            bool isChange = currentHorizontalSpeed < _targetSpeed - _data.SpeedOffSet 
-                || currentHorizontalSpeed > _targetSpeed + _data.SpeedOffSet;
+            bool isChange = currentHorizontalSpeed < _targetSpeed - _constantData.SpeedOffSet 
+                || currentHorizontalSpeed > _targetSpeed + _constantData.SpeedOffSet;
 
             if (isChange)
             {

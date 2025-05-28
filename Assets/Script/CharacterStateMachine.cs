@@ -17,6 +17,7 @@ namespace State
         private Dictionary<TEnum, ICharacterState> _stateDictionary;
         private CharacterStateFactory<TClass, TEnum, TFactroy> _factory;
         private ICharacterState _state;
+        private TEnum _currentType;
 
         public void FixedUpdate()
         {
@@ -48,6 +49,7 @@ namespace State
             {
                 _state.OnStateExit();
                 _state = _stateDictionary[newState];
+                _currentType = newState;
                 _state.OnStateEnter();
             }
         }
@@ -68,6 +70,11 @@ namespace State
                 return _stateDictionary[enumType];
 
             return null;
+        }
+
+        public TEnum GetCurrentStateType()
+        {
+            return _currentType;
         }
     }   
 }
