@@ -8,6 +8,6 @@
     "LadderSpeed": "5",
     "SpeedChangeValue": "100",
     "SpeedOffSet": "0.1",
-    "DashDistance": "0.5"
+    "DashSpeed": "2.5"
   }
 ]

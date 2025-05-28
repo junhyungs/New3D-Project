@@ -8,11 +8,8 @@ namespace PlayerComponent
 {
     public class ChargeAttack : PlayerAttackState, ICharacterState<ChargeAttack>
     {
-        public ChargeAttack(Player player) : base(player)
-        {
-        }
-
-        private WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();
+        public ChargeAttack(Player player) : base(player) { }
+        private WaitForFixedUpdate _waitForFixedUpdate;
 
         private readonly int _chargeAttack = Animator.StringToHash("ChargeAttack");
         private readonly int _chargeEquals = Animator.StringToHash("ChargeEquals");
@@ -24,13 +21,6 @@ namespace PlayerComponent
 
         public bool Pressed { get; set; }
         private bool _attackDirection = true;
-
-        private const float _maxDistance = 5f;
-        private float _speed;
-        private float _moveDistance;
-
-        private Vector3 _startPos;
-        private Vector3 _currentPos;
 
         public void OnStateEnter()
         {
@@ -51,7 +41,7 @@ namespace PlayerComponent
                 if (isMax)
                 {
                     LookAtCursor();
-                    _player.StartCoroutine(DashMovement());
+                    _monobehaviour.StartCoroutine(DashMovement());
                 }
 
                 _animator.SetBool(_chargeAttack , Pressed);
@@ -66,18 +56,20 @@ namespace PlayerComponent
                 return stateInfo.IsName(_first_Slash) || stateInfo.IsName(_second_Slash);
             });
 
-            _startPos = _rigidbody.position;
-           
-            while (!_animator.IsInTransition(0))
-            {
-                _currentPos = _rigidbody.position;
-                _moveDistance = Vector3.Distance(_startPos, _currentPos);
+            var speed = _constantData.DashSpeed * 2;
+            var maxDistance = 5f;
+            var startPosition = _rigidbody.position;
 
-                if (_moveDistance > _maxDistance)
+            while (!_animator.IsInTransition(0))//상태전환이 일어나기 전까지 반복.
+            {
+                var currentPosition = _rigidbody.position;
+                var moveDistance = Vector3.Distance(startPosition, currentPosition);
+
+                if (moveDistance > maxDistance)
                     break;
 
-                _speed = (_constantData.DashSpeed * 10f) * Time.fixedDeltaTime;
-                Vector3 moveVector = _playerTransform.forward * _speed;
+                var dashSpeed = speed * Time.fixedDeltaTime;
+                var moveVector = _playerTransform.forward * dashSpeed;
 
                 _rigidbody.MovePosition(_rigidbody.position + moveVector);
                 yield return _waitForFixedUpdate;

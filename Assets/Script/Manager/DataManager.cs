@@ -74,11 +74,11 @@ public class DataManager : Singleton<DataManager>
         float ladder = ParseFloat(item["LadderSpeed"]);
         float changeValue = ParseFloat(item["SpeedChangeValue"]);
         float speedOffSet = ParseFloat(item["SpeedOffSet"]);
-        float dashDistance = ParseFloat(item["DashDistance"]);
+        float dashSpeed = ParseFloat(item["DashSpeed"]);
         int health = ParseInt(item["Health"]);
 
         PlayerConstantData constantData = new PlayerConstantData(
-            rollSpeed, ladder, changeValue, speedOffSet, dashDistance);
+            rollSpeed, ladder, changeValue, speedOffSet, dashSpeed);
 
         PlayerSaveData data = new PlayerSaveData()
         {

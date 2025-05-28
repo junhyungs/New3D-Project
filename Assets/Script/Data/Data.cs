@@ -39,13 +39,13 @@ namespace GameData
         public float DashSpeed { get; set; }
 
         public PlayerConstantData(float rollSpeed, float ladderSpeed,
-            float speedChangeValue, float speedOffSet, float dashDistance)
+            float speedChangeValue, float speedOffSet, float dashSpeed)
         {
             RollSpeed = rollSpeed;
             LadderSpeed = ladderSpeed;
             SpeedChangeValue = speedChangeValue;
             SpeedOffSet = speedOffSet;
-            DashSpeed = dashDistance;
+            DashSpeed = dashSpeed;
         }
     }
 }

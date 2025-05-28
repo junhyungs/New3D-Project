@@ -12,14 +12,16 @@ namespace PlayerComponent
         }
 
         protected Animator _animator;
+        protected MonoBehaviour _monobehaviour;
         protected Rigidbody _rigidbody;
         protected Transform _playerTransform;
-        protected bool _isMove;
+        
 
         private void Initialize(Player player)
         {
             _animator = player.GetComponentInChildren<Animator>();
             _rigidbody = player.GetComponent<Rigidbody>();
+            _monobehaviour = player;
             _playerTransform = player.transform;
         }
 
