@@ -13,7 +13,8 @@ namespace EnumCollection
         Falling,
         Climbing,
         Attack,
-        ChargeAttack
+        ChargeAttack,
+        Skill
     }
 
     public enum Key
@@ -32,6 +33,14 @@ namespace EnumCollection
         SaveInfoSlot_1,
         SaveInfoSlot_2,
         SaveInfoSlot_3,
+    }
+
+    public enum PlayerSkillType
+    {
+        Bow = 1,
+        FireBall,
+        Bomb,
+        Hook
     }
 }
 

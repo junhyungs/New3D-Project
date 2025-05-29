@@ -5,7 +5,7 @@ using System;
 
 namespace PlayerComponent
 {
-    public class PlayerInteraction
+    public class PlayerInteraction : IUnbindAction
     {
         public PlayerInteraction(Player player, InteractionInfo info)
         {
@@ -35,7 +35,7 @@ namespace PlayerComponent
             _unbindAction += () => inputHandler.InteractionEvent -= Interaction;
         }
 
-        public void UnBindAction()
+        public void Unbind()
         {
             _unbindAction.Invoke();
         }
@@ -72,7 +72,8 @@ namespace PlayerComponent
             {
                 action?.Invoke(interaction);
             }
-        }   
+        }
+
     }
 }
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace PlayerComponent
@@ -9,9 +10,11 @@ namespace PlayerComponent
 
         public PlayerInputHandler InputHandler { get; private set; }        
         public PlayerStateTransitionHandler StateHandler { get; private set; }
-        public PlayerStateMachine StateMachine { get; private set; } //삭제 보류.
         public PlayerInteraction Interaction { get; private set; }
         public PlayerPlane Plane { get; private set; }
+        public PlayerSkillSystem SkillSystem { get; private set; }
+
+        private List<IUnbindAction> _onDestroyInvokeList = new List<IUnbindAction>();
 
         private void Awake()
         {
@@ -20,19 +23,34 @@ namespace PlayerComponent
 
         private void OnDestroy()
         {
-            InputHandler.UnBindAction();
-            StateHandler.UnRegisterEvent();
-            Interaction.UnBindAction();
+            OnDestroyPlayer();
         }
 
         private void InitializeOnAwakePlayer()
         {
-            StateMachine = GetComponent<PlayerStateMachine>();
+            var stateMachine = GetComponent<PlayerStateMachine>();
             Plane = GetComponent<PlayerPlane>();
+            SkillSystem = GetComponentInChildren<PlayerSkillSystem>();
             
             InputHandler = new PlayerInputHandler(this);
-            StateHandler = new PlayerStateTransitionHandler(StateMachine, InputHandler);
+            StateHandler = new PlayerStateTransitionHandler(stateMachine, InputHandler);
             Interaction = new PlayerInteraction(this, _interactionInfo);
+
+            AddUnbindList();
+        }
+
+        private void AddUnbindList()
+        {
+            _onDestroyInvokeList = new List<IUnbindAction>()
+            {
+                InputHandler, StateHandler, Interaction, SkillSystem
+            };
+        }
+
+        private void OnDestroyPlayer()
+        {
+            foreach (var item in _onDestroyInvokeList)
+                item.Unbind();
         }
 
         private void OnDrawGizmos()

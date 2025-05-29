@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace PlayerComponent
 {
-    public class PlayerStateTransitionHandler
+    public class PlayerStateTransitionHandler : IUnbindAction
     {
         public PlayerStateTransitionHandler(PlayerStateMachine stateMachine,
             PlayerInputHandler inputHandler)
@@ -39,12 +39,10 @@ namespace PlayerComponent
             _unregisterActions.Add(() => handler.ChargeSlashEvent -= ToChargeAttackState);
         }
 
-        public void UnRegisterEvent()
+        public void Unbind()
         {
             foreach(var action in _unregisterActions)
-            {
                 action?.Invoke();
-            }
 
             _unregisterActions.Clear();
         }
@@ -149,6 +147,7 @@ namespace PlayerComponent
 
             _stateMachine.ChangeState(state);
         }
+
     }
 }
 

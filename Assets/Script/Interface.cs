@@ -53,3 +53,8 @@ public interface ITakeDamage
 {
     void TakeDamage(float damage);
 }
+
+public interface IUnbindAction
+{
+    void Unbind();
+}
