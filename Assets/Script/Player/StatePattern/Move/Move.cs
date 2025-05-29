@@ -22,8 +22,15 @@ namespace PlayerComponent
 
         public void OnStateFixedUpdate()
         {
-            IsFalling(E_PlayerState.Falling);
             Movement();
+        }
+
+        public void OnStateUpdate()
+        {
+            IsFalling(E_PlayerState.Falling);
+
+            var normalizedSpeed = _currentSpeed / _data.Speed;
+            _animator.SetFloat(_moveValue, normalizedSpeed);
         }
 
         public void OnStateExit()
@@ -78,9 +85,6 @@ namespace PlayerComponent
             Vector3 moveVector = direction * _currentSpeed;
             moveVector.y = _rigidBody.velocity.y;
             _rigidBody.velocity = moveVector;
-
-            var normalizedSpeed = _currentSpeed / _data.Speed;
-            _animator.SetFloat(_moveValue, normalizedSpeed);
         }
     }
 

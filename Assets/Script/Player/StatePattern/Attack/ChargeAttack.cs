@@ -56,7 +56,7 @@ namespace PlayerComponent
                 return stateInfo.IsName(_first_Slash) || stateInfo.IsName(_second_Slash);
             });
 
-            var speed = _constantData.DashSpeed * 2;
+            var speed = _constantData.DashSpeed;
             var maxDistance = 5f;
             var startPosition = _rigidbody.position;
 
