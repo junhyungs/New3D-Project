@@ -12,21 +12,21 @@ public class Bow : PlayerSkill, ISkill
    
     public override void Fire()
     {
-        throw new System.NotImplementedException();
+        base.Fire();
     }
 
     public override void InitializeSkill(Transform firePosition, int animatorTriggerCode)
     {
-        throw new System.NotImplementedException();
+        base.InitializeSkill(firePosition, animatorTriggerCode);
     }
 
     public override void Reloading()
     {
-        throw new System.NotImplementedException();
+        //TODO 오브젝트 풀에서 투사체를 가져와서 fireTransform의 자식으로 설정.
     }
 
-    public override void TriggerAnimation()
+    public override void Execute()
     {
-        throw new System.NotImplementedException();
+        base.Execute();
     }
 }

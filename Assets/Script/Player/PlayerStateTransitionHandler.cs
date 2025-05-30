@@ -31,12 +31,14 @@ namespace PlayerComponent
             handler.RollSlashEvent += ToRollSlashState;
             handler.SlashEvent += ToAttackState;
             handler.ChargeSlashEvent += ToChargeAttackState;
+            handler.SkillEvent += ToSkillState;
 
             _unregisterActions.Add(() => handler.MoveEvent -= SetVector2);
             _unregisterActions.Add(() => handler.RollEvent -= ToRollState);
             _unregisterActions.Add(() => handler.RollSlashEvent -= ToRollSlashState);
             _unregisterActions.Add(() => handler.SlashEvent -= ToAttackState);
             _unregisterActions.Add(() => handler.ChargeSlashEvent -= ToChargeAttackState);
+            _unregisterActions.Add(() => handler.SkillEvent -= ToSkillState);
         }
 
         public void Unbind()
@@ -127,6 +129,22 @@ namespace PlayerComponent
                 if (currentState is ChargeAttack chargeAttack)
                 {
                     chargeAttack.Pressed = pressed;
+                }
+            }
+        }
+
+        public void ToSkillState(bool pressed)
+        {
+            if (pressed)
+            {
+                ChangeState(E_PlayerState.Skill);
+            }
+            else
+            {
+                if (EqualsCurrentState<Skill>())
+                {
+                    var skill = _stateMachine.GetState(E_PlayerState.Skill) as Skill;
+                    skill.Fire(pressed);
                 }
             }
         }

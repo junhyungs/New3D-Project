@@ -12,21 +12,21 @@ public class FireBall : PlayerSkill, ISkill
     
     public override void Fire()
     {
-        throw new System.NotImplementedException();
+        base.Fire();
     }
 
     public override void InitializeSkill(Transform firePosition, int animatorTriggerCode)
     {
-        throw new System.NotImplementedException();
+        base.InitializeSkill(firePosition, animatorTriggerCode);
     }
 
     public override void Reloading()
     {
-        throw new System.NotImplementedException();
+        
     }
 
-    public override void TriggerAnimation()
+    public override void Execute()
     {
-        throw new System.NotImplementedException();
+        base .Execute();
     }
 }

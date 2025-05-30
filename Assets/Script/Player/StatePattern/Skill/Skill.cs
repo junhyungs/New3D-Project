@@ -12,32 +12,35 @@ namespace PlayerComponent
         }
 
         private PlayerSkillSystem _skillSystem;
+        private ISkill _skill;
 
         public void OnStateEnter()
         {
-            var skill = _skillSystem.GetSkill();
-            skill.TriggerAnimation();
+            _skill = _skillSystem.GetSkill();
+
+            if (_skill != null)
+                _skill.Execute();
+            else
+                _stateHandler.ChangeIdleORMoveState();
         }
 
         public void OnStateUpdate()
         {
-
-        }
-
-        public void OnStateFixedUpdate()
-        {
-
+            if (_skill.EndSkill)
+                _stateHandler.ChangeIdleORMoveState();
         }
 
         public void OnStateExit()
         {
-
+            _skill.RemoveProjectile();
         }
 
         public void Fire(bool isFire)
         {
-            
+            if (_skill == null || !_skill.RequiresReload)
+                return;
 
+            _skill.Fire();
         }
     }
 }

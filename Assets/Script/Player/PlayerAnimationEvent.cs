@@ -25,6 +25,12 @@ public class PlayerAnimationEvent : MonoBehaviour
         _reloadSkillAction += action;
     }
 
+    public void UnSetReloadAction()
+    {
+        if(_reloadSkillAction != null )
+            _reloadSkillAction = null;
+    }
+
     public void ReloadSkill()
     {
         _reloadSkillAction?.Invoke();

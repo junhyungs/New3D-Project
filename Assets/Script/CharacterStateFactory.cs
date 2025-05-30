@@ -54,6 +54,8 @@ namespace State
                     return new Attack(classType);
                 case E_PlayerState.ChargeAttack:
                     return new ChargeAttack(classType);
+                case E_PlayerState.Skill:
+                    return new Skill(classType);
                 default:
                     throw new ArgumentException();
             }

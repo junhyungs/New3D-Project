@@ -102,9 +102,11 @@ namespace PlayerComponent
     public interface ISkill
     {
         public bool RequiresReload { get; set; }
-        public void TriggerAnimation();
+        public bool EndSkill { get; set; }
+        public void Execute();
         public void Reloading();
         public void Fire();
+        public void RemoveProjectile();
     }
 }
 
