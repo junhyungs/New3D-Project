@@ -43,6 +43,8 @@ public class Hook : PlayerSkill, ISkill
     {
 
     }
+
+    public override void OnUpdateSkill() { }
     
     public override void Execute()
     {

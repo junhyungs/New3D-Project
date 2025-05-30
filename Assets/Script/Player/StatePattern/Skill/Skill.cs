@@ -28,6 +28,8 @@ namespace PlayerComponent
         {
             if (_skill.EndSkill)
                 _stateHandler.ChangeIdleORMoveState();
+
+            _skill.OnUpdateSkill();
         }
 
         public void OnStateExit()

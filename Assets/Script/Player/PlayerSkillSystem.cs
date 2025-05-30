@@ -107,6 +107,7 @@ namespace PlayerComponent
         public void Reloading();
         public void Fire();
         public void RemoveProjectile();
+        public void OnUpdateSkill();
     }
 }
 

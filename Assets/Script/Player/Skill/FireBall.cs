@@ -10,23 +10,9 @@ public class FireBall : PlayerSkill, ISkill
         RequiresReload = true;
     }
     
-    public override void Fire()
-    {
-        base.Fire();
-    }
-
-    public override void InitializeSkill(Transform firePosition, int animatorTriggerCode)
-    {
-        base.InitializeSkill(firePosition, animatorTriggerCode);
-    }
-
     public override void Reloading()
     {
         
     }
 
-    public override void Execute()
-    {
-        base .Execute();
-    }
 }

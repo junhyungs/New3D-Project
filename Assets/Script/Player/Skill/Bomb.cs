@@ -15,6 +15,8 @@ public class Bomb : PlayerSkill, ISkill
 
     public override void Fire()
     {
+        _rotate = false;
+
         var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
         var success = stateInfo.normalizedTime >= 0.9f;
 
@@ -52,18 +54,8 @@ public class Bomb : PlayerSkill, ISkill
         EndSkill = true;
     }
 
-    public override void InitializeSkill(Transform firePosition, int animatorTriggerCode)
-    {
-        base.InitializeSkill(firePosition, animatorTriggerCode);
-    }
-
     public override void Reloading()
     {
         
-    }
-
-    public override void Execute()
-    {
-        base.Execute();
     }
 }

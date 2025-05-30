@@ -92,7 +92,8 @@ namespace PlayerComponent
 
             AddDictionary(E_PlayerState.Skill,
                 E_PlayerState.Idle,
-                E_PlayerState.Move);
+                E_PlayerState.Move,
+                E_PlayerState.Roll);
         }
     }
 }

@@ -494,7 +494,7 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: bbfdd63f0c80a0c4e8d6cf6badcf280c, type: 2}
-  m_Tag: 
+  m_Tag: SkillReady
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
@@ -1053,7 +1053,7 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: 4ed5a80960e78f04cab8816a395c850b, type: 2}
-  m_Tag: 
+  m_Tag: SkillReady
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
@@ -1301,7 +1301,7 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: ef29d0d109db3504fbfe15d6cea9cf52, type: 2}
-  m_Tag: 
+  m_Tag: SkillReady
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
