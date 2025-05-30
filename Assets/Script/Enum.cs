@@ -17,7 +17,7 @@ namespace EnumCollection
         Skill
     }
 
-    public enum Key
+    public enum ObjectKey//PathCSV ID와 동일하게.
     {
         Player,
     }
@@ -25,7 +25,8 @@ namespace EnumCollection
     public enum JsonData
     {
         New_3D_Player,
-        New_3D_ScreenResolution
+        New_3D_ScreenResolution,
+        New_3D_Path,
     }
 
     public enum UIEvent
@@ -41,11 +42,6 @@ namespace EnumCollection
         FireBall,
         Bomb,
         Hook
-    }
-
-    public enum ObjectName
-    {
-
     }
 }
 

@@ -1,12 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using GameData;
-using System.Threading.Tasks;
 using EnumCollection;
+using GameData;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using Newtonsoft.Json;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEditor.PackageManager.Requests;
+using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
 {
@@ -29,11 +30,60 @@ public class DataManager : Singleton<DataManager>
 
     public async Task LoadAllData()
     {
-        Debug.Log("StartLoadAllData");
-        await Task.Delay(3000);
-        Debug.Log("EndLoadAllData");
+        var taskList = new List<Task>()
+        {
+            LoadPathData(),
+        };
+        
+        await Task.WhenAll(taskList);
     }
 
+    public async Task<JArray> LoadJsonArray(string path)
+    {
+        var request = Resources.LoadAsync<TextAsset>(path);
+
+        while (!request.isDone)
+            await Task.Yield();
+
+        var textAsset = request.asset as TextAsset;
+        return JArray.Parse(textAsset.text);
+    }
+
+    #region PathData
+    public async Task LoadPathData()
+    {
+        JArray jArray = await LoadJsonArray($"JsonData/{JsonData.New_3D_Path}");
+
+        foreach(var item in jArray)
+        {
+            string id = ParseString(item);
+            string path = ParseString(item);
+
+            PathData pathData = new PathData(id, path);
+            TryAddData(id, pathData);
+        }
+    }
+
+    public void TestLoadPathData()
+    {
+        try
+        {
+            var textAsset = Resources.Load<TextAsset>("JsonData/New_3D_Path");
+            JArray jArray = JArray.Parse(textAsset.text);
+
+            foreach (var item in jArray)
+            {
+                string id = ParseString(item);
+                string path = ParseString(item);
+
+                PathData pathData = new PathData(id, path);
+                TryAddData(id, pathData);
+            }
+        }
+        catch { }
+    }
+
+    #endregion
     #region Player
     public void AddToPlayerData(PlayerSaveData playerSaveData)
     {

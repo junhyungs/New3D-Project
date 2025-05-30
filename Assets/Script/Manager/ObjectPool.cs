@@ -7,20 +7,28 @@ using GameData;
 
 public class ObjectPool : Singleton_MonoBehaviour<ObjectPool>
 {
-    private Dictionary<ObjectName, Pool> _poolDictionary = new Dictionary<ObjectName, Pool>();
-    private Dictionary<ObjectName, PathData> _pathDataDictionary = new Dictionary<ObjectName, PathData>();
+    private Dictionary<ObjectKey, Pool> _poolDictionary = new Dictionary<ObjectKey, Pool>();
+    private Dictionary<ObjectKey, PathData> _pathDataDictionary = new Dictionary<ObjectKey, PathData>();
 
-    private PathData GetPathData(ObjectName objectName)
+    private void Awake() //테스트 코드.
     {
-        if (_pathDataDictionary.TryGetValue(objectName, out var pathData))
-            return pathData;
-
-        return new PathData("Test", "Test"); // 없으면 데이터 매니저에서 끌어오기.
+        DataManager.Instance.TestLoadPathData();
     }
 
-    public void CreatePool(ObjectName name, int count = 1)
+    private PathData GetPathData(ObjectKey objectKey)
     {
-        if (_poolDictionary.ContainsKey(name))
+        if (_pathDataDictionary.TryGetValue(objectKey, out var pathData))
+            return pathData;
+
+        var newPathData = DataManager.Instance.GetData(objectKey.ToString()) as PathData;
+        _pathDataDictionary.Add(objectKey, newPathData);
+
+        return newPathData;
+    }
+
+    public void CreatePool(ObjectKey objectKey, int count = 1)
+    {
+        if (_poolDictionary.ContainsKey(objectKey))
             return;
 
         var gameObjectName = name.ToString();
@@ -29,9 +37,9 @@ public class ObjectPool : Singleton_MonoBehaviour<ObjectPool>
         poolObject.transform.SetParent(transform);
 
         var pool = new Pool(poolObject.transform);
-        _poolDictionary.Add(name, pool);
+        _poolDictionary.Add(objectKey, pool);
 
-        var pathData = GetPathData(name);
+        var pathData = GetPathData(objectKey);
         StartCoroutine(LoadPrefab(pool, pathData.Path, gameObjectName, count));
     }
 
@@ -46,15 +54,15 @@ public class ObjectPool : Singleton_MonoBehaviour<ObjectPool>
 
         for(int i = 0; i < count; i++)
         {
-            var poolItem = Instantiate(gameObject);
+            var poolItem = Instantiate(gameObject, pool.PoolTrasnform);
             poolItem.SetActive(false);
             pool.Enqueue(poolItem);
         }
     }
 
-    public void AllDisableGameObject(ObjectName objectName)
+    public void AllDisableGameObject(ObjectKey objectKey)
     {
-        if(_poolDictionary.TryGetValue(objectName, out var pool))
+        if(_poolDictionary.TryGetValue(objectKey, out var pool))
         {
             foreach(Transform childTransform in pool.PoolTrasnform)
             {
@@ -69,23 +77,23 @@ public class ObjectPool : Singleton_MonoBehaviour<ObjectPool>
         }
     }
 
-    public void EnqueueGameObject(ObjectName objectName, GameObject gameObject)
+    public void EnqueueGameObject(ObjectKey objectKey, GameObject gameObject)
     {
-        if(!_poolDictionary.ContainsKey(objectName))
-            CreatePool(objectName);
+        if(!_poolDictionary.ContainsKey(objectKey))
+            CreatePool(objectKey);
 
-        var pool = _poolDictionary[objectName];
+        var pool = _poolDictionary[objectKey];
         gameObject.transform.SetParent(pool.PoolTrasnform);
         gameObject.SetActive(false);
         pool.Enqueue(gameObject);
     }
 
-    public GameObject DequeueGameObject(ObjectName objectName)
+    public GameObject DequeueGameObject(ObjectKey objectKey)
     {
-        if(!_poolDictionary.ContainsKey(objectName))
-            CreatePool(objectName);
+        if(!_poolDictionary.ContainsKey(objectKey))
+            CreatePool(objectKey);
 
-        var pool = _poolDictionary[objectName];
+        var pool = _poolDictionary[objectKey];
         if(pool.QueueCount == 0)
         {
             var saveItem = pool.SaveItem;
