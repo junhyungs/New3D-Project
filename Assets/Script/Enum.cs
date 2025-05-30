@@ -42,5 +42,10 @@ namespace EnumCollection
         Bomb,
         Hook
     }
+
+    public enum ObjectName
+    {
+
+    }
 }
 

@@ -7,6 +7,18 @@ namespace GameData
     [System.Serializable]
     public class Data { }
 
+    public class  PathData : Data
+    {
+        public string ID { get; set; }
+        public string Path { get; set; }
+
+        public PathData(string id, string path)
+        {
+            ID = id;
+            Path = path;
+        }
+    }
+
     public class ScreenResolutionData : Data
     {
         public int Width { get; set; }
