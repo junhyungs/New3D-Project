@@ -7,20 +7,21 @@ using EnumCollection;
 namespace PlayerComponent
 {
     [System.Serializable]
-    public class FireTransfromInfo
+    public class SkillInfo
     {
         public PlayerSkillType Type;
-        public int AnimationTriggerCode;
+        public int AnimationCode;
         public Transform FireTransform;
+        public GameObject SkillItem;
     }
 
     public class PlayerSkillSystem : MonoBehaviour, IUnbindAction
     {
         [Header("PlayerAnimationEvent"), SerializeField] private PlayerAnimationEvent _animationEvent;
-        [Header("FireTransform"), SerializeField] private FireTransfromInfo[] _fireTransfromInfos;
+        [Header("Skill_Info"), SerializeField] private SkillInfo[] _skillInfos;
 
         private Dictionary<PlayerSkillType, ISkill> _skillDictionary = new Dictionary<PlayerSkillType, ISkill>();
-        private Dictionary<PlayerSkillType, FireTransfromInfo> _infoDictionary = new Dictionary<PlayerSkillType, FireTransfromInfo>();
+        private Dictionary<PlayerSkillType, SkillInfo> _infoDictionary = new Dictionary<PlayerSkillType, SkillInfo>();
         private Action _unbindAction;
 
         private ISkill _currentSkill;
@@ -42,7 +43,7 @@ namespace PlayerComponent
 
         private void InitializeInfoDictionary()
         {
-            foreach(var info in _fireTransfromInfos)
+            foreach(var info in _skillInfos)
                 _infoDictionary.Add(info.Type, info);
         }
 
@@ -71,7 +72,7 @@ namespace PlayerComponent
                 }
 
                 var info = _infoDictionary[enumValue];
-                playerSkill.InitializeSkill(info.FireTransform, info.AnimationTriggerCode);
+                playerSkill.InitializeSkill(info);
 
                 _skillDictionary.Add(enumValue, playerSkill);
             }

@@ -34,11 +34,6 @@ public class Hook : PlayerSkill, ISkill
         yield return null;
     }
 
-    public override void InitializeSkill(Transform firePosition, int animatorTriggerCode)
-    {
-        base.InitializeSkill(firePosition, animatorTriggerCode);
-    }
-
     public override void Reloading()
     {
 
@@ -48,7 +43,16 @@ public class Hook : PlayerSkill, ISkill
     
     public override void Execute()
     {
-        base.Execute();
+        _animationEvent.SetReloadAction(Reloading);
+
+        _animator.SetTrigger(_skill);
+        _animator.SetInteger(_skillEquals, _skillInfo.AnimationCode);
+
         Fire();
+    }
+
+    public override void InitializeSkill(SkillInfo info)
+    {
+        _skillInfo = info;
     }
 }

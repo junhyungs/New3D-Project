@@ -12,6 +12,15 @@ public class Bomb : PlayerSkill, ISkill
     }
 
     private const string _arrowBombEnd = "Arrow_bomb_end";
+    public override void Execute()
+    {
+        _animationEvent.SetReloadAction(Reloading);
+
+        _animator.SetTrigger(_skill);
+        _animator.SetInteger(_skillEquals, _skillInfo.AnimationCode);
+
+        _rotate = true;
+    }
 
     public override void Fire()
     {
@@ -57,5 +66,10 @@ public class Bomb : PlayerSkill, ISkill
     public override void Reloading()
     {
         
+    }
+
+    public override void InitializeSkill(SkillInfo info)
+    {
+        _skillInfo = info;
     }
 }
