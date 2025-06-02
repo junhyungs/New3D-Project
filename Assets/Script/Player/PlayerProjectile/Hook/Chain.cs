@@ -6,13 +6,6 @@ namespace PlayerComponent
 {
     public class Chain : MonoBehaviour
     {
-        public string Test;
-
-        private void OnEnable()
-        {
-            Test = "XX";
-        }
-
         public float Scale
         {
             get
@@ -20,6 +13,13 @@ namespace PlayerComponent
                 return transform.localScale.x;
             }
         }
+
+        //private void OnTriggerEnter(Collider other)
+        //{
+        //    bool disable = other.gameObject.layer == LayerMask.NameToLayer("Hookshot_Fly");
+        //    if (disable)
+        //        gameObject.SetActive(false);
+        //}
     }
 }
 

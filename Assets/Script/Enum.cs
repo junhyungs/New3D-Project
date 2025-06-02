@@ -19,7 +19,20 @@ namespace EnumCollection
 
     public enum ObjectKey//PathCSV ID와 동일하게.
     {
+        PlayerArrowPrefab,
+        PlayerFireBallPrefab,
+        PlayerBombPrefab,
+        PlayerHookPrefab,
+
+    }
+    //Path 데이터로 사용되는 경우 DataKey와 ObjectKey는 일치해야함.
+    public enum DataKey //DataCSV ID와 동일하게.
+    {
         Player,
+        PlayerArrowPrefab,
+        PlayerFireBallPrefab,
+        PlayerBombPrefab,
+        PlayerHookPrefab
     }
 
     public enum JsonData

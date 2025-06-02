@@ -29,7 +29,7 @@ namespace PlayerComponent
         private void SetPlayerData()
         {
             DataManager.Instance.AddToPlayerData(null); //테스트를 위한 임시 코드.
-            var key = ObjectKey.Player.ToString();
+            var key = DataKey.Player.ToString();
             _data = DataManager.Instance.GetData(key) as PlayerSaveData;
             _constantData = _data.ConstantData;
         }

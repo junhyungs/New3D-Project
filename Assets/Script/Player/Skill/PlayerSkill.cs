@@ -11,9 +11,9 @@ public abstract class PlayerSkill : ISkill
     {
         _animationEvent = animationEvent;
         
-        var player = animationEvent.GetComponentInParent<Player>();
-        _playerTransform = player.transform;
-        _playerPlane = player.GetComponent<PlayerPlane>();
+        _player = animationEvent.GetComponentInParent<Player>();        
+        _playerPlane = _player.GetComponent<PlayerPlane>();
+        _rigidBody = _player.GetComponent<Rigidbody>();
 
         var animator = _animationEvent.Animator;
         if(animator != null )
@@ -21,10 +21,11 @@ public abstract class PlayerSkill : ISkill
     }
 
     protected PlayerAnimationEvent _animationEvent;
+    protected Player _player;
+    protected Rigidbody _rigidBody;
     protected PlayerPlane _playerPlane;
     protected Animator _animator;
     protected SkillInfo _skillInfo;
-    protected Transform _playerTransform;
     
     protected readonly int _skill = Animator.StringToHash("Skill");
     protected readonly int _skillEquals = Animator.StringToHash("SkillEquals");
@@ -58,13 +59,18 @@ public abstract class PlayerSkill : ISkill
     private void Rotate()
     {
         Vector3 lookPos = new Vector3(_playerPlane.Point.x,
-           _playerTransform.position.y, _playerPlane.Point.z);
+           _player.transform.position.y, _playerPlane.Point.z);
 
-        Vector3 rotateDirection = (lookPos - _playerTransform.position).normalized;
+        Vector3 rotateDirection = (lookPos - _player.transform.position).normalized;
 
         Quaternion lookRotation = Quaternion.LookRotation(rotateDirection);
 
-        _playerTransform.rotation = Quaternion.RotateTowards(_playerTransform.rotation,
+        _player.transform.rotation = Quaternion.RotateTowards(_player.transform.rotation,
             lookRotation, 700f * Time.deltaTime);
+    }
+
+    protected void MakeProjectile(ObjectKey key, int count = 1)
+    {
+        ObjectPool.Instance.CreatePool(key, count);
     }
 }

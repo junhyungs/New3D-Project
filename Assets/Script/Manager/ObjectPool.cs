@@ -8,7 +8,6 @@ using GameData;
 public class ObjectPool : Singleton_MonoBehaviour<ObjectPool>
 {
     private Dictionary<ObjectKey, Pool> _poolDictionary = new Dictionary<ObjectKey, Pool>();
-    private Dictionary<ObjectKey, PathData> _pathDataDictionary = new Dictionary<ObjectKey, PathData>();
 
     private void Awake() //테스트 코드.
     {
@@ -17,12 +16,11 @@ public class ObjectPool : Singleton_MonoBehaviour<ObjectPool>
 
     private PathData GetPathData(ObjectKey objectKey)
     {
-        if (_pathDataDictionary.TryGetValue(objectKey, out var pathData))
-            return pathData;
+        var key = objectKey.ToString();
+        if (!Enum.TryParse(key, out DataKey dataKey))
+            throw new ArgumentException("ObjectKey != DataKey");
 
-        var newPathData = DataManager.Instance.GetData(objectKey.ToString()) as PathData;
-        _pathDataDictionary.Add(objectKey, newPathData);
-
+        var newPathData = DataManager.Instance.GetData(dataKey.ToString()) as PathData;
         return newPathData;
     }
 
@@ -31,7 +29,7 @@ public class ObjectPool : Singleton_MonoBehaviour<ObjectPool>
         if (_poolDictionary.ContainsKey(objectKey))
             return;
 
-        var gameObjectName = name.ToString();
+        var gameObjectName = objectKey.ToString();
 
         var poolObject = new GameObject(gameObjectName + "Pool");
         poolObject.transform.SetParent(transform);
@@ -48,15 +46,18 @@ public class ObjectPool : Singleton_MonoBehaviour<ObjectPool>
         var request = Resources.LoadAsync<GameObject>(path);
         yield return new WaitUntil(() => request.isDone);
 
-        var gameObject = Instantiate(request.asset as GameObject);
-        gameObject.name = name;
-        pool.SaveItem = gameObject;
+        var requestAsset = request.asset as GameObject;
+        requestAsset.name = name;
+        pool.SaveItem = requestAsset;
 
-        for(int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
-            var poolItem = Instantiate(gameObject, pool.PoolTrasnform);
+            var poolItem = Instantiate(requestAsset, pool.PoolTrasnform);
             poolItem.SetActive(false);
             pool.Enqueue(poolItem);
+
+            if(pool.SaveItem == null)
+                pool.SaveItem = poolItem;
         }
     }
 

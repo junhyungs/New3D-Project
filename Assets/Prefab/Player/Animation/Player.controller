@@ -87,8 +87,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: Complete
+  - m_ConditionMode: 2
+    m_ConditionEvent: Hook
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 0}
@@ -289,7 +289,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Hookshot
-  m_Speed: 1
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 7472265447467676330}
@@ -345,6 +345,9 @@ AnimatorStateMachine:
   - {fileID: -7629345030237521125}
   m_EntryTransitions: []
   m_StateMachineTransitions:
+  - first: {fileID: 8814436354618379425}
+    second:
+    - {fileID: -7886934604889653489}
   - first: {fileID: -7527024731461153917}
     second:
     - {fileID: -4762744923902082406}
@@ -354,9 +357,6 @@ AnimatorStateMachine:
   - first: {fileID: -5042549905423285259}
     second:
     - {fileID: 5833237286468865168}
-  - first: {fileID: 8814436354618379425}
-    second:
-    - {fileID: -7886934604889653489}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
@@ -1314,8 +1314,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 2
-    m_ConditionEvent: Hook
+  - m_ConditionMode: 1
+    m_ConditionEvent: SkillFail
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 0}

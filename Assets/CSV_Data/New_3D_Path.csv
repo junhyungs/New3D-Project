@@ -1,0 +1,5 @@
+ID,Path
+PlayerArrowPrefab,Player/Projectile/PlayerArrow
+PlayerFireBallPrefab,Player/Projectile/PlayerFireBall
+PlayerBombPrefab,Player/Projectile/PlayerBomb
+PlayerHookPrefab,Player/Projectile/Hook

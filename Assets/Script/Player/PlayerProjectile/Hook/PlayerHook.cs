@@ -7,11 +7,13 @@ namespace PlayerComponent
 {
     public class PlayerHook : MonoBehaviour
     {
+        [Header("AnchorObject"), SerializeField] private GameObject _anchorObject;
+        public Stack<GameObject> EnableChains => _enableChains;
         private Stack<GameObject> _enableChains = new Stack<GameObject>();
-        private WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();
-        private Coroutine _moveCoroutine;
+        private WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();        
         private HookChain _hookChain;
         private Rigidbody _rigidBody;
+        private Action<Vector3, PlayerHook> _oneTimeAction;
 
         private int _chainIndex;
 
@@ -19,9 +21,6 @@ namespace PlayerComponent
         private float _distance;
         private float _intervalDistance;
         private float _speed = 8f;
-
-        private Vector3 _startPos;
-        private Vector3 _nextPos;
 
         private bool _isCollision;
 
@@ -44,12 +43,25 @@ namespace PlayerComponent
 
         private void OnEnable()
         {
-            _startPos = transform.localPosition;
-            _moveCoroutine = StartCoroutine(HookStart());
+            if (!_anchorObject.activeSelf)
+                _anchorObject.SetActive(true);
         }
 
         private void OnDisable()
         {
+            Initialize();
+        }
+
+        public void FireHook()
+        {
+            StartCoroutine(HookStart());
+        }
+
+        private void Initialize()
+        {
+            _enableChains.Clear();
+            _isCollision = false;
+            _distance = 0f;
             _chainIndex = 0;
         }
 
@@ -60,22 +72,14 @@ namespace PlayerComponent
             if (!_isCollision)
             {
                 yield return StartCoroutine(ReturnHook());
+                _oneTimeAction?.Invoke(Vector3.zero, this);
             }
-
-            if(_enableChains.Count > 0)
-            {
-                foreach (var chain in _enableChains)
-                    chain.SetActive(false);
-            }
-
-            _enableChains.Clear();
-            gameObject.SetActive(false);
+            else
+                _anchorObject.SetActive(false);
         }
 
         private IEnumerator ExtendHook()
         {
-            _nextPos = _startPos;
-
             while(_distance < _maxDistance && !_isCollision)
             {
                 _distance += _speed * Time.fixedDeltaTime;
@@ -93,28 +97,28 @@ namespace PlayerComponent
                     chain.SetActive(true);
 
                     _enableChains.Push(chain);
-                    _nextPos = transform.localPosition;
                     _chainIndex++;
                 }
 
                 yield return _waitForFixedUpdate;
             }
 
-            while(_chainIndex < _hookChain.Chains.Length)
+            while(_chainIndex < _hookChain.Chains.Length && !_isCollision)
             {
                 var chain = _hookChain.Chains[_chainIndex].gameObject;
                 chain.SetActive(true);
-                _enableChains.Push(chain);
-                _nextPos = transform.localPosition;
-                _chainIndex++;
 
+                _enableChains.Push(chain);
+                _chainIndex++;
                 yield return null;
             }
         }
 
         private IEnumerator ReturnHook()
         {
-            while(_distance > 0.05f)
+            var intervalDistance = _intervalDistance - 0.05f;
+
+            while (_distance > 0.05f)
             {
                 _distance -= _speed * Time.fixedDeltaTime;
                 if(_distance < 0)
@@ -124,7 +128,7 @@ namespace PlayerComponent
 
                 Movement(-1);
 
-                int theoreticalChainCount = Mathf.FloorToInt(_distance / _intervalDistance);
+                int theoreticalChainCount = Mathf.FloorToInt(_distance / intervalDistance);
 
                 while(_enableChains.Count > theoreticalChainCount)
                 {
@@ -144,14 +148,28 @@ namespace PlayerComponent
             _rigidBody.MovePosition(_rigidBody.position +  moveVector);
         }
 
-        public void CallBackCollisionTransform()
+        public void CallBackCollisionVector3(Action<Vector3, PlayerHook> callBack)
         {
-
+            Action<Vector3, PlayerHook> oneTimeAction = null;
+            oneTimeAction = (transform, gameObject) =>
+            {
+                callBack?.Invoke(transform, this);
+                _oneTimeAction -= oneTimeAction;
+            };
+            _oneTimeAction += oneTimeAction;
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            
+            bool isTarget = other.gameObject.tag == "HookAnchor";
+            if (isTarget)
+            {
+                _isCollision = true;
+
+                var hitPoint = other.ClosestPoint(transform.position);
+                var movePosition = hitPoint - transform.forward * 1.2f;
+                _oneTimeAction?.Invoke(movePosition, this);
+            }
         }
     }
 }

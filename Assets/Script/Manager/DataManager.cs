@@ -72,8 +72,8 @@ public class DataManager : Singleton<DataManager>
 
             foreach (var item in jArray)
             {
-                string id = ParseString(item);
-                string path = ParseString(item);
+                string id = ParseString(item["ID"]);
+                string path = ParseString(item["Path"]);
 
                 PathData pathData = new PathData(id, path);
                 TryAddData(id, pathData);

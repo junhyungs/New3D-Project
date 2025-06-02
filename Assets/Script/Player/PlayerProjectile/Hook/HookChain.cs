@@ -15,7 +15,7 @@ namespace PlayerComponent
             {
                 totalSize += chain.Scale;
             }
-            Debug.Log(totalSize);
+            
             return totalSize;
         }
     }

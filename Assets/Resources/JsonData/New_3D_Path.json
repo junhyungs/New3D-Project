@@ -1,0 +1,18 @@
+[
+  {
+    "ID": "PlayerArrowPrefab",
+    "Path": "Player/Projectile/PlayerArrow"
+  },
+  {
+    "ID": "PlayerFireBallPrefab",
+    "Path": "Player/Projectile/PlayerFireBall"
+  },
+  {
+    "ID": "PlayerBombPrefab",
+    "Path": "Player/Projectile/PlayerBomb"
+  },
+  {
+    "ID": "PlayerHookPrefab",
+    "Path": "Player/Projectile/Hook"
+  }
+]
