@@ -3005,7 +3005,7 @@ MonoBehaviour:
   - Type: 1
     AnimationCode: 1
     FireTransform: {fileID: 5751960965367423460}
-    SkillItem: {fileID: 0}
+    SkillItem: {fileID: 4644295648158746241}
   - Type: 2
     AnimationCode: 2
     FireTransform: {fileID: 5913786334030577083}

@@ -2,14 +2,16 @@ using GameData;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EnumCollection;
 
 public class PlayerProjectile : MonoBehaviour
 {
     protected Rigidbody _rigidBody;
+    protected ObjectKey _objectKey;
     protected int _damage;
     protected float _timer;
-    protected float _maxDistance;
-    protected float _speed;
+    protected float _maxTime = 3f;//임시 코드
+    protected float _speed = 5f; //임시 코드
     protected bool _isFire;
 
     protected virtual void Awake()
@@ -19,7 +21,6 @@ public class PlayerProjectile : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-        _timer = 0f;
         _isFire = false;
     }
 
@@ -30,29 +31,44 @@ public class PlayerProjectile : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        if(_isFire)
-            Movement();
+        if (_isFire)
+        {
+            if(_timer < _maxTime)
+            {
+                _timer += Time.fixedDeltaTime;
+                Movement();
+            }
+            else
+            {
+                _isFire = false;
+                ReturnObjectPool();
+            }
+        }
+    }
+
+    protected void ReturnObjectPool()
+    {
+        ObjectPool.Instance.EnqueueGameObject(_objectKey, gameObject);
     }
 
     public virtual void Fire()
     {
-        _timer = Time.time;
+        _timer = 0f;
         _isFire = true;
     }
 
-    protected virtual void SetData(float speed, int damage, float maxDistance)
+    protected void SetData(float speed, int damage)
     {
         _damage = damage;
         _speed = speed;
-        _maxDistance = maxDistance;
     }
 
     protected virtual void Movement()
     {
         Vector3 direction = transform.forward;
-        Vector3 moveVector = direction * _speed * Time.fixedDeltaTime;
+        Vector3 moveVector = direction * _speed;
 
-        _rigidBody.AddForce(moveVector);
+        _rigidBody.AddForce(moveVector, ForceMode.VelocityChange);
     }
 
     protected void Hit(Collider other)

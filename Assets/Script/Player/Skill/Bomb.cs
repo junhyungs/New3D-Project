@@ -3,12 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using EnumCollection;
 
 public class Bomb : PlayerSkill, ISkill
 {
     public Bomb(PlayerAnimationEvent animationEvent) : base(animationEvent)
     {
         RequiresReload = true;
+
+        _objectKey = ObjectKey.PlayerBombPrefab;
+        MakeProjectile(_objectKey);
     }
 
     private const string _arrowBombEnd = "Arrow_bomb_end";
@@ -34,12 +38,11 @@ public class Bomb : PlayerSkill, ISkill
 
         if (success)
         {
-            Debug.Log("발사");
+            _fireAction?.Invoke();
             _animationEvent.StartCoroutine(DelayCoroutine(action));
         }
         else
         {
-            Debug.Log("스킬취소");
             action.Invoke();
             EndSkill = true;
 
@@ -65,7 +68,29 @@ public class Bomb : PlayerSkill, ISkill
 
     public override void Reloading()
     {
-        
+        var bombObject = ObjectPool.Instance.DequeueGameObject(_objectKey);
+        bombObject.transform.SetParent(_skillInfo.FireTransform);
+        bombObject.transform.localPosition = Vector3.zero;
+        bombObject.transform.localRotation = Quaternion.identity;
+
+        var bombComponent = bombObject.GetComponent<BombObject>();
+        if(bombComponent != null)
+        {
+            Action action = null;
+            action = () =>
+            {
+                bombObject.transform.parent = null;
+                bombComponent.Fire();
+                _fireAction -= action;
+            };
+
+            _fireAction += action;
+        }
+        else
+        {
+            _animator.SetTrigger(_skillFail);
+            EndSkill = true;
+        }
     }
 
     public override void InitializeSkill(SkillInfo info)

@@ -18,7 +18,7 @@ namespace PlayerComponent
 
         private float _distance;
         private float _intervalDistance;
-
+        private float _maxDistance;
         private bool _isCollision;
 
         protected override void Awake()
@@ -160,10 +160,13 @@ namespace PlayerComponent
 
         protected override void OnTriggerEnter(Collider other)
         {
-            bool isTarget = other.gameObject.tag == "HookAnchor";
+            bool isTarget = other.gameObject.tag == "HookAnchor" ||
+                other.gameObject.layer == LayerMask.NameToLayer("Enemy");
             if (isTarget)
             {
                 _isCollision = true;
+
+                Hit(other);
 
                 var hitPoint = other.ClosestPoint(transform.position);
                 var movePosition = hitPoint - transform.forward * 1.2f;

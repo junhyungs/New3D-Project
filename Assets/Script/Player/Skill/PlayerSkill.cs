@@ -27,6 +27,7 @@ public abstract class PlayerSkill : ISkill
     protected Animator _animator;
     protected SkillInfo _skillInfo;
     protected Action _fireAction;
+    protected ObjectKey _objectKey;
     
     protected readonly int _skill = Animator.StringToHash("Skill");
     protected readonly int _skillEquals = Animator.StringToHash("SkillEquals");
@@ -44,7 +45,13 @@ public abstract class PlayerSkill : ISkill
     public abstract void Fire();
     public virtual void RemoveProjectile()
     {
-        //TODO 자식으로 붙어있는 투사체 제거.
+        if(_skillInfo.FireTransform.childCount > 0)
+        {
+            var childObject = _skillInfo.FireTransform.GetChild(0).gameObject;
+            childObject.transform.parent = null;
+            ObjectPool.Instance.EnqueueGameObject(_objectKey, childObject);
+        }
+
         _animationEvent.UnSetReloadAction();
         EndSkill = false;
     }

@@ -10,7 +10,9 @@ public class Bow : PlayerSkill, ISkill
     public Bow(PlayerAnimationEvent animationEvent) : base(animationEvent)
     {
         RequiresReload = true;
-        MakeProjectile(ObjectKey.PlayerArrowPrefab);
+
+        _objectKey = ObjectKey.PlayerArrowPrefab;
+        MakeProjectile(_objectKey);
     }
 
     public override void Execute()

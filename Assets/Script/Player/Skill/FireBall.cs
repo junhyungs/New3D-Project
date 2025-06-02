@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using PlayerComponent;
 using System;
+using EnumCollection;
 
 public class FireBall : PlayerSkill, ISkill
 {
     public FireBall(PlayerAnimationEvent animationEvent) : base(animationEvent)
     {
         RequiresReload = true;
+
+        _objectKey = ObjectKey.PlayerFireBallPrefab;
+        MakeProjectile(_objectKey);
     }
 
     public override void Execute()
@@ -30,19 +34,14 @@ public class FireBall : PlayerSkill, ISkill
 
         if (success)
         {
-            Debug.Log("발사");
+            _fireAction?.Invoke();
         }
         else
         {
-            Debug.Log("스킬취소");
             _animationEvent.UnSetReloadAction();
         }
 
-        Action action = success ? () => _animator.SetTrigger(_complete) :
-            () => _animator.SetTrigger(_skillFail);
-
-        action.Invoke();
-        EndSkill = true;
+        IsComplete(success);
     }
 
     public override void InitializeSkill(SkillInfo info)
@@ -52,7 +51,28 @@ public class FireBall : PlayerSkill, ISkill
 
     public override void Reloading()
     {
-        
+        var fireBallObject = ObjectPool.Instance.DequeueGameObject(_objectKey);
+        fireBallObject.transform.SetParent(_skillInfo.FireTransform);
+        fireBallObject.transform.localPosition = Vector3.zero;
+        fireBallObject.transform.localRotation = Quaternion.identity;
+
+        var fireBallComponent = fireBallObject.GetComponent<FireBallObject>();
+        if(fireBallComponent != null)
+        {
+            Action action = null;
+            action = () =>
+            {
+                fireBallObject.transform.parent = null;
+                fireBallComponent.Fire();
+                _fireAction -= action;
+            };
+
+            _fireAction += action;
+        }
+        else
+        {
+            IsComplete(false);
+        }
     }
 
 }

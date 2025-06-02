@@ -1,15 +1,17 @@
+using EnumCollection;
+using PlayerComponent;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using PlayerComponent;
-using EnumCollection;
 
 public class Hook : PlayerSkill, ISkill
 {
     public Hook(PlayerAnimationEvent animationEvent) : base(animationEvent)
     {
         RequiresReload = false;
-        MakeProjectile(ObjectKey.PlayerHookPrefab);
+
+        _objectKey = ObjectKey.PlayerHookPrefab;
+        MakeProjectile(_objectKey);
     }
 
     private WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();
@@ -17,7 +19,7 @@ public class Hook : PlayerSkill, ISkill
 
     public override void Fire()
     {
-        var hook = ObjectPool.Instance.DequeueGameObject(ObjectKey.PlayerHookPrefab);
+        var hook = ObjectPool.Instance.DequeueGameObject(_objectKey);
         hook.transform.SetParent(_skillInfo.FireTransform);
         hook.transform.localPosition = Vector3.zero;
         hook.transform.localRotation = Quaternion.identity;
@@ -40,7 +42,7 @@ public class Hook : PlayerSkill, ISkill
         EndSkill = true;
 
         hookObject.transform.parent = null;
-        ObjectPool.Instance.EnqueueGameObject(ObjectKey.PlayerHookPrefab, hookObject);
+        ObjectPool.Instance.EnqueueGameObject(_objectKey, hookObject);
     }
 
     public void SetMovePosition(Vector3 targetPosition, HookObject hook)
@@ -79,7 +81,7 @@ public class Hook : PlayerSkill, ISkill
 
         AnimatorSetBool(false);
         EndSkill = true;
-        ObjectPool.Instance.EnqueueGameObject(ObjectKey.PlayerHookPrefab, hookObject);
+        ObjectPool.Instance.EnqueueGameObject(_objectKey, hookObject);
     }
 
     private void DisableChain(Stack<GameObject> chainStack, LayerMask targetLayer)
@@ -107,10 +109,22 @@ public class Hook : PlayerSkill, ISkill
     
     public override void Execute()
     {
+        LookAt();
+
         _animator.SetTrigger(_skill);
         _animator.SetInteger(_skillEquals, _skillInfo.AnimationCode);
 
         Fire();
+    }
+
+    private void LookAt()
+    {
+        Vector3 lookPos = new Vector3(_playerPlane.Point.x,
+            _player.transform.position.y, _playerPlane.Point.z);
+
+        var distance = Vector3.Distance(lookPos, _player.transform.position);
+        if(distance > 0.1f)
+            _player.transform.LookAt(lookPos);
     }
 
     public override void InitializeSkill(SkillInfo info)
