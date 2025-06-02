@@ -7,6 +7,24 @@ namespace GameData
     [System.Serializable]
     public class Data { }
 
+    public class PlayerSkillData : Data
+    {
+        public string ID { get; set; }
+        public float ProjectileSpeed { get; set; }
+        public int ProjectileDamage { get; set; }
+        public int ProjectileCost { get; set; }
+        public float MaxDistance { get; set; }
+        public PlayerSkillData(string id, float projectileSpeed, int projectileDamage,
+            int projectileCost, float maxDistance)
+        {
+            ID = id;
+            ProjectileSpeed = projectileSpeed;
+            ProjectileDamage = projectileDamage;
+            ProjectileCost = projectileCost;
+            MaxDistance = maxDistance;
+        }
+    }
+
     public class  PathData : Data
     {
         public string ID { get; set; }

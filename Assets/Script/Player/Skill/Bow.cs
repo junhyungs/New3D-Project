@@ -3,18 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using EnumCollection;
 
 public class Bow : PlayerSkill, ISkill
 {
     public Bow(PlayerAnimationEvent animationEvent) : base(animationEvent)
     {
         RequiresReload = true;
+        MakeProjectile(ObjectKey.PlayerArrowPrefab);
     }
 
     public override void Execute()
     {
-        _animationEvent.SetReloadAction(Reloading);
+        _skillInfo.SkillItem.SetActive(true);
 
+        _animationEvent.SetReloadAction(Reloading);
         _animator.SetTrigger(_skill);
         _animator.SetInteger(_skillEquals, _skillInfo.AnimationCode);
 
@@ -30,19 +33,15 @@ public class Bow : PlayerSkill, ISkill
 
         if (success)
         {
-            Debug.Log("발사");
+            _fireAction?.Invoke();
         }
         else
         {
-            Debug.Log("스킬취소");
             _animationEvent.UnSetReloadAction();
         }
 
-        Action action = success ? () => _animator.SetTrigger(_complete) :
-            () => _animator.SetTrigger(_skillFail);
-
-        action.Invoke();
-        EndSkill = true;
+        _skillInfo.SkillItem.SetActive(false);
+        IsComplete(success);
     }
 
     public override void InitializeSkill(SkillInfo info)
@@ -52,6 +51,27 @@ public class Bow : PlayerSkill, ISkill
 
     public override void Reloading()
     {
-        //TODO 오브젝트 풀에서 투사체를 가져와서 fireTransform의 자식으로 설정.
+        var arrowObject = ObjectPool.Instance.DequeueGameObject(ObjectKey.PlayerArrowPrefab);
+        arrowObject.transform.SetParent(_skillInfo.FireTransform);
+        arrowObject.transform.localPosition = Vector3.zero;
+        arrowObject.transform.localRotation = Quaternion.identity;
+
+        var arrowComponent = arrowObject.GetComponent<ArrowObject>();
+        if(arrowComponent != null)
+        {
+            Action action = null;
+            action = () =>
+            {
+                arrowObject.transform.parent = null;
+                arrowComponent.Fire();
+                _fireAction -= action;
+            };
+
+            _fireAction += action;
+        }
+        else
+        {
+            IsComplete(false);
+        }
     }
 }

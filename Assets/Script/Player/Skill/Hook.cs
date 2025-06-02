@@ -22,11 +22,11 @@ public class Hook : PlayerSkill, ISkill
         hook.transform.localPosition = Vector3.zero;
         hook.transform.localRotation = Quaternion.identity;
 
-        var hookComponent = hook.GetComponent<PlayerHook>();
+        var hookComponent = hook.GetComponent<HookObject>();
         if (hookComponent != null)
         {
             hookComponent.CallBackCollisionVector3(SetMovePosition);
-            hookComponent.FireHook();
+            hookComponent.Fire();
         }
         else
         {
@@ -43,7 +43,7 @@ public class Hook : PlayerSkill, ISkill
         ObjectPool.Instance.EnqueueGameObject(ObjectKey.PlayerHookPrefab, hookObject);
     }
 
-    public void SetMovePosition(Vector3 targetPosition, PlayerHook hook)
+    public void SetMovePosition(Vector3 targetPosition, HookObject hook)
     {
         if(targetPosition != Vector3.zero)
         {
@@ -54,7 +54,7 @@ public class Hook : PlayerSkill, ISkill
         HookFail(hook.gameObject);
     }
 
-    private IEnumerator HookMovement(Vector3 targetPosition, PlayerHook hook)
+    private IEnumerator HookMovement(Vector3 targetPosition, HookObject hook)
     {
         var hookObject = hook.gameObject;
         hookObject.transform.parent = null;

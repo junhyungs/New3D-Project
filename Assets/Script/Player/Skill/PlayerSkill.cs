@@ -26,6 +26,7 @@ public abstract class PlayerSkill : ISkill
     protected PlayerPlane _playerPlane;
     protected Animator _animator;
     protected SkillInfo _skillInfo;
+    protected Action _fireAction;
     
     protected readonly int _skill = Animator.StringToHash("Skill");
     protected readonly int _skillEquals = Animator.StringToHash("SkillEquals");
@@ -67,6 +68,15 @@ public abstract class PlayerSkill : ISkill
 
         _player.transform.rotation = Quaternion.RotateTowards(_player.transform.rotation,
             lookRotation, 700f * Time.deltaTime);
+    }
+
+    protected void IsComplete(bool success)
+    {
+        Action action = success ? () => _animator.SetTrigger(_complete) :
+            () => _animator.SetTrigger(_skillFail);
+
+        action.Invoke();
+        EndSkill = true;
     }
 
     protected void MakeProjectile(ObjectKey key, int count = 1)

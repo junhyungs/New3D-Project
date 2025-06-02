@@ -5,35 +5,34 @@ using System;
 
 namespace PlayerComponent
 {
-    public class PlayerHook : MonoBehaviour
+    public class HookObject : PlayerProjectile
     {
         [Header("AnchorObject"), SerializeField] private GameObject _anchorObject;
         public Stack<GameObject> EnableChains => _enableChains;
         private Stack<GameObject> _enableChains = new Stack<GameObject>();
         private WaitForFixedUpdate _waitForFixedUpdate = new WaitForFixedUpdate();        
         private HookChain _hookChain;
-        private Rigidbody _rigidBody;
-        private Action<Vector3, PlayerHook> _oneTimeAction;
+        private Action<Vector3, HookObject> _oneTimeAction;
 
         private int _chainIndex;
 
-        private float _maxDistance;
         private float _distance;
         private float _intervalDistance;
-        private float _speed = 8f;
 
         private bool _isCollision;
 
-        private void Awake()
+        protected override void Awake()
         {
-            _hookChain = GetComponentInChildren<HookChain>();
-            _rigidBody = GetComponent<Rigidbody>();
+            base.Awake();
 
+            _hookChain = GetComponentInChildren<HookChain>();
             CarculateMaxDistance();
         }
 
         private void CarculateMaxDistance()
         {
+            _speed = 8f; //임시 코드
+
             var mySizeZ = GetComponent<BoxCollider>().size.z;
             var chainSize = _hookChain.GetChainSize();
 
@@ -41,18 +40,18 @@ namespace PlayerComponent
             _maxDistance = mySizeZ + chainSize;
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
             if (!_anchorObject.activeSelf)
                 _anchorObject.SetActive(true);
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
             Initialize();
         }
 
-        public void FireHook()
+        public override void Fire()
         {
             StartCoroutine(HookStart());
         }
@@ -148,9 +147,9 @@ namespace PlayerComponent
             _rigidBody.MovePosition(_rigidBody.position +  moveVector);
         }
 
-        public void CallBackCollisionVector3(Action<Vector3, PlayerHook> callBack)
+        public void CallBackCollisionVector3(Action<Vector3, HookObject> callBack)
         {
-            Action<Vector3, PlayerHook> oneTimeAction = null;
+            Action<Vector3, HookObject> oneTimeAction = null;
             oneTimeAction = (transform, gameObject) =>
             {
                 callBack?.Invoke(transform, this);
@@ -159,7 +158,7 @@ namespace PlayerComponent
             _oneTimeAction += oneTimeAction;
         }
 
-        private void OnTriggerEnter(Collider other)
+        protected override void OnTriggerEnter(Collider other)
         {
             bool isTarget = other.gameObject.tag == "HookAnchor";
             if (isTarget)
