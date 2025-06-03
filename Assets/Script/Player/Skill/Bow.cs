@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using EnumCollection;
+using GameData;
 
 public class Bow : PlayerSkill, ISkill
 {
@@ -46,8 +47,9 @@ public class Bow : PlayerSkill, ISkill
         IsComplete(success);
     }
 
-    public override void InitializeSkill(SkillInfo info)
+    public override void InitializeSkill(SkillInfo info, PlayerSkillData data)
     {
+        _data = data;
         _skillInfo = info;
     }
 
@@ -61,6 +63,9 @@ public class Bow : PlayerSkill, ISkill
         var arrowComponent = arrowObject.GetComponent<ArrowObject>();
         if(arrowComponent != null)
         {
+            arrowComponent.SetData(_data.FlightTime,
+                _data.ProjectileSpeed, _data.ProjectileDamage);
+
             Action action = null;
             action = () =>
             {

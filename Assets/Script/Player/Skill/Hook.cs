@@ -3,6 +3,7 @@ using PlayerComponent;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GameData;
 
 public class Hook : PlayerSkill, ISkill
 {
@@ -28,6 +29,7 @@ public class Hook : PlayerSkill, ISkill
         if (hookComponent != null)
         {
             hookComponent.CallBackCollisionVector3(SetMovePosition);
+            hookComponent.SetData(0, _data.ProjectileSpeed, _data.ProjectileDamage);
             hookComponent.Fire();
         }
         else
@@ -127,8 +129,9 @@ public class Hook : PlayerSkill, ISkill
             _player.transform.LookAt(lookPos);
     }
 
-    public override void InitializeSkill(SkillInfo info)
+    public override void InitializeSkill(SkillInfo info, PlayerSkillData data)
     {
+        _data = data;
         _skillInfo = info;
     }
 }

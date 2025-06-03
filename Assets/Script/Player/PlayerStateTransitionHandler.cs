@@ -59,7 +59,7 @@ namespace PlayerComponent
             var nextState = MoveVector != Vector2.zero ?
                 E_PlayerState.Move : E_PlayerState.Idle;
             
-            _stateMachine.ChangeState(nextState);
+            ChangeState(nextState);
         }
 
         public void IsFalling(E_PlayerState state, bool isGround)

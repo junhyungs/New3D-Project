@@ -1,4 +1,5 @@
 using EnumCollection;
+using GameData;
 using PlayerComponent;
 using System;
 using System.Collections;
@@ -21,6 +22,7 @@ public abstract class PlayerSkill : ISkill
     }
 
     protected PlayerAnimationEvent _animationEvent;
+    protected PlayerSkillData _data;
     protected Player _player;
     protected Rigidbody _rigidBody;
     protected PlayerPlane _playerPlane;
@@ -39,7 +41,7 @@ public abstract class PlayerSkill : ISkill
     public bool RequiresReload { get; set; }
     public bool EndSkill { get; set; }
 
-    public abstract void InitializeSkill(SkillInfo info);
+    public abstract void InitializeSkill(SkillInfo info, PlayerSkillData data);
     public abstract void Execute();
     public abstract void Reloading();
     public abstract void Fire();
@@ -89,5 +91,13 @@ public abstract class PlayerSkill : ISkill
     protected void MakeProjectile(ObjectKey key, int count = 1)
     {
         ObjectPool.Instance.CreatePool(key, count);
+    }
+
+    public int GetCost()
+    {
+        if(_data == null)
+            return 0;
+
+        return _data.ProjectileCost;
     }
 }

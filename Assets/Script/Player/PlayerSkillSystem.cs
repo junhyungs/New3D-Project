@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EnumCollection;
+using GameData;
 
 namespace PlayerComponent
 {
@@ -25,6 +26,7 @@ namespace PlayerComponent
         private Action _unbindAction;
 
         private ISkill _currentSkill;
+        public int Cost { get; set; } = 4; //테스트 값
 
         private void Awake()
         {
@@ -50,6 +52,8 @@ namespace PlayerComponent
         private void InitializeSkillDictionary()
         {
             var enumArray = (PlayerSkillType[])Enum.GetValues(typeof(PlayerSkillType));
+            var playerSaveData = DataManager.Instance.GetData(DataKey.Player) as PlayerSaveData;
+            var skillData = playerSaveData.SkillDictionary;
             
             foreach(var enumValue in enumArray)
             {
@@ -57,22 +61,23 @@ namespace PlayerComponent
 
                 switch (enumValue)
                 {
-                    case PlayerSkillType.Bow:
+                    case PlayerSkillType.PlayerBow:
                         playerSkill = new Bow(_animationEvent);
                         break;
-                    case PlayerSkillType.FireBall:
+                    case PlayerSkillType.PlayerFireBall:
                         playerSkill = new FireBall(_animationEvent);
                         break;
-                    case PlayerSkillType.Bomb:
+                    case PlayerSkillType.PlayerBomb:
                         playerSkill = new Bomb(_animationEvent);
                         break;
-                    case PlayerSkillType.Hook:
+                    case PlayerSkillType.PlayerHook:
                         playerSkill = new Hook(_animationEvent);
                         break;
                 }
 
                 var info = _infoDictionary[enumValue];
-                playerSkill.InitializeSkill(info);
+                var data = skillData[enumValue.ToString()];
+                playerSkill.InitializeSkill(info, data);
 
                 _skillDictionary.Add(enumValue, playerSkill);
             }
@@ -91,7 +96,22 @@ namespace PlayerComponent
 
         public ISkill GetSkill()
         {
-            return _currentSkill;
+            if (TryUse())
+                return _currentSkill;
+
+            return null;
+        }
+
+        public bool TryUse()
+        {
+            var useCost = _currentSkill.GetCost();
+            if(Cost >= useCost)
+            {
+                Cost -= useCost;
+                return true;
+            }
+
+            return false;
         }
 
         public void Unbind()
@@ -104,6 +124,7 @@ namespace PlayerComponent
     {
         public bool RequiresReload { get; set; }
         public bool EndSkill { get; set; }
+        public int GetCost();
         public void Execute();
         public void Reloading();
         public void Fire();

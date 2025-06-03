@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using EnumCollection;
+using GameData;
 
 public class Bomb : PlayerSkill, ISkill
 {
@@ -76,6 +77,9 @@ public class Bomb : PlayerSkill, ISkill
         var bombComponent = bombObject.GetComponent<BombObject>();
         if(bombComponent != null)
         {
+            bombComponent.SetData(_data.FlightTime, _data.ProjectileSpeed,
+                _data.ProjectileDamage);
+
             Action action = null;
             action = () =>
             {
@@ -93,8 +97,9 @@ public class Bomb : PlayerSkill, ISkill
         }
     }
 
-    public override void InitializeSkill(SkillInfo info)
+    public override void InitializeSkill(SkillInfo info, PlayerSkillData data)
     {
+        _data = data;
         _skillInfo = info;
     }
 }

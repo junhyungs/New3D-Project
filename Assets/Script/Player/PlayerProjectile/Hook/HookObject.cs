@@ -31,8 +31,6 @@ namespace PlayerComponent
 
         private void CarculateMaxDistance()
         {
-            _speed = 8f; //임시 코드
-
             var mySizeZ = GetComponent<BoxCollider>().size.z;
             var chainSize = _hookChain.GetChainSize();
 

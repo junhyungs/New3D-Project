@@ -4,6 +4,7 @@ using UnityEngine;
 using PlayerComponent;
 using System;
 using EnumCollection;
+using GameData;
 
 public class FireBall : PlayerSkill, ISkill
 {
@@ -44,8 +45,9 @@ public class FireBall : PlayerSkill, ISkill
         IsComplete(success);
     }
 
-    public override void InitializeSkill(SkillInfo info)
+    public override void InitializeSkill(SkillInfo info, PlayerSkillData data)
     {
+        _data = data;
         _skillInfo = info;
     }
 
@@ -59,6 +61,9 @@ public class FireBall : PlayerSkill, ISkill
         var fireBallComponent = fireBallObject.GetComponent<FireBallObject>();
         if(fireBallComponent != null)
         {
+            fireBallComponent.SetData(_data.FlightTime, _data.ProjectileSpeed,
+                _data.ProjectileDamage);
+
             Action action = null;
             action = () =>
             {

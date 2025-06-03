@@ -20,7 +20,7 @@ public class ObjectPool : Singleton_MonoBehaviour<ObjectPool>
         if (!Enum.TryParse(key, out DataKey dataKey))
             throw new ArgumentException("ObjectKey != DataKey");
 
-        var newPathData = DataManager.Instance.GetData(dataKey.ToString()) as PathData;
+        var newPathData = DataManager.Instance.GetData(dataKey) as PathData;
         return newPathData;
     }
 

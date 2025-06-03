@@ -18,22 +18,28 @@ namespace PlayerComponent
         {
             _skill = _skillSystem.GetSkill();
 
-            if (_skill != null)
-                _skill.Execute();
-            else
+            if(_skill == null)
+            {
                 _stateHandler.ChangeIdleORMoveState();
+                return;
+            }
+
+            _skill.Execute();
         }
 
         public void OnStateUpdate()
         {
             if (_skill.EndSkill)
                 _stateHandler.ChangeIdleORMoveState();
-
-            _skill.OnUpdateSkill();
+            else
+                _skill.OnUpdateSkill();
         }
 
         public void OnStateExit()
         {
+            if (_skill == null)
+                return;
+
             _skill.RemoveProjectile();
         }
 

@@ -10,8 +10,8 @@ public class PlayerProjectile : MonoBehaviour
     protected ObjectKey _objectKey;
     protected int _damage;
     protected float _timer;
-    protected float _maxTime = 3f;//임시 코드
-    protected float _speed = 5f; //임시 코드
+    protected float _flightTime;
+    protected float _speed;
     protected bool _isFire;
 
     protected virtual void Awake()
@@ -33,7 +33,7 @@ public class PlayerProjectile : MonoBehaviour
     {
         if (_isFire)
         {
-            if(_timer < _maxTime)
+            if(_timer < _flightTime)
             {
                 _timer += Time.fixedDeltaTime;
                 Movement();
@@ -57,8 +57,12 @@ public class PlayerProjectile : MonoBehaviour
         _isFire = true;
     }
 
-    protected void SetData(float speed, int damage)
+    public void SetData(float flightTime, float speed, int damage)
     {
+        Debug.Log(flightTime);
+        Debug.Log(speed);
+        Debug.Log(damage);
+        _flightTime = flightTime;
         _damage = damage;
         _speed = speed;
     }
@@ -68,7 +72,7 @@ public class PlayerProjectile : MonoBehaviour
         Vector3 direction = transform.forward;
         Vector3 moveVector = direction * _speed;
 
-        _rigidBody.AddForce(moveVector, ForceMode.VelocityChange);
+        _rigidBody.AddForce(moveVector, ForceMode.VelocityChange); //ForceMode.VelocityChange 즉각적인 속도 변화.
     }
 
     protected void Hit(Collider other)

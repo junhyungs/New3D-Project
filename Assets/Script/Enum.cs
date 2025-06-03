@@ -40,6 +40,7 @@ namespace EnumCollection
         New_3D_Player,
         New_3D_ScreenResolution,
         New_3D_Path,
+        New_3D_PlayerSkill,
     }
 
     public enum UIEvent
@@ -51,10 +52,10 @@ namespace EnumCollection
 
     public enum PlayerSkillType
     {
-        Bow = 1,
-        FireBall,
-        Bomb,
-        Hook
+        PlayerBow = 1,
+        PlayerFireBall,
+        PlayerBomb,
+        PlayerHook
     }
 }
 
