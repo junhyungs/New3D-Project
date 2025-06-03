@@ -7,6 +7,18 @@ namespace GameData
     [System.Serializable]
     public class Data { }
 
+    public class  PathData : Data
+    {
+        public string ID { get; set; }
+        public string Path { get; set; }
+
+        public PathData(string id, string path)
+        {
+            ID = id;
+            Path = path;
+        }
+    }
+
     public class ScreenResolutionData : Data
     {
         public int Width { get; set; }
@@ -26,8 +38,8 @@ namespace GameData
         public int Power {  get; set; }
         public float Speed { get; set; }
         public int Health { get; set; }
-
         public PlayerConstantData ConstantData { get; set; }
+        public Dictionary<string, PlayerSkillData> SkillDictionary { get; set; }
     }
 
     public class PlayerConstantData : Data
@@ -46,6 +58,24 @@ namespace GameData
             SpeedChangeValue = speedChangeValue;
             SpeedOffSet = speedOffSet;
             DashSpeed = dashSpeed;
+        }
+    }
+
+    public class PlayerSkillData : Data
+    {
+        public string ID { get; set; }
+        public float ProjectileSpeed { get; set; }
+        public int ProjectileDamage { get; set; }
+        public int ProjectileCost { get; set; }
+        public float FlightTime { get; set; }
+        public PlayerSkillData(string id, float projectileSpeed, int projectileDamage,
+            int projectileCost, float flightTime)
+        {
+            ID = id;
+            ProjectileSpeed = projectileSpeed;
+            ProjectileDamage = projectileDamage;
+            ProjectileCost = projectileCost;
+            FlightTime = flightTime;
         }
     }
 }

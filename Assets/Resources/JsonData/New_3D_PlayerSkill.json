@@ -1,0 +1,30 @@
+[
+  {
+    "ID": "PlayerBow",
+    "ProjectileSpeed": "5",
+    "ProjectileDamage": "1",
+    "ProjectileCost": "1",
+    "FlightTime": "3"
+  },
+  {
+    "ID": "PlayerFireBall",
+    "ProjectileSpeed": "5",
+    "ProjectileDamage": "1",
+    "ProjectileCost": "1",
+    "FlightTime": "3"
+  },
+  {
+    "ID": "PlayerBomb",
+    "ProjectileSpeed": "5",
+    "ProjectileDamage": "2",
+    "ProjectileCost": "2",
+    "FlightTime": "3"
+  },
+  {
+    "ID": "PlayerHook",
+    "ProjectileSpeed": "8",
+    "ProjectileDamage": "1",
+    "ProjectileCost": "0",
+    "FlightTime": "3"
+  }
+]

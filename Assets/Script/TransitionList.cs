@@ -51,7 +51,8 @@ namespace PlayerComponent
                 E_PlayerState.Attack,
                 E_PlayerState.Climbing,
                 E_PlayerState.Falling,
-                E_PlayerState.ChargeAttack);
+                E_PlayerState.ChargeAttack,
+                E_PlayerState.Skill);
 
             AddDictionary(E_PlayerState.Move,
                 E_PlayerState.Idle,
@@ -60,7 +61,8 @@ namespace PlayerComponent
                 E_PlayerState.Attack,
                 E_PlayerState.Falling,
                 E_PlayerState.Climbing,
-                E_PlayerState.ChargeAttack);
+                E_PlayerState.ChargeAttack,
+                E_PlayerState.Skill);
 
             AddDictionary(E_PlayerState.Roll,
                 E_PlayerState.Idle,
@@ -84,6 +86,11 @@ namespace PlayerComponent
                 E_PlayerState.Roll);
 
             AddDictionary(E_PlayerState.ChargeAttack,
+                E_PlayerState.Idle,
+                E_PlayerState.Move,
+                E_PlayerState.Roll);
+
+            AddDictionary(E_PlayerState.Skill,
                 E_PlayerState.Idle,
                 E_PlayerState.Move,
                 E_PlayerState.Roll);

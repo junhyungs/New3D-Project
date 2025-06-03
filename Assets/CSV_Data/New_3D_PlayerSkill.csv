@@ -1,0 +1,5 @@
+ID,ProjectileSpeed,ProjectileDamage,ProjectileCost,FlightTime
+PlayerBow,5,1,1,3
+PlayerFireBall,5,1,1,3
+PlayerBomb,5,2,2,3
+PlayerHook,8,1,0,3

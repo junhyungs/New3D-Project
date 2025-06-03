@@ -8,7 +8,6 @@ public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
 {
     [Header("PlayerPrefab"), SerializeField] private GameObject _playerPrefab; //TODO Resources File
     [Header("PlayerVirtualCamera"), SerializeField] private GameObject _virtualCamera; //TODO Resources File
-
     public Player Player { get; private set; }
     public GameObject VirtualCamera { get; private set; }
 

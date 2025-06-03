@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace PlayerComponent
 {
-    public class PlayerStateTransitionHandler
+    public class PlayerStateTransitionHandler : IUnbindAction
     {
         public PlayerStateTransitionHandler(PlayerStateMachine stateMachine,
             PlayerInputHandler inputHandler)
@@ -31,20 +31,20 @@ namespace PlayerComponent
             handler.RollSlashEvent += ToRollSlashState;
             handler.SlashEvent += ToAttackState;
             handler.ChargeSlashEvent += ToChargeAttackState;
+            handler.SkillEvent += ToSkillState;
 
             _unregisterActions.Add(() => handler.MoveEvent -= SetVector2);
             _unregisterActions.Add(() => handler.RollEvent -= ToRollState);
             _unregisterActions.Add(() => handler.RollSlashEvent -= ToRollSlashState);
             _unregisterActions.Add(() => handler.SlashEvent -= ToAttackState);
             _unregisterActions.Add(() => handler.ChargeSlashEvent -= ToChargeAttackState);
+            _unregisterActions.Add(() => handler.SkillEvent -= ToSkillState);
         }
 
-        public void UnRegisterEvent()
+        public void Unbind()
         {
             foreach(var action in _unregisterActions)
-            {
                 action?.Invoke();
-            }
 
             _unregisterActions.Clear();
         }
@@ -59,7 +59,7 @@ namespace PlayerComponent
             var nextState = MoveVector != Vector2.zero ?
                 E_PlayerState.Move : E_PlayerState.Idle;
             
-            _stateMachine.ChangeState(nextState);
+            ChangeState(nextState);
         }
 
         public void IsFalling(E_PlayerState state, bool isGround)
@@ -133,6 +133,22 @@ namespace PlayerComponent
             }
         }
 
+        public void ToSkillState(bool pressed)
+        {
+            if (pressed)
+            {
+                ChangeState(E_PlayerState.Skill);
+            }
+            else
+            {
+                if (EqualsCurrentState<Skill>())
+                {
+                    var skill = _stateMachine.GetState(E_PlayerState.Skill) as Skill;
+                    skill.Fire(pressed);
+                }
+            }
+        }
+
         private bool EqualsCurrentState<T>() where T : PlayerState
         {
             var currentState = _stateMachine.GetCurrentState();
@@ -149,6 +165,7 @@ namespace PlayerComponent
 
             _stateMachine.ChangeState(state);
         }
+
     }
 }
 

@@ -1,12 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using GameData;
-using System.Threading.Tasks;
 using EnumCollection;
+using GameData;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using Newtonsoft.Json;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
 {
@@ -18,9 +18,10 @@ public class DataManager : Singleton<DataManager>
         else Debug.Log("Fail");
     }
 
-    public Data GetData(string key)
+    public Data GetData(DataKey key)
     {
-        if(_dataDictionary.TryGetValue(key, out Data data))
+        var stringKey = key.ToString();
+        if(_dataDictionary.TryGetValue(stringKey, out Data data))
             return data;
 
         Debug.Log("Data Null");
@@ -29,22 +30,75 @@ public class DataManager : Singleton<DataManager>
 
     public async Task LoadAllData()
     {
-        Debug.Log("StartLoadAllData");
-        await Task.Delay(3000);
-        Debug.Log("EndLoadAllData");
+        var taskList = new List<Task>()
+        {
+            LoadPathData(),
+        };
+        
+        await Task.WhenAll(taskList);
     }
 
+    public async Task<JArray> LoadJsonArrayAsync(string path)
+    {
+        var request = Resources.LoadAsync<TextAsset>(path);
+
+        while (!request.isDone)
+            await Task.Yield();
+
+        var textAsset = request.asset as TextAsset;
+        return JArray.Parse(textAsset.text);
+    }
+
+    public JArray LoadJsonArray(string path)
+    {
+        var textAsset = Resources.Load<TextAsset>(path);
+        return JArray.Parse(textAsset.text);
+    }
+
+    #region PathData
+    public async Task LoadPathData()
+    {
+        JArray jArray = await LoadJsonArrayAsync($"JsonData/{JsonData.New_3D_Path}");
+
+        foreach(var item in jArray)
+        {
+            string id = ParseString(item);
+            string path = ParseString(item);
+
+            PathData pathData = new PathData(id, path);
+            TryAddData(id, pathData);
+        }
+    }
+
+    public void TestLoadPathData()
+    {
+        try
+        {
+            var textAsset = Resources.Load<TextAsset>("JsonData/New_3D_Path");
+            JArray jArray = JArray.Parse(textAsset.text);
+
+            foreach (var item in jArray)
+            {
+                string id = ParseString(item["ID"]);
+                string path = ParseString(item["Path"]);
+
+                PathData pathData = new PathData(id, path);
+                TryAddData(id, pathData);
+            }
+        }
+        catch { }
+    }
+
+    #endregion
     #region Player
     public void AddToPlayerData(PlayerSaveData playerSaveData)
     {
         if (playerSaveData == null)
         {
-            var jsonDataName = JsonData.New_3D_Player.ToString();
-
             try
             {
-                var jsonData = Resources.Load<TextAsset>($"JsonData/{jsonDataName}");
-                ParsePlayerBaseData(jsonData.text);
+                var jsonDataName = JsonData.New_3D_Player.ToString();
+                ParsePlayerBaseData($"JsonData/{jsonDataName}");
             }
             catch
             {
@@ -58,13 +112,9 @@ public class DataManager : Singleton<DataManager>
         TryAddData(key, playerSaveData);
     }
 
-    private void ParsePlayerBaseData(string jsonData) //새로운 게임인 경우 호출.
+    private void ParsePlayerBaseData(string path) //새로운 게임인 경우 호출.
     {
-        //List<PlayerSaveData> dataList = 
-        //    JsonConvert.DeserializeObject<List<PlayerSaveData>>(jsonData); List
-
-        JArray jsonArray = JArray.Parse(jsonData);
-       
+        JArray jsonArray = LoadJsonArray(path);  
         var item = jsonArray[0];
 
         string id = ParseString(item["ID"]);
@@ -81,16 +131,40 @@ public class DataManager : Singleton<DataManager>
             rollSpeed, ladder, changeValue, speedOffSet, dashSpeed);
 
         PlayerSaveData data = new PlayerSaveData()
-        {
+        {            
             ID = id,
             Power = power,
             Speed = speed,
             Health = health,
-            ConstantData = constantData
+            ConstantData = constantData,
+            SkillDictionary = new Dictionary<string, PlayerSkillData>()
         };
-        
+
+        ParsePlayerSkillData(data);
         //SaveManager.Instance.SavePlayerData(data); 주석 마지막에 풀어줘야함.
         TryAddData(id, data);
+    }
+
+    private void ParsePlayerSkillData(PlayerSaveData saveData)
+    {
+        var skillDictionary = saveData.SkillDictionary;
+
+        var path = $"JsonData/{JsonData.New_3D_PlayerSkill}";
+        JArray jArray = LoadJsonArray(path);
+
+        foreach(var item in jArray)
+        {
+            string id = ParseString(item["ID"]);
+            float projectileSpeed = ParseFloat(item["ProjectileSpeed"]);
+            float flightTime = ParseFloat(item["FlightTime"]);
+            int projectileDamage = ParseInt(item["ProjectileDamage"]);
+            int projectileCost = ParseInt(item["ProjectileCost"]);
+
+            PlayerSkillData data = new PlayerSkillData(
+                id, projectileSpeed, projectileDamage, projectileCost, flightTime);
+
+            skillDictionary.Add(id, data);
+        }
     }
     #endregion
     #region Resolution

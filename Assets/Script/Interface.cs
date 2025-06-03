@@ -51,5 +51,16 @@ public interface IInteractionGameObject : IInteraction
 
 public interface ITakeDamage
 {
-    void TakeDamage(float damage);
+    void TakeDamage(int damage);
+}
+
+public interface IUnbindAction
+{
+    void Unbind();
+}
+
+public interface IBurnable
+{
+    void Ignite();
+    bool IsBurning();
 }

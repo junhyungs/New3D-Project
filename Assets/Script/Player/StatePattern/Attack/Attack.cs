@@ -14,6 +14,7 @@ namespace PlayerComponent
         }
         
         private readonly int _attack = Animator.StringToHash("Attack");
+        private readonly int _isAttack = Animator.StringToHash("IsAttack");
         private int _comboCount;
 
         public float NextCombo { get; set; } = 0.4f;
@@ -29,6 +30,7 @@ namespace PlayerComponent
         public void OnStateEnter()
         {
             _animator.SetTrigger(_attack);
+            _animator.SetBool(_isAttack, true);
 
             LookAtCursor();
             _lastClickTime = Time.time;
@@ -67,12 +69,13 @@ namespace PlayerComponent
             }
 
             _changeTime += Time.deltaTime;
-            if (_changeTime >= 0.65f)
+            if (_changeTime >= 0.63f)
                 _stateHandler.ChangeIdleORMoveState();
         }
 
         public void OnStateExit()
         {
+            _animator.SetBool(_isAttack, false);
             _lastClickTime = 0f;
             _changeTime = 0f;
             _comboCount = 0;

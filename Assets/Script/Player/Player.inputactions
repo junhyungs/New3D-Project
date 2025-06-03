@@ -67,6 +67,15 @@
                     "processors": "",
                     "interactions": "Hold(duration=1)",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ChangeSkill",
+                    "type": "Button",
+                    "id": "56aa017c-9c23-4394-85f6-a94cabf2c78c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -188,6 +197,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "ChargeSlash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9fe57a3e-ef0c-42fd-96c7-c4a07f247bd7",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeSkill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3a16983e-e80b-4978-b6f2-9c595bc8074b",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeSkill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f5ad9899-c23d-4278-821f-b6b914522944",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeSkill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2f4973bd-2336-4cab-8b92-58925cc73f6a",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeSkill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
