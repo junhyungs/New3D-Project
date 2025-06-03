@@ -64,6 +64,8 @@ public class FireBall : PlayerSkill, ISkill
             fireBallComponent.SetData(_data.FlightTime, _data.ProjectileSpeed,
                 _data.ProjectileDamage);
 
+            fireBallComponent.PlayParticleSystem(true);
+
             Action action = null;
             action = () =>
             {

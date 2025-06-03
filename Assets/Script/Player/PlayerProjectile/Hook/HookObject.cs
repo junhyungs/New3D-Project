@@ -156,7 +156,7 @@ namespace PlayerComponent
             _oneTimeAction += oneTimeAction;
         }
 
-        protected override void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
             bool isTarget = other.gameObject.tag == "HookAnchor" ||
                 other.gameObject.layer == LayerMask.NameToLayer("Enemy");

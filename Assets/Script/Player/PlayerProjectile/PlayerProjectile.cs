@@ -40,7 +40,6 @@ public class PlayerProjectile : MonoBehaviour
             }
             else
             {
-                _isFire = false;
                 ReturnObjectPool();
             }
         }
@@ -48,6 +47,7 @@ public class PlayerProjectile : MonoBehaviour
 
     protected void ReturnObjectPool()
     {
+        _isFire = false;
         ObjectPool.Instance.EnqueueGameObject(_objectKey, gameObject);
     }
 
@@ -59,9 +59,6 @@ public class PlayerProjectile : MonoBehaviour
 
     public void SetData(float flightTime, float speed, int damage)
     {
-        Debug.Log(flightTime);
-        Debug.Log(speed);
-        Debug.Log(damage);
         _flightTime = flightTime;
         _damage = damage;
         _speed = speed;
@@ -75,17 +72,11 @@ public class PlayerProjectile : MonoBehaviour
         _rigidBody.AddForce(moveVector, ForceMode.VelocityChange); //ForceMode.VelocityChange 즉각적인 속도 변화.
     }
 
-    protected void Hit(Collider other)
+    protected virtual void Hit(Collider other)
     {
-        var takeDamage = other.GetComponent<ITakeDamage>();
-        if(takeDamage != null)
-        {
-            takeDamage.TakeDamage(_damage);
-        }
-    }
+        if (!other.TryGetComponent(out ITakeDamage iTakeDamage))
+            return;
 
-    protected virtual void OnTriggerEnter(Collider other)
-    {
-        Hit(other);
+        iTakeDamage.TakeDamage(_damage);
     }
 }
