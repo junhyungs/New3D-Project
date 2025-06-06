@@ -32,7 +32,22 @@ namespace EnumCollection
         PlayerArrowPrefab,
         PlayerFireBallPrefab,
         PlayerBombPrefab,
-        PlayerHookPrefab
+        PlayerHookPrefab,
+        Witch_Description,
+        Swampking_Description,
+        Betty_Description,
+        HealthCrystal_Description,
+        MagicCrystal_Description,
+        Sword_Description,
+        Hammer_Description,
+        Dagger_Description,
+        GreatSword_Description,
+        Umbrella_Description,
+        Ring_Description,
+        RustyKey_Description,
+        Teddy_Description,
+        Trowel_Description,
+        Surveillance_Description
     }
 
     public enum JsonData
@@ -41,6 +56,7 @@ namespace EnumCollection
         New_3D_ScreenResolution,
         New_3D_Path,
         New_3D_PlayerSkill,
+        New_3D_ItemDescription
     }
 
     public enum UIEvent
