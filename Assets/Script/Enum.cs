@@ -57,5 +57,12 @@ namespace EnumCollection
         PlayerBomb,
         PlayerHook
     }
+
+    public enum InventroyPanelType { Witch, Swampking, Betty, HealthCrystal, MagicCrystal }
+    public enum WeaponPanelType { Sword, Hammer, Dagger, GreatSword, Umbrella }
+    public enum TrinketPanelType
+    {
+        Ring, RustyKey, Teddy, Trowel, Surveillance
+    }
 }
 

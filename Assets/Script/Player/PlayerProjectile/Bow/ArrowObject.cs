@@ -30,8 +30,11 @@ namespace PlayerComponent
 
         protected override void Hit(Collider other)
         {
-            base.Hit(other);
-            ReturnObjectPool();
+            if (other.TryGetComponent(out ITakeDamage iTakeDamage))
+            {
+                iTakeDamage.TakeDamage(_damage);
+                ReturnObjectPool();
+            }
         }
 
         private void Ignite(Collider other)

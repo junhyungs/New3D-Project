@@ -43,10 +43,10 @@ public class OptionMenu : MenuUI
 
     private void Start()
     {
-        InitializeDropdownOnStart();
+        InitializeDropdown();
     }
 
-    private void InitializeDropdownOnStart()
+    private void InitializeDropdown()
     {
         _screenResolution = new ScreenResolution();
 
