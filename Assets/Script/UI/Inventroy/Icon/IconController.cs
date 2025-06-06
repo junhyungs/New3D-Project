@@ -14,12 +14,15 @@ namespace InventroyUI
         private IconInfo[] _iconInfos;
 
         private IconInfo _current;
-        private int _iconIndex; 
+        private int _iconIndex;
+
+        private void Start()
+        {
+            MoveIcon(-1);
+        }
 
         private void OnEnable()
         {
-            MoveIcon(-1);
-
             _horizontalAction.action.Enable();
             _horizontalAction.action.performed += IconControl;
         }
