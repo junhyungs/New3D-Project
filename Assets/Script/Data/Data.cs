@@ -7,7 +7,13 @@ namespace GameData
     [System.Serializable]
     public class Data { }
 
-    public class  PathData : Data
+    public class ItemDescriptionData : Data
+    {
+        public string Id { get; set; }
+        public string Description { get; set; }
+    }
+
+    public class PathData : Data
     {
         public string ID { get; set; }
         public string Path { get; set; }

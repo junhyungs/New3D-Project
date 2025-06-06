@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using EnumCollection;
+using UnityEngine.InputSystem;
 
 namespace InventroyUI
 {
-    public class InventroyPanel : Panel<InventroyPanelType>
-    {
+    public class WeaponPanel : Panel<WeaponPanelType>
+    {       
         protected override void SlotControl(InputAction.CallbackContext context)
         {
             
