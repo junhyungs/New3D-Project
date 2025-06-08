@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace InventroyUI
+namespace InventoryUI
 {
     public class OptionPanel : MonoBehaviour
     {

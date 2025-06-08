@@ -33,12 +33,13 @@ public class DataManager : Singleton<DataManager>
         var taskList = new List<Task>()
         {
             LoadPathData(),
+            LoadItemDescriptionData(),
         };
         
         await Task.WhenAll(taskList);
     }
 
-    public async Task<JArray> LoadJsonArrayAsync(string path)
+    private async Task<JArray> LoadJsonArrayAsync(string path)
     {
         var request = Resources.LoadAsync<TextAsset>(path);
 
@@ -49,21 +50,61 @@ public class DataManager : Singleton<DataManager>
         return JArray.Parse(textAsset.text);
     }
 
-    public JArray LoadJsonArray(string path)
+    private JArray LoadJsonArray(string path)
     {
         var textAsset = Resources.Load<TextAsset>(path);
         return JArray.Parse(textAsset.text);
     }
 
+    #region ItemDescriptionData
+    private async Task LoadItemDescriptionData()
+    {
+        JArray jArray = await LoadJsonArrayAsync($"JsonData/{JsonData.New_3D_ItemDescription}");
+        foreach (var item in jArray)
+        {
+            string id = ParseString(item["Id"]);
+            string itemName = ParseString(item["ItemName"]);
+            string description = ParseString(item["Description"]);
+
+            ItemDescriptionData data = new ItemDescriptionData(id, itemName, description);
+            TryAddData(id, data);
+        }
+    }
+
+    public void TestLoadItemDescriptionData()
+    {
+        try
+        {
+            var textAsset = Resources.Load<TextAsset>("JsonData/New_3D_ItemDescription");
+            JArray jArray = JArray.Parse(textAsset.text);
+            foreach (var item in jArray)
+            {
+                string id = ParseString(item["Id"]);
+                string itemName = ParseString(item["ItemName"]);
+                string description = ParseString(item["Description"]);
+
+                ItemDescriptionData data = new ItemDescriptionData(id, itemName, description);
+                TryAddData(id, data);
+            }
+        }
+        catch(Exception e)
+        {
+            Debug.Log("TestLoadItemDescriptionData");
+            Debug.Log(e.Message);
+        }
+    }
+
+    #endregion
+
     #region PathData
-    public async Task LoadPathData()
+    private async Task LoadPathData()
     {
         JArray jArray = await LoadJsonArrayAsync($"JsonData/{JsonData.New_3D_Path}");
 
         foreach(var item in jArray)
         {
-            string id = ParseString(item);
-            string path = ParseString(item);
+            string id = ParseString(item["ID"]);
+            string path = ParseString(item["Path"]);
 
             PathData pathData = new PathData(id, path);
             TryAddData(id, pathData);

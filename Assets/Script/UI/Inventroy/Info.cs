@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace InventroyUI
+namespace InventoryUI
 {
     [System.Serializable]
     public class Info<T> where T : Enum

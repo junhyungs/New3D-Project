@@ -74,11 +74,23 @@ namespace EnumCollection
         PlayerHook
     }
 
-    public enum InventroyPanelType { Witch, Swampking, Betty, HealthCrystal, MagicCrystal }
-    public enum WeaponPanelType { Sword, Hammer, Dagger, GreatSword, Umbrella }
-    public enum TrinketPanelType
+    public enum InventoryItem
     {
-        Ring, RustyKey, Teddy, Trowel, Surveillance
+        Witch,
+        Swampking,
+        Betty,
+        HealthCrystal,
+        MagicCrystal,
+        Sword,
+        Hammer,
+        Dagger,
+        GreatSword,
+        Umbrella,
+        Ring,
+        RustyKey,
+        Teddy,
+        Trowel,
+        Surveillance
     }
 }
 
