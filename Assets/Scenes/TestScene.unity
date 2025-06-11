@@ -35765,6 +35765,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1084824388908342251}
+  - component: {fileID: 1084824388908342252}
   m_Layer: 0
   m_Name: TRINKET_Ring Variant
   m_TagString: Untagged
@@ -37714,6 +37715,19 @@ Transform:
   - {fileID: 3037389606152559419}
   m_Father: {fileID: 1162166000}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1084824388908342252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 526678761433209940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cca7ff88a9964014e8d30c8382de713d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 100
 --- !u!23 &1092906594933140564
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -40355,6 +40369,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4835875685362910615}
+  - component: {fileID: 4835875685362910616}
   m_Layer: 0
   m_Name: GreatSword
   m_TagString: Untagged
@@ -48358,6 +48373,19 @@ Transform:
   - {fileID: 6175070598809967043}
   m_Father: {fileID: 993891441}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 180}
+--- !u!114 &4835875685362910616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974815585408321651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cca7ff88a9964014e8d30c8382de713d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 100
 --- !u!4 &4850283558714534680
 Transform:
   m_ObjectHideFlags: 0
@@ -51588,6 +51616,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1785785852744146742}
+  - component: {fileID: 5995789718780320180}
   m_Layer: 0
   m_Name: Dagger
   m_TagString: Untagged
@@ -51595,6 +51624,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!114 &5995789718780320180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5995789718780320179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cca7ff88a9964014e8d30c8382de713d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 100
 --- !u!4 &6001424289297042918
 Transform:
   m_ObjectHideFlags: 0
@@ -53319,6 +53361,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4296892620464658897}
+  - component: {fileID: 6458874331185126042}
   m_Layer: 0
   m_Name: TRINKET_Surveillance Variant
   m_TagString: Untagged
@@ -53326,6 +53369,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!114 &6458874331185126042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6458874331185126041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cca7ff88a9964014e8d30c8382de713d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 100
 --- !u!1 &6465984114059059132
 GameObject:
   m_ObjectHideFlags: 0
@@ -53730,6 +53786,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3161777407691534083}
+  - component: {fileID: 6559986532448248733}
   m_Layer: 0
   m_Name: TRINKET_trowel Variant
   m_TagString: Untagged
@@ -53737,6 +53794,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!114 &6559986532448248733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6559986532448248732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cca7ff88a9964014e8d30c8382de713d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 100
 --- !u!1 &6567963249377811545
 GameObject:
   m_ObjectHideFlags: 0
@@ -55754,6 +55824,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 204723018790893415}
+  - component: {fileID: 7174679042919223265}
   m_Layer: 0
   m_Name: TRINKET_RustyKey Variant
   m_TagString: Untagged
@@ -55761,6 +55832,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!114 &7174679042919223265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7174679042919223264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cca7ff88a9964014e8d30c8382de713d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 100
 --- !u!1 &7178584912750974161
 GameObject:
   m_ObjectHideFlags: 0
@@ -55770,6 +55854,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 665228525300271732}
+  - component: {fileID: 7178584912750974162}
   m_Layer: 0
   m_Name: Umbrella
   m_TagString: Untagged
@@ -55777,6 +55862,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!114 &7178584912750974162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7178584912750974161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cca7ff88a9964014e8d30c8382de713d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 100
 --- !u!114 &7179450389564254830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57225,6 +57323,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2395617700944610574}
+  - component: {fileID: 7628301464748261179}
   m_Layer: 0
   m_Name: TRINKET_Teddy Variant
   m_TagString: Untagged
@@ -57232,6 +57331,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!114 &7628301464748261179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7628301464748261178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cca7ff88a9964014e8d30c8382de713d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 100
 --- !u!1 &7635507099236411090
 GameObject:
   m_ObjectHideFlags: 0
@@ -57241,6 +57353,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5030986763282110474}
+  - component: {fileID: 7635507099236411091}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Untagged
@@ -57248,6 +57361,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!114 &7635507099236411091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7635507099236411090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cca7ff88a9964014e8d30c8382de713d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 100
 --- !u!23 &7644266924137374425
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -62389,6 +62515,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2546157003603989079}
+  - component: {fileID: 9169146634995238616}
   m_Layer: 0
   m_Name: Hammer
   m_TagString: Untagged
@@ -62396,6 +62523,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!114 &9169146634995238616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9169146634995238615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cca7ff88a9964014e8d30c8382de713d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 100
 --- !u!4 &9175364886171303140
 Transform:
   m_ObjectHideFlags: 0
