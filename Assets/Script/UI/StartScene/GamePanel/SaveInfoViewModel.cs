@@ -23,13 +23,13 @@ public class SaveInfoViewModel : ViewModel
     public override void RegisterEvent<TParameter>(TParameter parameter)
     {
         var key = parameter.ToString();
-        UIManager.Instance.RegisterUIEvent<PlayerSaveData>(key, SetPlayerSaveData);
+        UIManager.RegisterUIEvent<PlayerSaveData>(key, SetPlayerSaveData);
     }
 
     public override void UnRegisterEvent<TParameter>(TParameter parameter)
     {
         var key = parameter.ToString();
-        UIManager.Instance.UnRegisterUIEvent<PlayerSaveData>(key, SetPlayerSaveData);
+        UIManager.UnRegisterUIEvent<PlayerSaveData>(key, SetPlayerSaveData);
     }
 }
 

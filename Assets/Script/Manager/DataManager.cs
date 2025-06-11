@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 public class DataManager : Singleton<DataManager>
 {
@@ -14,8 +15,8 @@ public class DataManager : Singleton<DataManager>
 
     private void TryAddData(string key, Data data)
     {
-        if (_dataDictionary.TryAdd(key, data)) Debug.Log("AddData");
-        else Debug.Log("Fail");
+        if (_dataDictionary.TryAdd(key, data)) Debug.Log($"AddData : {key}");
+        else Debug.Log($"Fail : {key}");
     }
 
     public Data GetData(DataKey key)
@@ -28,23 +29,22 @@ public class DataManager : Singleton<DataManager>
         return null;
     }
 
-    public async Task LoadAllData()
+    public async UniTask LoadAllData()
     {
-        var taskList = new List<Task>()
+        var taskList = new List<UniTask>()
         {
+            AddToPlayerDataAsync(),
             LoadPathData(),
             LoadItemDescriptionData(),
         };
         
-        await Task.WhenAll(taskList);
+        await UniTask.WhenAll(taskList);
     }
 
-    private async Task<JArray> LoadJsonArrayAsync(string path)
+    private async UniTask<JArray> LoadJsonArrayAsync(string path)
     {
         var request = Resources.LoadAsync<TextAsset>(path);
-
-        while (!request.isDone)
-            await Task.Yield();
+        await request.ToUniTask();
 
         var textAsset = request.asset as TextAsset;
         return JArray.Parse(textAsset.text);
@@ -57,9 +57,9 @@ public class DataManager : Singleton<DataManager>
     }
 
     #region ItemDescriptionData
-    private async Task LoadItemDescriptionData()
+    private async UniTask LoadItemDescriptionData()
     {
-        JArray jArray = await LoadJsonArrayAsync($"JsonData/{JsonData.New_3D_ItemDescription}");
+        JArray jArray = await LoadJsonArrayAsync($"JsonData/New_3D_ItemDescription");
         foreach (var item in jArray)
         {
             string id = ParseString(item["Id"]);
@@ -95,11 +95,10 @@ public class DataManager : Singleton<DataManager>
     }
 
     #endregion
-
     #region PathData
-    private async Task LoadPathData()
+    private async UniTask LoadPathData()
     {
-        JArray jArray = await LoadJsonArrayAsync($"JsonData/{JsonData.New_3D_Path}");
+        JArray jArray = await LoadJsonArrayAsync($"JsonData/New_3D_Path");
 
         foreach(var item in jArray)
         {
@@ -132,6 +131,97 @@ public class DataManager : Singleton<DataManager>
 
     #endregion
     #region Player
+    public async UniTask AddToPlayerDataAsync()
+    {
+        var index = SaveManager.SaveIndex;
+        PlayerSaveData saveData = await SaveManager.Instance.LoadPlayerSaveDataAsync(index);
+
+        if(saveData != null)
+        {
+            var key = saveData.ID;
+            TryAddData(key, saveData);
+        }
+        else
+        {
+            try
+            {
+                var newSaveData = await NewPlayerDataAsync();
+                SaveManager.Instance.SavePlayerData(newSaveData);
+                TryAddData(newSaveData.ID, newSaveData);
+            }
+            catch(Exception ex)
+            {
+                Debug.Log(ex.Message);
+            }
+        }
+    }
+
+    private async UniTask<PlayerSaveData>NewPlayerDataAsync()
+    {
+        var saveData = await ParsePlayerBaseDataAsync();
+
+        List<UniTask> taskList = new List<UniTask>()
+        {
+            ParsePlayerSkillDataAsync(saveData)
+        };
+        
+        await UniTask.WhenAll(taskList);
+        return saveData;
+    }
+
+    private async UniTask<PlayerSaveData> ParsePlayerBaseDataAsync()
+    {
+        var path = $"JsonData/New_3D_Player";
+        JArray jArray = await LoadJsonArrayAsync(path);
+        var item = jArray[0];
+
+        var newSaveData = new PlayerSaveData();
+        newSaveData.ID = ParseString(item["ID"]);
+        newSaveData.Power = ParseInt(item["Power"]);
+        newSaveData.Speed = ParseFloat(item["Speed"]);
+        newSaveData.Health = ParseInt(item["Health"]);
+        newSaveData.ConstantData = ParseConstantData(item);
+
+        return newSaveData;
+    }
+
+    private PlayerConstantData ParseConstantData(JToken item)
+    {
+        var rollSpeed = ParseFloat(item["RollSpeed"]);
+        var ladder = ParseFloat(item["LadderSpeed"]);
+        var changeValue = ParseFloat(item["SpeedChangeValue"]);
+        var speedOffSet = ParseFloat(item["SpeedOffSet"]);
+        var dashSpeed = ParseFloat(item["DashSpeed"]);
+
+        PlayerConstantData constantData = new PlayerConstantData(rollSpeed,
+            ladder, changeValue, speedOffSet, dashSpeed);
+
+        return constantData;
+    }
+
+    private async UniTask ParsePlayerSkillDataAsync(PlayerSaveData newSaveData)
+    {
+        var path = $"JsonData/New_3D_PlayerSkill";
+        JArray jArray = await LoadJsonArrayAsync(path);
+
+        var skillDictionary = new Dictionary<string, PlayerSkillData>();
+        foreach(var item in jArray)
+        {
+            var id = ParseString(item["ID"]);
+            var projectileSpeed = ParseFloat(item["ProjectileSpeed"]);
+            var flightTime = ParseFloat(item["FlightTime"]);
+            var projectileDamage = ParseInt(item["ProjectileDamage"]);
+            var projectileCost = ParseInt(item["ProjectileCost"]);
+
+            PlayerSkillData data = new PlayerSkillData(id, projectileSpeed, projectileDamage,
+                projectileCost, flightTime);
+
+            skillDictionary.Add(id, data);
+        }
+
+        newSaveData.SkillDictionary = skillDictionary;
+    }
+
     public void AddToPlayerData(PlayerSaveData playerSaveData)
     {
         if (playerSaveData == null)
@@ -206,6 +296,11 @@ public class DataManager : Singleton<DataManager>
 
             skillDictionary.Add(id, data);
         }
+    }
+
+    private void ParsePlayerWeaponData()
+    {
+
     }
     #endregion
     #region Resolution

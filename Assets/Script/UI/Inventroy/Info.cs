@@ -11,8 +11,8 @@ namespace InventoryUI
     {
         [Header("Type")]
         public T Type;
-        [Header("SlotObject")]
-        public GameObject SlotObject;
+        [Header("InfoObject")]
+        public GameObject InfoObject;
     }
 }
 

@@ -2,18 +2,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ModelViewPresenter;
+using GameData;
 
 namespace InventoryUI
 {
     public class WeaponPresenter : Presenter<IWeaponView>
     {
         public WeaponPresenter(IWeaponView view) : base(view) { }
+        private WeaponSlot _previousSlot;
+
+        public override void RequestUpdate(GameObject gameObject)
+        {
+            base.RequestUpdate(gameObject);
+        }
+
         protected override void UpdateView(Slot slot)
         {
-            var data = slot as WeaponDataSlot;
+            if(_previousSlot != null)
+                _previousSlot.CaptureImage();
 
-            _view.UpdateDescription(data.DescriptionData);
-            _view.UpdateWeaponAbility(data.WeaponData);
+            var weaponSlot = slot as WeaponSlot;
+            if(weaponSlot == null)
+            {
+                UpdateWeaponView();
+                return;
+            }
+                
+            var itemDescriptionData = weaponSlot.DescriptionData;
+            var weaponData = weaponSlot.WeaponData;
+
+            bool isData = itemDescriptionData != null &&
+                weaponData != null;
+
+            if (isData)
+            {
+                weaponSlot.LiveImage();
+                UpdateWeaponView(itemDescriptionData, weaponData);
+
+                _previousSlot = weaponSlot;
+            }
+            else
+                UpdateWeaponView();
+        }
+
+        private void UpdateWeaponView(ItemDescriptionData itemData = null,
+            PlayerWeaponData weaponData = null)
+        {
+            _view.UpdateDescription(itemData);
+            _view.UpdateWeaponAbility(weaponData);
         }
     }
 }

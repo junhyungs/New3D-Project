@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EnumCollection;
 using InventoryUI;
+using System;
 
 public class InventroyManager : Singleton_MonoBehaviour<InventroyManager>
 {

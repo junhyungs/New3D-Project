@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class UIManager : Singleton<UIManager>
 {
-    private Dictionary<string, Delegate> _uiEventDictionary = new Dictionary<string, Delegate>();
-    private Dictionary<string, GameObject> _enableUIDictionary = new Dictionary<string, GameObject>();
+    private static Dictionary<string, Delegate> _uiEventDictionary = new Dictionary<string, Delegate>();
     public static event Action<bool> LoadingUIController;
+
+    private Dictionary<string, GameObject> _enableUIDictionary = new Dictionary<string, GameObject>();
 
     public void StartLoadingUI(bool enable)
     {
@@ -44,13 +45,13 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    public void RegisterUIEvent<T>(string key, Action<T> action)
+    public static void RegisterUIEvent<T>(string key, Action<T> action)
     {
         if(!_uiEventDictionary.ContainsKey(key))
             _uiEventDictionary.Add(key, action);
     }
 
-    public void UnRegisterUIEvent<T>(string key, Action<T> action)
+    public static void UnRegisterUIEvent<T>(string key, Action<T> action)
     {
         if (_uiEventDictionary.ContainsKey(key))
         {
@@ -63,7 +64,7 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    public void TriggerUIEvent<T>(string key, T value)
+    public static void TriggerUIEvent<T>(string key, T value)
     {
         if(_uiEventDictionary.TryGetValue(key, out Delegate action))
         {

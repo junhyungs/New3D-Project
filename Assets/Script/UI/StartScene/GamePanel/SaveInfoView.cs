@@ -4,6 +4,8 @@ using ModelViewViewModel;
 using System.ComponentModel;
 using System;
 using EnumCollection;
+using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 
 public class SaveInfoView : View<SaveInfoViewModel>
 {
@@ -28,15 +30,14 @@ public class SaveInfoView : View<SaveInfoViewModel>
     protected override void OnPropertyChangedEvent(object sender, PropertyChangedEventArgs args)
     {
         _dateText.text = _viewModel.PlayerSaveData == null ? "새로운 게임" : _viewModel.PlayerSaveData.Date;
-        OneTimeAction(() => DataManager.Instance.AddToPlayerData(_viewModel.PlayerSaveData));
+        //OneTimeAction(() => DataManager.Instance.AddToPlayerData(_viewModel.PlayerSaveData));
     }
 
-    public void OnClickStartGame()
+    public async void OnClickStartGame()
     {
         SaveManager.SaveIndex = _saveIndex;
-        _onClick?.Invoke();
-
-        _loadingController.StartLoadingSceneGameDataAsync("MainScene", "GamePanel");
+        //_onClick?.Invoke();
+        await _loadingController.LoadingSceneGameDataAsync("MainScene", "GamePanel");
     }
 
     private void OneTimeAction(Action addToPlayerData)

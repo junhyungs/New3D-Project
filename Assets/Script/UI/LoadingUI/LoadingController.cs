@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 public class LoadingController : MonoBehaviour
 {
@@ -48,24 +49,23 @@ public class LoadingController : MonoBehaviour
        asyncOperaction.allowSceneActivation = true;
     }
 
-    public void StartLoadingSceneGameDataAsync(string sceneName, string disableUIName)
-    {
-        StartCoroutine(LoadingSceneGameDataCoroutine(sceneName, disableUIName));
-    }
-
-    private IEnumerator LoadingSceneGameDataCoroutine(string sceneName, string disableUIName)
+    public async UniTask LoadingSceneGameDataAsync(string sceneName, string disableUIName)
     {
         UIManager.Instance.DisableUI(disableUIName);
-
-        var asyncOperaction = AllowSceneActivationFalse(sceneName);
         StartImageBlinkCoroutine(true);
 
-        Task task = DataManager.Instance.LoadAllData();
-        while (!task.IsCompleted)
-            yield return null;
-        
-        //StartImageBlinkCoroutine(false);
-        asyncOperaction.allowSceneActivation = true;
+        var loadAllData = DataManager.Instance.LoadAllData();
+        await loadAllData;
+
+        SceneManager.LoadScene(sceneName);
+    }
+
+    private AsyncOperation AllowSceneActivationFalse(string sceneName)
+    {
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
+        asyncOperation.allowSceneActivation = false;
+
+        return asyncOperation;
     }
 
     private void StartImageBlinkCoroutine(bool isStart)
@@ -119,12 +119,5 @@ public class LoadingController : MonoBehaviour
         _icon.color = color;
     }
 
-    private AsyncOperation AllowSceneActivationFalse(string sceneName)
-    {
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
-        asyncOperation.allowSceneActivation = false;
-
-        return asyncOperation;
-    }
 
 }

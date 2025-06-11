@@ -13,6 +13,7 @@ namespace ModelViewPresenter
 
         protected Dictionary<GameObject, Slot> _modelDictionary;
         public virtual void RequestUpdate(GameObject gameObject) { }
+        protected virtual void UpdateView(Slot slot) { }
     }
 
     public class Presenter<T> : Presenter where T : IView
@@ -26,13 +27,13 @@ namespace ModelViewPresenter
 
         public override void RequestUpdate(GameObject gameObject)
         {
-            if (!_modelDictionary.TryGetValue(gameObject, out Slot slot))
+            if (_modelDictionary.TryGetValue(gameObject, out Slot slot))
             {
                 UpdateView(slot);
                 return;
             }
 
-            var model = gameObject.GetComponent<InventorySlot>();
+            var model = gameObject.GetComponent<Slot>();
             if (model == null)
                 return;
 
@@ -40,7 +41,7 @@ namespace ModelViewPresenter
             _modelDictionary.Add(gameObject, model);
         }
 
-        protected virtual void UpdateView(Slot slot)
+        protected override void UpdateView(Slot slot)
         {
             var data = slot.DescriptionData;
             _view.UpdateDescription(data);
