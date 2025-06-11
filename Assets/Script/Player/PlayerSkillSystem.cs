@@ -59,16 +59,16 @@ namespace PlayerComponent
                 switch (enumValue)
                 {
                     case PlayerSkillType.PlayerBow:
-                        playerSkill = new Bow(_animationEvent);
+                        playerSkill = new Bow(_animationEvent, this);
                         break;
                     case PlayerSkillType.PlayerFireBall:
-                        playerSkill = new FireBall(_animationEvent);
+                        playerSkill = new FireBall(_animationEvent, this);
                         break;
                     case PlayerSkillType.PlayerBomb:
-                        playerSkill = new Bomb(_animationEvent);
+                        playerSkill = new Bomb(_animationEvent, this);
                         break;
                     case PlayerSkillType.PlayerHook:
-                        playerSkill = new Hook(_animationEvent);
+                        playerSkill = new Hook(_animationEvent, this);
                         break;
                 }
 
@@ -94,22 +94,7 @@ namespace PlayerComponent
 
         public ISkill GetSkill()
         {
-            if (TryUse())
-                return _currentSkill;
-
-            return null;
-        }
-
-        public bool TryUse()
-        {
-            var useCost = _currentSkill.GetCost();
-            if(Cost >= useCost)
-            {
-                Cost -= useCost;
-                return true;
-            }
-
-            return false;
+            return _currentSkill;
         }
 
         public void Unbind()

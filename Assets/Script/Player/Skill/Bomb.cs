@@ -8,7 +8,7 @@ using GameData;
 
 public class Bomb : PlayerSkill, ISkill
 {
-    public Bomb(PlayerAnimationEvent animationEvent) : base(animationEvent)
+    public Bomb(PlayerAnimationEvent animationEvent, PlayerSkillSystem playerSkillSystem) : base(animationEvent, playerSkillSystem)
     {
         RequiresReload = true;
 
@@ -69,6 +69,9 @@ public class Bomb : PlayerSkill, ISkill
 
     public override void Reloading()
     {
+        if (!TryUse())
+            return;
+
         var bombObject = ObjectPool.Instance.DequeueGameObject(_objectKey);
         bombObject.transform.SetParent(_skillInfo.FireTransform);
         bombObject.transform.localPosition = Vector3.zero;

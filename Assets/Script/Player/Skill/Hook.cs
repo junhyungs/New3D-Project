@@ -7,7 +7,7 @@ using GameData;
 
 public class Hook : PlayerSkill, ISkill
 {
-    public Hook(PlayerAnimationEvent animationEvent) : base(animationEvent)
+    public Hook(PlayerAnimationEvent animationEvent, PlayerSkillSystem playerSkillSystem) : base(animationEvent, playerSkillSystem)
     {
         RequiresReload = false;
 
