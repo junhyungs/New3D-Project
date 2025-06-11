@@ -19,10 +19,9 @@ public class DataManager : Singleton<DataManager>
         else Debug.Log($"Fail : {key}");
     }
 
-    public Data GetData(DataKey key)
+    public Data GetData(string key)
     {
-        var stringKey = key.ToString();
-        if(_dataDictionary.TryGetValue(stringKey, out Data data))
+        if(_dataDictionary.TryGetValue(key, out Data data))
             return data;
 
         Debug.Log("Data Null");
@@ -145,9 +144,7 @@ public class DataManager : Singleton<DataManager>
         {
             try
             {
-                var newSaveData = await NewPlayerDataAsync();
-                SaveManager.Instance.SavePlayerData(newSaveData);
-                TryAddData(newSaveData.ID, newSaveData);
+                await NewPlayerDataAsync();
             }
             catch(Exception ex)
             {
@@ -156,20 +153,18 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
-    private async UniTask<PlayerSaveData>NewPlayerDataAsync()
+    private async UniTask NewPlayerDataAsync()
     {
-        var saveData = await ParsePlayerBaseDataAsync();
-
         List<UniTask> taskList = new List<UniTask>()
         {
-            ParsePlayerSkillDataAsync(saveData)
+            ParsePlayerBaseDataAsync(),
+            ParsePlayerSkillDataAsync()
         };
-        
+
         await UniTask.WhenAll(taskList);
-        return saveData;
     }
 
-    private async UniTask<PlayerSaveData> ParsePlayerBaseDataAsync()
+    private async UniTask ParsePlayerBaseDataAsync()
     {
         var path = $"JsonData/New_3D_Player";
         JArray jArray = await LoadJsonArrayAsync(path);
@@ -182,7 +177,7 @@ public class DataManager : Singleton<DataManager>
         newSaveData.Health = ParseInt(item["Health"]);
         newSaveData.ConstantData = ParseConstantData(item);
 
-        return newSaveData;
+        TryAddData(newSaveData.ID, newSaveData);
     }
 
     private PlayerConstantData ParseConstantData(JToken item)
@@ -199,12 +194,11 @@ public class DataManager : Singleton<DataManager>
         return constantData;
     }
 
-    private async UniTask ParsePlayerSkillDataAsync(PlayerSaveData newSaveData)
+    private async UniTask ParsePlayerSkillDataAsync()
     {
         var path = $"JsonData/New_3D_PlayerSkill";
         JArray jArray = await LoadJsonArrayAsync(path);
 
-        var skillDictionary = new Dictionary<string, PlayerSkillData>();
         foreach(var item in jArray)
         {
             var id = ParseString(item["ID"]);
@@ -216,91 +210,8 @@ public class DataManager : Singleton<DataManager>
             PlayerSkillData data = new PlayerSkillData(id, projectileSpeed, projectileDamage,
                 projectileCost, flightTime);
 
-            skillDictionary.Add(id, data);
+            TryAddData(id, data);
         }
-
-        newSaveData.SkillDictionary = skillDictionary;
-    }
-
-    public void AddToPlayerData(PlayerSaveData playerSaveData)
-    {
-        if (playerSaveData == null)
-        {
-            try
-            {
-                var jsonDataName = JsonData.New_3D_Player.ToString();
-                ParsePlayerBaseData($"JsonData/{jsonDataName}");
-            }
-            catch
-            {
-                Debug.Log("AddToPlayerData");
-            }
-
-            return;
-        }
-
-        var key = playerSaveData.ID;
-        TryAddData(key, playerSaveData);
-    }
-
-    private void ParsePlayerBaseData(string path) //새로운 게임인 경우 호출.
-    {
-        JArray jsonArray = LoadJsonArray(path);  
-        var item = jsonArray[0];
-
-        string id = ParseString(item["ID"]);
-        int power = ParseInt(item["Power"]);
-        float speed = ParseFloat(item["Speed"]);
-        float rollSpeed = ParseFloat(item["RollSpeed"]);
-        float ladder = ParseFloat(item["LadderSpeed"]);
-        float changeValue = ParseFloat(item["SpeedChangeValue"]);
-        float speedOffSet = ParseFloat(item["SpeedOffSet"]);
-        float dashSpeed = ParseFloat(item["DashSpeed"]);
-        int health = ParseInt(item["Health"]);
-
-        PlayerConstantData constantData = new PlayerConstantData(
-            rollSpeed, ladder, changeValue, speedOffSet, dashSpeed);
-
-        PlayerSaveData data = new PlayerSaveData()
-        {            
-            ID = id,
-            Power = power,
-            Speed = speed,
-            Health = health,
-            ConstantData = constantData,
-            SkillDictionary = new Dictionary<string, PlayerSkillData>()
-        };
-
-        ParsePlayerSkillData(data);
-        //SaveManager.Instance.SavePlayerData(data); 주석 마지막에 풀어줘야함.
-        TryAddData(id, data);
-    }
-
-    private void ParsePlayerSkillData(PlayerSaveData saveData)
-    {
-        var skillDictionary = saveData.SkillDictionary;
-
-        var path = $"JsonData/{JsonData.New_3D_PlayerSkill}";
-        JArray jArray = LoadJsonArray(path);
-
-        foreach(var item in jArray)
-        {
-            string id = ParseString(item["ID"]);
-            float projectileSpeed = ParseFloat(item["ProjectileSpeed"]);
-            float flightTime = ParseFloat(item["FlightTime"]);
-            int projectileDamage = ParseInt(item["ProjectileDamage"]);
-            int projectileCost = ParseInt(item["ProjectileCost"]);
-
-            PlayerSkillData data = new PlayerSkillData(
-                id, projectileSpeed, projectileDamage, projectileCost, flightTime);
-
-            skillDictionary.Add(id, data);
-        }
-    }
-
-    private void ParsePlayerWeaponData()
-    {
-
     }
     #endregion
     #region Resolution
@@ -320,6 +231,85 @@ public class DataManager : Singleton<DataManager>
         }
 
         return dataList;
+    }
+    #endregion
+    #region TestCode
+    public void AddToPlayerData(PlayerSaveData playerSaveData)
+    {
+        if (playerSaveData == null)
+        {
+            try
+            {
+                var jsonDataName = JsonData.New_3D_Player.ToString();
+                ParsePlayerBaseData($"JsonData/{jsonDataName}");
+                ParsePlayerSkillData();
+            }
+            catch
+            {
+                Debug.Log("AddToPlayerData");
+            }
+
+            return;
+        }
+
+        var key = playerSaveData.ID;
+        TryAddData(key, playerSaveData);
+    }
+
+    private void ParsePlayerBaseData(string path) //새로운 게임인 경우 호출.
+    {
+        JArray jsonArray = LoadJsonArray(path);
+        var item = jsonArray[0];
+
+        string id = ParseString(item["ID"]);
+        int power = ParseInt(item["Power"]);
+        float speed = ParseFloat(item["Speed"]);
+        float rollSpeed = ParseFloat(item["RollSpeed"]);
+        float ladder = ParseFloat(item["LadderSpeed"]);
+        float changeValue = ParseFloat(item["SpeedChangeValue"]);
+        float speedOffSet = ParseFloat(item["SpeedOffSet"]);
+        float dashSpeed = ParseFloat(item["DashSpeed"]);
+        int health = ParseInt(item["Health"]);
+
+        PlayerConstantData constantData = new PlayerConstantData(
+            rollSpeed, ladder, changeValue, speedOffSet, dashSpeed);
+
+        PlayerSaveData data = new PlayerSaveData()
+        {
+            ID = id,
+            Power = power,
+            Speed = speed,
+            Health = health,
+            ConstantData = constantData
+        };
+
+        //SaveManager.Instance.SavePlayerData(data); 주석 마지막에 풀어줘야함.
+        TryAddData(id, data);
+    }
+
+    private void ParsePlayerSkillData()
+    {
+        var path = $"JsonData/{JsonData.New_3D_PlayerSkill}";
+        JArray jArray = LoadJsonArray(path);
+
+        foreach (var item in jArray)
+        {
+            string id = ParseString(item["ID"]);
+            float projectileSpeed = ParseFloat(item["ProjectileSpeed"]);
+            float flightTime = ParseFloat(item["FlightTime"]);
+            int projectileDamage = ParseInt(item["ProjectileDamage"]);
+            int projectileCost = ParseInt(item["ProjectileCost"]);
+
+            PlayerSkillData data = new PlayerSkillData(
+                id, projectileSpeed, projectileDamage, projectileCost, flightTime);
+
+            TryAddData(id, data);
+        }
+    }
+
+    private void ParsePlayerWeaponData()
+    {
+
     }
     #endregion
 

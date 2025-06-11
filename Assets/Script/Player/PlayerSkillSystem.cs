@@ -52,9 +52,6 @@ namespace PlayerComponent
         private void InitializeSkillDictionary()
         {
             var enumArray = (PlayerSkillType[])Enum.GetValues(typeof(PlayerSkillType));
-            var playerSaveData = DataManager.Instance.GetData(DataKey.Player) as PlayerSaveData;
-            var skillData = playerSaveData.SkillDictionary;
-            
             foreach(var enumValue in enumArray)
             {
                 PlayerSkill playerSkill = null;
@@ -76,7 +73,8 @@ namespace PlayerComponent
                 }
 
                 var info = _infoDictionary[enumValue];
-                var data = skillData[enumValue.ToString()];
+                var key = enumValue.ToString();
+                var data = DataManager.Instance.GetData(key) as PlayerSkillData;
                 playerSkill.InitializeSkill(info, data);
 
                 _skillDictionary.Add(enumValue, playerSkill);

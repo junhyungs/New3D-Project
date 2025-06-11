@@ -29,10 +29,6 @@ namespace EnumCollection
     public enum DataKey //DataCSV ID와 동일하게.
     {
         Player,
-        PlayerArrowPrefab,
-        PlayerFireBallPrefab,
-        PlayerBombPrefab,
-        PlayerHookPrefab,
         Witch_Description,
         Swampking_Description,
         Betty_Description,
@@ -47,7 +43,8 @@ namespace EnumCollection
         RustyKey_Description,
         Teddy_Description,
         Trowel_Description,
-        Surveillance_Description
+        Surveillance_Description,
+        Default
     }
 
     public enum JsonData
@@ -74,7 +71,7 @@ namespace EnumCollection
         PlayerHook
     }
 
-    public enum InventoryItem
+    public enum ItemType
     {
         Witch,
         Swampking,

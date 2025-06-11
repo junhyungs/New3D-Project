@@ -21,7 +21,8 @@ namespace InventoryUI
         {
             base.Awake();
 
-            var data = DataManager.Instance.GetData(_key) as ItemDescriptionData;
+            var key = _key.ToString();
+            var data = DataManager.Instance.GetData(key) as ItemDescriptionData;
             if (data == null)
                 return;
 

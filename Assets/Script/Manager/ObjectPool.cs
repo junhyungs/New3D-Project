@@ -17,10 +17,7 @@ public class ObjectPool : Singleton_MonoBehaviour<ObjectPool>
     private PathData GetPathData(ObjectKey objectKey)
     {
         var key = objectKey.ToString();
-        if (!Enum.TryParse(key, out DataKey dataKey))
-            throw new ArgumentException("ObjectKey != DataKey");
-
-        var newPathData = DataManager.Instance.GetData(dataKey) as PathData;
+        var newPathData = DataManager.Instance.GetData(key) as PathData;
         return newPathData;
     }
 

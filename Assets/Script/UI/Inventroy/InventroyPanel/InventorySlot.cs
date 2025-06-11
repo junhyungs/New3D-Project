@@ -9,7 +9,7 @@ namespace InventoryUI
     public class InventorySlot : Slot
     {
         [Header("ItemName"), SerializeField]
-        private InventoryItem _itemName;
+        private ItemType _itemName;
 
         [Header("ItemUI"), SerializeField]
         private GameObject _itemUI;
@@ -26,6 +26,8 @@ namespace InventoryUI
             }
         }
 
+        public override void InitializeSlot() { }
+        
         protected virtual void Awake()
         {
             InventroyManager.Instance.RegisterSlot(_itemName, this);

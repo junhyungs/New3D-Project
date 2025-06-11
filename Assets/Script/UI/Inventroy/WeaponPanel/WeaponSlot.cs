@@ -1,6 +1,4 @@
 using GameData;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using EnumCollection;
 using UnityEngine.UI;
@@ -10,7 +8,7 @@ namespace InventoryUI
     public class WeaponSlot : WeaponDataSlot
     {
         [Header("ItemName"), SerializeField]
-        private InventoryItem _itemName;
+        private ItemType _itemName;
         [Header("WeaponTexture"), SerializeField]
         private Texture2D _weaponTexture;
         [Header("RenderTexture"), SerializeField]
@@ -28,7 +26,7 @@ namespace InventoryUI
             InventroyManager.Instance.RegisterSlot(_itemName, this);
         }
 
-        public void InitializeWeaponSlot()
+        public override void InitializeSlot()
         {
             _rawImage.enabled = true;
             _rawImage.texture = _weaponTexture;

@@ -58,7 +58,6 @@ namespace GameData
         public float Speed { get; set; }
         public int Health { get; set; }
         public PlayerConstantData ConstantData { get; set; }
-        public Dictionary<string, PlayerSkillData> SkillDictionary { get; set; }
     }
 
     public class PlayerConstantData : Data

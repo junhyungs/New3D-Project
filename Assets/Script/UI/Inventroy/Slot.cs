@@ -9,6 +9,7 @@ namespace InventoryUI
     {
         protected ItemDescriptionData _descriptionData;
         public abstract ItemDescriptionData DescriptionData { get; set; }
+        public abstract void InitializeSlot();
     }
 
     public abstract class WeaponDataSlot : Slot
