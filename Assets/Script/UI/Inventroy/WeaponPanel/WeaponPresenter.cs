@@ -11,11 +11,6 @@ namespace InventoryUI
         public WeaponPresenter(IWeaponView view) : base(view) { }
         private WeaponSlot _previousSlot;
 
-        public override void RequestUpdate(GameObject gameObject)
-        {
-            base.RequestUpdate(gameObject);
-        }
-
         protected override void UpdateView(Slot slot)
         {
             if(_previousSlot != null)

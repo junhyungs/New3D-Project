@@ -12,7 +12,7 @@ public class ItemCamera : MonoBehaviour
     private Info<ItemType>[] _trinketObjects;
 
     private Dictionary<ItemType, GameObject> _items;
-    private const string KEY = "WeaponItem";
+    private const string KEY = "EnableItem";
 
     private void Awake()
     {
