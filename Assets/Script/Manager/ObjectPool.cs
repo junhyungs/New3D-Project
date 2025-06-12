@@ -5,23 +5,23 @@ using UnityEngine;
 using EnumCollection;
 using GameData;
 
-public class ObjectPool : Singleton_MonoBehaviour<ObjectPool>
+public class ObjectPool<T> : Singleton_MonoBehaviour<T> where T : MonoBehaviour
 {
-    private Dictionary<ObjectKey, Pool> _poolDictionary = new Dictionary<ObjectKey, Pool>();
+    protected Dictionary<ObjectKey, Pool> _poolDictionary = new Dictionary<ObjectKey, Pool>();
 
-    private void Awake() //테스트 코드.
+    private void Awake()
     {
-        DataManager.Instance.TestLoadPathData();
+        DataManager.Instance.TestLoadPathData(); //테스트 코드
     }
 
-    private PathData GetPathData(ObjectKey objectKey)
+    protected PathData GetPathData(ObjectKey objectKey)
     {
         var key = objectKey.ToString();
         var newPathData = DataManager.Instance.GetData(key) as PathData;
         return newPathData;
     }
 
-    public void CreatePool(ObjectKey objectKey, int count = 1)
+    public virtual void CreatePool(ObjectKey objectKey, int count = 1)
     {
         if (_poolDictionary.ContainsKey(objectKey))
             return;
@@ -53,16 +53,16 @@ public class ObjectPool : Singleton_MonoBehaviour<ObjectPool>
             poolItem.SetActive(false);
             pool.Enqueue(poolItem);
 
-            if(pool.SaveItem == null)
+            if (pool.SaveItem == null)
                 pool.SaveItem = poolItem;
         }
     }
 
-    public void AllDisableGameObject(ObjectKey objectKey)
+    public virtual void AllDisableGameObject(ObjectKey objectKey)
     {
-        if(_poolDictionary.TryGetValue(objectKey, out var pool))
+        if (_poolDictionary.TryGetValue(objectKey, out var pool))
         {
-            foreach(Transform childTransform in pool.PoolTrasnform)
+            foreach (Transform childTransform in pool.PoolTrasnform)
             {
                 var gameObject = childTransform.gameObject;
 
@@ -75,9 +75,9 @@ public class ObjectPool : Singleton_MonoBehaviour<ObjectPool>
         }
     }
 
-    public void EnqueueGameObject(ObjectKey objectKey, GameObject gameObject)
+    public virtual void EnqueueGameObject(ObjectKey objectKey, GameObject gameObject)
     {
-        if(!_poolDictionary.ContainsKey(objectKey))
+        if (!_poolDictionary.ContainsKey(objectKey))
             CreatePool(objectKey);
 
         var pool = _poolDictionary[objectKey];
@@ -86,13 +86,13 @@ public class ObjectPool : Singleton_MonoBehaviour<ObjectPool>
         pool.Enqueue(gameObject);
     }
 
-    public GameObject DequeueGameObject(ObjectKey objectKey)
+    public virtual GameObject DequeueGameObject(ObjectKey objectKey)
     {
-        if(!_poolDictionary.ContainsKey(objectKey))
+        if (!_poolDictionary.ContainsKey(objectKey))
             CreatePool(objectKey);
 
         var pool = _poolDictionary[objectKey];
-        if(pool.QueueCount == 0)
+        if (pool.QueueCount == 0)
         {
             var saveItem = pool.SaveItem;
             var newgameObject = Instantiate(saveItem);
