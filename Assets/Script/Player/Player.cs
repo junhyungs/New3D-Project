@@ -13,7 +13,6 @@ namespace PlayerComponent
         public PlayerInteraction Interaction { get; private set; }
         public PlayerPlane Plane { get; private set; }
         public PlayerSkillSystem SkillSystem { get; private set; }
-        public PlayerWeaponSystem WeaponSystem { get; private set; }
 
         private List<IUnbindAction> _onDestroyInvokeList = new List<IUnbindAction>();
 
@@ -32,7 +31,6 @@ namespace PlayerComponent
             var stateMachine = GetComponent<PlayerStateMachine>();
             Plane = GetComponent<PlayerPlane>();
             SkillSystem = GetComponentInChildren<PlayerSkillSystem>();
-            WeaponSystem = GetComponentInChildren<PlayerWeaponSystem>();
             
             InputHandler = new PlayerInputHandler(this);
             StateHandler = new PlayerStateTransitionHandler(stateMachine, InputHandler);

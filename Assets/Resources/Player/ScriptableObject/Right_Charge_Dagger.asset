@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Right_Charge_Dagger
   m_EditorClassIdentifier: 
   _weaponType: 7
-  _handType: 3
+  _handType: 4
   _localEulerAngles: {x: 306.98697, y: 164.47116, z: 322.64426}
   _localPosition: {x: 0.029, y: -0.015, z: -0.005}

@@ -15,6 +15,7 @@ namespace Item
     public interface IPlayerWeaponItem : IPlayerItem
     {
         string WeaponDataKey { get; }
+        string PrefabKey { get; }
     }
 
     public abstract class Item : MonoBehaviour, IInteractionItem

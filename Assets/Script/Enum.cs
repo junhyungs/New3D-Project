@@ -23,6 +23,11 @@ namespace EnumCollection
         PlayerFireBallPrefab,
         PlayerBombPrefab,
         PlayerHookPrefab,
+        PlayerSwordPrefab,
+        PlayerHammerPrefab,
+        PlayerDaggerPrefab,
+        PlayerGreatSwordPrefab,
+        PlayerUmbrellaPrefab
 
     }
     //Path 데이터로 사용되는 경우 DataKey와 ObjectKey는 일치해야함.
@@ -92,10 +97,11 @@ namespace EnumCollection
 
     public enum PlayerHand
     {
+        Idle,
         Right,
         Left,
-        Idle,
-        Charge
+        Charge_L,
+        Charge_R
     }
 }
 

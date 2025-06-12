@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Idle_Dagger
   m_EditorClassIdentifier: 
   _weaponType: 7
-  _handType: 2
+  _handType: 0
   _localEulerAngles: {x: 82.98105, y: 168.58398, z: 76.15498}
   _localPosition: {x: -0.444, y: -0.001, z: -0.046}

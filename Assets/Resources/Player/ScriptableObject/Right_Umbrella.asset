@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Right_Umbrella
   m_EditorClassIdentifier: 
   _weaponType: 9
-  _handType: 0
+  _handType: 1
   _localEulerAngles: {x: 23.055006, y: 29.237003, z: 101.17899}
   _localPosition: {x: 0.118, y: 0.019, z: 0.051}

@@ -14,7 +14,7 @@ public class ObjectPool<T> : Singleton_MonoBehaviour<T> where T : MonoBehaviour
         DataManager.Instance.TestLoadPathData(); //테스트 코드
     }
 
-    protected PathData GetPathData(ObjectKey objectKey)
+    protected virtual PathData GetPathData(ObjectKey objectKey)
     {
         var key = objectKey.ToString();
         var newPathData = DataManager.Instance.GetData(key) as PathData;

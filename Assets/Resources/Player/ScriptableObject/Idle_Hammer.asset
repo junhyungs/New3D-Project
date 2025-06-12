@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Idle_Hammer
   m_EditorClassIdentifier: 
   _weaponType: 6
-  _handType: 2
+  _handType: 0
   _localEulerAngles: {x: 86.27805, y: 4.952972, z: 276.79193}
   _localPosition: {x: -0.986, y: -0.086, z: 0.001}

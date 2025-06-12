@@ -1,36 +1,40 @@
 using EnumCollection;
+using GameData;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponPool : ObjectPool<WeaponPool>
 {
-    private Dictionary<ObjectKey, WeaponObjectPool> _weaponDictionary = new Dictionary<ObjectKey, WeaponObjectPool>();
+    private Dictionary<ItemType, WeaponObjectPool> _weaponDictionary = new Dictionary<ItemType, WeaponObjectPool>();
 
-    public void CreatePool(ObjectKey objectKey)
+    private PathData GetPathData(string key)
     {
-        if (_weaponDictionary.ContainsKey(objectKey))
+        var newPathData = DataManager.Instance.GetData(key) as PathData;
+        return newPathData;
+    }
+
+    public void CreatePool(ItemType weaponKey, string pathKey)
+    {
+        if (_weaponDictionary.ContainsKey(weaponKey))
             return;
 
-        var gameObjectName = objectKey.ToString();
+        var gameObjectName = weaponKey.ToString();
 
         var poolObject = new GameObject(gameObjectName + "Pool");
         poolObject.transform.SetParent(transform);
 
-        var pathData = GetPathData(objectKey);
-        StartCoroutine(LoadPrefab(poolObject.transform, objectKey, pathData.Path, gameObjectName));
+        var pathData = GetPathData(pathKey);
+        LoadPrefab(poolObject.transform, weaponKey, pathData.Path, gameObjectName);
     }
 
-    private IEnumerator LoadPrefab(Transform poolTransform, ObjectKey key, string path, string name)
+    private void LoadPrefab(Transform poolTransform, ItemType key, string path, string name)
     {
-        var request = Resources.LoadAsync<GameObject>(path);
-        yield return new WaitUntil(() => request.isDone);
-
-        var requestAsset = request.asset as GameObject;
+        var requestAsset = Resources.Load<GameObject>(path);
         requestAsset.name = name;
 
-        var pool = new WeaponObjectPool(poolTransform, 3);
-        for(int i = 0; i < pool.ObjectArray.Length; i++)
+        var pool = new WeaponObjectPool(poolTransform, 5);
+        for (int i = 0; i < pool.ObjectArray.Length; i++)
         {
             var poolItem = Instantiate(requestAsset, poolTransform);
             poolItem.SetActive(false);
@@ -40,7 +44,7 @@ public class WeaponPool : ObjectPool<WeaponPool>
         _weaponDictionary.Add(key, pool);
     }
 
-    public GameObject[] GetWeaponItem(ObjectKey objectKey)
+    public GameObject[] GetWeaponItem(ItemType objectKey)
     {
         if(_weaponDictionary.TryGetValue(objectKey, out var weaponItems))
         {
@@ -51,7 +55,7 @@ public class WeaponPool : ObjectPool<WeaponPool>
         return null;
     }
 
-    public void SetWeaponItem(GameObject[] items, ObjectKey objectKey)
+    public void SetWeaponItem(GameObject[] items, ItemType objectKey)
     {
         if (!_weaponDictionary.TryGetValue(objectKey, out var weaponItems))
             return;
@@ -64,6 +68,8 @@ public class WeaponPool : ObjectPool<WeaponPool>
         foreach(var item in items)
         {
             item.transform.SetParent(parentTransform);
+            if(parentTransform != null)
+                item.SetActive(false);
         }
     }
 }

@@ -136,6 +136,7 @@ MonoBehaviour:
   _slotName: 9
   _descriptionKey: 10
   _weaponDataKey: 16
+  _prefabKey: 8
 --- !u!135 &9138555505124178080
 SphereCollider:
   m_ObjectHideFlags: 0
