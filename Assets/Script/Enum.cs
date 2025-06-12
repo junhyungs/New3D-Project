@@ -94,7 +94,8 @@ namespace EnumCollection
     {
         Right,
         Left,
-        Idle
+        Idle,
+        Charge
     }
 }
 

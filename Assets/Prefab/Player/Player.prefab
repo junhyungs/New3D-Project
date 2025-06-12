@@ -2793,6 +2793,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4ea3ceeceb77224cb71930b845baa60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponTransforms:
+  - {fileID: 11400000, guid: 9a06119a2d937c947bd1ff4c4e8762eb, type: 2}
+  - {fileID: 11400000, guid: efbf0fcae7136714191fc37bc8d0b2ab, type: 2}
+  - {fileID: 11400000, guid: f0ceca175c099d248a014aaee6b6a051, type: 2}
+  - {fileID: 11400000, guid: 85c4063628c4cb747a2ceb24ffacc48c, type: 2}
+  - {fileID: 11400000, guid: 2b724da5f7fda5b4cb6899b3ee12b848, type: 2}
+  - {fileID: 11400000, guid: de7320ac9d57b76488a922404ad62154, type: 2}
+  - {fileID: 11400000, guid: 4f0693fd6ed55bd46ad3471e00eca979, type: 2}
+  - {fileID: 11400000, guid: c6482f8631fd1ce418b6a17c0d18b5c2, type: 2}
+  - {fileID: 11400000, guid: b5f8f0c98f485924d935d40b2ef9731c, type: 2}
+  - {fileID: 11400000, guid: 073d493be15a0864688edd8e783aaa53, type: 2}
+  - {fileID: 11400000, guid: 5c928f6d32170cf4fb372a428b83d49b, type: 2}
+  - {fileID: 11400000, guid: 71176b72e5a3d4b40be15f022408cf35, type: 2}
+  - {fileID: 11400000, guid: ea9d3c341fa386c43b7cb088bcedb515, type: 2}
+  - {fileID: 11400000, guid: 33c04d2707fcecd45b53df7422888379, type: 2}
+  - {fileID: 11400000, guid: 321734435fddca140be8a436196f0a38, type: 2}
+  - {fileID: 11400000, guid: 36b4413bb9d35124dba37d49ac2d0d06, type: 2}
+  - {fileID: 11400000, guid: ed8fc75d8cd987140a2442cf31c43430, type: 2}
+  - {fileID: 11400000, guid: 4bbed059c585d5a47a5a6aae14543d6f, type: 2}
+  - {fileID: 11400000, guid: eb11a3ad9461c4046bd3e384f4418e97, type: 2}
+  - {fileID: 11400000, guid: 7c9f283c02027814d850149dfb92293e, type: 2}
+  - {fileID: 11400000, guid: 26c09407feb95ce40a4b75d5dec6c647, type: 2}
+  - {fileID: 11400000, guid: debd9a3dbf4bff24885856724cb44614, type: 2}
+  - {fileID: 11400000, guid: 6451f9d1698eeb641b0842c03078946e, type: 2}
+  - {fileID: 11400000, guid: 8ae9017d747b2b04e8c60fc0ce8c3249, type: 2}
+  - {fileID: 11400000, guid: 39a3564c6f01e60469fb17def366243e, type: 2}
+  _equipTransformInfo:
+    Holster: {fileID: 1455983548442531145}
+    WeaponL: {fileID: 8379743854120917769}
+    WeaponR: {fileID: 773913383831780141}
 --- !u!1 &6096582642035357267
 GameObject:
   m_ObjectHideFlags: 0

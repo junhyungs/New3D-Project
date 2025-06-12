@@ -4,6 +4,7 @@ using UnityEngine;
 using EnumCollection;
 using UnityEditor;
 using System.IO;
+using SO;
 
 public class SaveWeaponRotate : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class SaveWeaponRotate : MonoBehaviour
     
     public void SaveLocalRotation()
     {
-        var scriptableObject = ScriptableObject.CreateInstance<WeaponRotate>();
+        var scriptableObject = ScriptableObject.CreateInstance<WeaponTransform>();
 
         scriptableObject.WeaponType = ItemType;
         scriptableObject.HandType = HandType;
