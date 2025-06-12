@@ -4,29 +4,24 @@ using UnityEngine;
 using System;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
-using GameData;
 using TMPro;
-namespace InventroyUI
+using ModelViewPresenter;
+
+namespace InventoryUI
 {
-    public class Panel<T> : MonoBehaviour where T : Enum
+    public class Panel<T> : MonoBehaviour where T : Presenter
     {
         [Header("SlotControlAction"), SerializeField]
         private InputActionReference _controlAction;
+
+        [Header("FirstObject"), SerializeField]
+        private GameObject _firstGameObject;
 
         [Header("Description")]
         [SerializeField] protected TextMeshProUGUI _descriptionNameText;
         [SerializeField] protected TextMeshProUGUI _descriptionText;
 
-        [Header("Info"), SerializeField]
-        protected Info<T>[] _infos;
-
-        protected Dictionary<GameObject, T> _slotTypeDictionary = new Dictionary<GameObject, T>();
-        protected Dictionary<T, ItemDescriptionData> _dataDictionary = new Dictionary<T, ItemDescriptionData>();
-
-        protected virtual void Awake()
-        {
-            InitializeOnAwake();
-        }
+        protected T _presenter;
 
         protected virtual void OnEnable()
         {
@@ -41,28 +36,31 @@ namespace InventroyUI
             _controlAction.action.performed -= SlotControl;
             _controlAction.action.Disable();
         }
-
-        protected virtual void InitializeOnAwake()
-        {
-            foreach (var info in _infos)
-                if (info.SlotObject != null)
-                    _slotTypeDictionary.Add(info.SlotObject, info.Type);
-        }
             
         protected virtual void SlotControl(InputAction.CallbackContext context) { }
-
-        protected void OnEnablePanel()
+        
+        protected virtual void OnEnablePanel()
         {
-            var firstObject = _infos[0].SlotObject;
-            if (firstObject == null)
-                return;
+            SetSelectedGameObject(_firstGameObject);
+        }
 
-            SetSelectedGameObject(firstObject);
+        protected virtual IEnumerator WaitForCurrentSelectedGameObject()
+        {
+            yield return null;
+
+            var currentObject = EventSystem.current.currentSelectedGameObject;
+            _presenter.RequestUpdate(currentObject);
         }
 
         protected void SetSelectedGameObject(GameObject gameObject)
         {
             EventSystem.current.SetSelectedGameObject(gameObject);
+        }
+
+        protected void InitializeText()
+        {
+            _descriptionNameText.text = string.Empty;
+            _descriptionText.text = string.Empty;
         }
     }
 }

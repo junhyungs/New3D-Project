@@ -29,10 +29,22 @@ namespace EnumCollection
     public enum DataKey //DataCSV ID와 동일하게.
     {
         Player,
-        PlayerArrowPrefab,
-        PlayerFireBallPrefab,
-        PlayerBombPrefab,
-        PlayerHookPrefab
+        Witch_Description,
+        Swampking_Description,
+        Betty_Description,
+        HealthCrystal_Description,
+        MagicCrystal_Description,
+        Sword_Description,
+        Hammer_Description,
+        Dagger_Description,
+        GreatSword_Description,
+        Umbrella_Description,
+        Ring_Description,
+        RustyKey_Description,
+        Teddy_Description,
+        Trowel_Description,
+        Surveillance_Description,
+        Default
     }
 
     public enum JsonData
@@ -41,6 +53,7 @@ namespace EnumCollection
         New_3D_ScreenResolution,
         New_3D_Path,
         New_3D_PlayerSkill,
+        New_3D_ItemDescription
     }
 
     public enum UIEvent
@@ -58,11 +71,30 @@ namespace EnumCollection
         PlayerHook
     }
 
-    public enum InventroyPanelType { Witch, Swampking, Betty, HealthCrystal, MagicCrystal }
-    public enum WeaponPanelType { Sword, Hammer, Dagger, GreatSword, Umbrella }
-    public enum TrinketPanelType
+    public enum ItemType
     {
-        Ring, RustyKey, Teddy, Trowel, Surveillance
+        Witch,
+        Swampking,
+        Betty,
+        HealthCrystal,
+        MagicCrystal,
+        Sword,
+        Hammer,
+        Dagger,
+        GreatSword,
+        Umbrella,
+        Ring,
+        RustyKey,
+        Teddy,
+        Trowel,
+        Surveillance
+    }
+
+    public enum PlayerHand
+    {
+        Right,
+        Left,
+        Idle
     }
 }
 

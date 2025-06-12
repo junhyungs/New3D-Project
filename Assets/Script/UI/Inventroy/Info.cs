@@ -4,15 +4,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace InventroyUI
+namespace InventoryUI
 {
     [System.Serializable]
     public class Info<T> where T : Enum
     {
         [Header("Type")]
         public T Type;
-        [Header("SlotObject")]
-        public GameObject SlotObject;
+        [Header("InfoObject")]
+        public GameObject InfoObject;
     }
 }
 

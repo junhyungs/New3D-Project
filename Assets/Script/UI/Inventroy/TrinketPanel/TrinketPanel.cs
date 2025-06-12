@@ -4,35 +4,38 @@ using UnityEngine;
 using EnumCollection;
 using System;
 using UnityEngine.InputSystem;
+using ModelViewPresenter;
+using GameData;
 
-namespace InventroyUI
+namespace InventoryUI
 {
-    public class TrinketPanel : Panel<TrinketPanelType>
+    public class TrinketPanel : Panel<TrinketPresenter>, ITrinketView
     {
-        [Header("Slots"), SerializeField]
-        private GameObject[] _slots;
-
-        protected override void InitializeOnAwake()
+        private void Awake()
         {
-            var enumArray = (TrinketPanelType[])Enum.GetValues(typeof(TrinketPanelType));
-            _infos = new Info<TrinketPanelType>[enumArray.Length];
-            for (int i = 0; i < enumArray.Length; i++)
-            {
-                var type = enumArray[i];
-                if (_slots[i] != null)
-                {
-                    _slotTypeDictionary.Add(_slots[i], type);
+            _presenter = new TrinketPresenter(this);
+        }
 
-                    _infos[i] = new Info<TrinketPanelType>();
-                    _infos[i].Type = type;
-                    _infos[i].SlotObject = _slots[i];
-                }
-            }
+        protected override void OnEnablePanel()
+        {
+            base.OnEnablePanel();
+            StartCoroutine(WaitForCurrentSelectedGameObject());
         }
 
         protected override void SlotControl(InputAction.CallbackContext context)
         {
-            
+            StartCoroutine(WaitForCurrentSelectedGameObject());
+        }
+
+        public void UpdateDescription(ItemDescriptionData data)
+        {
+            InitializeText();
+
+            if (data == null)
+                return;
+
+            _descriptionNameText.text = data.ItemName;
+            _descriptionText.text = data.Description;
         }
     }
 }

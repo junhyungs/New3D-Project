@@ -7,7 +7,8 @@ namespace PlayerComponent
 {
     public class PlayerWeaponSystem : MonoBehaviour
     {
-        
+        //[Header("WeaponTransform")]
+        //[SerializeField]
     }
 }
 

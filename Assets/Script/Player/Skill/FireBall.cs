@@ -8,7 +8,7 @@ using GameData;
 
 public class FireBall : PlayerSkill, ISkill
 {
-    public FireBall(PlayerAnimationEvent animationEvent) : base(animationEvent)
+    public FireBall(PlayerAnimationEvent animationEvent, PlayerSkillSystem playerSkillSystem) : base(animationEvent, playerSkillSystem)
     {
         RequiresReload = true;
 
@@ -53,6 +53,9 @@ public class FireBall : PlayerSkill, ISkill
 
     public override void Reloading()
     {
+        if (!TryUse())
+            return;
+
         var fireBallObject = ObjectPool.Instance.DequeueGameObject(_objectKey);
         fireBallObject.transform.SetParent(_skillInfo.FireTransform);
         fireBallObject.transform.localPosition = Vector3.zero;

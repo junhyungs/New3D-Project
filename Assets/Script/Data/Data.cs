@@ -7,10 +7,23 @@ namespace GameData
     [System.Serializable]
     public class Data { }
 
+    public class PlayerWeaponData : Data
+    {
+        
+    }
+
     public class ItemDescriptionData : Data
     {
         public string Id { get; set; }
+        public string ItemName { get; set; }
         public string Description { get; set; }
+
+        public ItemDescriptionData(string id, string itemName, string description)
+        {
+            Id = id;
+            ItemName = itemName;
+            Description = description;
+        }
     }
 
     public class PathData : Data
@@ -45,7 +58,6 @@ namespace GameData
         public float Speed { get; set; }
         public int Health { get; set; }
         public PlayerConstantData ConstantData { get; set; }
-        public Dictionary<string, PlayerSkillData> SkillDictionary { get; set; }
     }
 
     public class PlayerConstantData : Data

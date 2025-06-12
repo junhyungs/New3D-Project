@@ -52,9 +52,6 @@ namespace PlayerComponent
         private void InitializeSkillDictionary()
         {
             var enumArray = (PlayerSkillType[])Enum.GetValues(typeof(PlayerSkillType));
-            var playerSaveData = DataManager.Instance.GetData(DataKey.Player) as PlayerSaveData;
-            var skillData = playerSaveData.SkillDictionary;
-            
             foreach(var enumValue in enumArray)
             {
                 PlayerSkill playerSkill = null;
@@ -62,21 +59,22 @@ namespace PlayerComponent
                 switch (enumValue)
                 {
                     case PlayerSkillType.PlayerBow:
-                        playerSkill = new Bow(_animationEvent);
+                        playerSkill = new Bow(_animationEvent, this);
                         break;
                     case PlayerSkillType.PlayerFireBall:
-                        playerSkill = new FireBall(_animationEvent);
+                        playerSkill = new FireBall(_animationEvent, this);
                         break;
                     case PlayerSkillType.PlayerBomb:
-                        playerSkill = new Bomb(_animationEvent);
+                        playerSkill = new Bomb(_animationEvent, this);
                         break;
                     case PlayerSkillType.PlayerHook:
-                        playerSkill = new Hook(_animationEvent);
+                        playerSkill = new Hook(_animationEvent, this);
                         break;
                 }
 
                 var info = _infoDictionary[enumValue];
-                var data = skillData[enumValue.ToString()];
+                var key = enumValue.ToString();
+                var data = DataManager.Instance.GetData(key) as PlayerSkillData;
                 playerSkill.InitializeSkill(info, data);
 
                 _skillDictionary.Add(enumValue, playerSkill);
@@ -96,22 +94,7 @@ namespace PlayerComponent
 
         public ISkill GetSkill()
         {
-            if (TryUse())
-                return _currentSkill;
-
-            return null;
-        }
-
-        public bool TryUse()
-        {
-            var useCost = _currentSkill.GetCost();
-            if(Cost >= useCost)
-            {
-                Cost -= useCost;
-                return true;
-            }
-
-            return false;
+            return _currentSkill;
         }
 
         public void Unbind()

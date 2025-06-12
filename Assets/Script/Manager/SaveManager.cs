@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
 using System;
+using Cysharp.Threading.Tasks;
 
 public class SaveManager : Singleton<SaveManager>
 {
@@ -28,7 +29,7 @@ public class SaveManager : Singleton<SaveManager>
         Debug.Log("SavePlayerData");
     }
 
-    public async Task<PlayerSaveData> LoadPlayerSaveDataAsync(int index)
+    public async UniTask<PlayerSaveData> LoadPlayerSaveDataAsync(int index)
     {
         string filePath = Path.Combine(Application.persistentDataPath, "SavePlayerData", $"PlayerData{index}.json");
 

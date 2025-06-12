@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using Cysharp.Threading.Tasks;
 
 public class GameMenu : MenuUI
 {
@@ -42,18 +43,18 @@ public class GameMenu : MenuUI
         await InitializeGameMenuAsync();
     }
 
-    private async Task InitializeGameMenuAsync()
+    private async UniTask InitializeGameMenuAsync()
     {
         var loadCount = _saveInfos.Length;
-        var task = new Task<PlayerSaveData>[loadCount];
+        var task = new UniTask<PlayerSaveData>[loadCount];
 
         for (int i = 0; i < loadCount; i++)
             task[i] = SaveManager.Instance.LoadPlayerSaveDataAsync(i);
 
-        PlayerSaveData[] savePlayerData = await Task.WhenAll(task);
+        PlayerSaveData[] savePlayerData = await UniTask.WhenAll(task);
 
         for (int i = 0; i < loadCount; i++)
-            UIManager.Instance.TriggerUIEvent(_saveInfos[i].EventKey, savePlayerData[i]);
+            UIManager.TriggerUIEvent(_saveInfos[i].EventKey, savePlayerData[i]);
     }
 
     public override void CallBackContext(InputAction.CallbackContext context)

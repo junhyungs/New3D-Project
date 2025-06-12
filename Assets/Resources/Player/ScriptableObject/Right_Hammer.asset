@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b8adc9b832108546af6656e13110404, type: 3}
+  m_Name: Right_Hammer
+  m_EditorClassIdentifier: 
+  _weaponType: 6
+  _handType: 0
+  _localEulerAngles: {x: 305.876, y: 167.53001, z: 315.594}
+  _localPosition: {x: 0.439, y: 0.013, z: -0.166}

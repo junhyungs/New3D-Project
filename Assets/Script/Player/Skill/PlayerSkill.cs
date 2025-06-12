@@ -8,13 +8,14 @@ using UnityEngine;
 
 public abstract class PlayerSkill : ISkill
 {
-    public PlayerSkill(PlayerAnimationEvent animationEvent)
+    public PlayerSkill(PlayerAnimationEvent animationEvent, PlayerSkillSystem skillSystem)
     {
         _animationEvent = animationEvent;
         
         _player = animationEvent.GetComponentInParent<Player>();        
         _playerPlane = _player.GetComponent<PlayerPlane>();
         _rigidBody = _player.GetComponent<Rigidbody>();
+        _skillSystem = skillSystem;
 
         var animator = _animationEvent.Animator;
         if(animator != null )
@@ -22,6 +23,7 @@ public abstract class PlayerSkill : ISkill
     }
 
     protected PlayerAnimationEvent _animationEvent;
+    protected PlayerSkillSystem _skillSystem;
     protected PlayerSkillData _data;
     protected Player _player;
     protected Rigidbody _rigidBody;
@@ -77,6 +79,18 @@ public abstract class PlayerSkill : ISkill
 
         _player.transform.rotation = Quaternion.RotateTowards(_player.transform.rotation,
             lookRotation, 700f * Time.deltaTime);
+    }
+
+    protected bool TryUse()
+    {
+        var useCost = _data.ProjectileCost;
+        if (_skillSystem.Cost >= useCost)
+        {
+            _skillSystem.Cost -= useCost;
+            return true;
+        }
+
+        return false;
     }
 
     protected void IsComplete(bool success)

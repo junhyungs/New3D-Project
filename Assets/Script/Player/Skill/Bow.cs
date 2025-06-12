@@ -8,7 +8,7 @@ using GameData;
 
 public class Bow : PlayerSkill, ISkill
 {
-    public Bow(PlayerAnimationEvent animationEvent) : base(animationEvent)
+    public Bow(PlayerAnimationEvent animationEvent, PlayerSkillSystem playerSkillSystem) : base(animationEvent, playerSkillSystem)
     {
         RequiresReload = true;
 
@@ -55,6 +55,9 @@ public class Bow : PlayerSkill, ISkill
 
     public override void Reloading()
     {
+        if (!TryUse())
+            return;
+
         var arrowObject = ObjectPool.Instance.DequeueGameObject(ObjectKey.PlayerArrowPrefab);
         arrowObject.transform.SetParent(_skillInfo.FireTransform);
         arrowObject.transform.localPosition = Vector3.zero;
