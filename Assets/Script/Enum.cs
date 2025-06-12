@@ -89,5 +89,12 @@ namespace EnumCollection
         Trowel,
         Surveillance
     }
+
+    public enum PlayerHand
+    {
+        Right,
+        Left,
+        Idle
+    }
 }
 
