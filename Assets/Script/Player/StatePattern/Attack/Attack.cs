@@ -9,42 +9,34 @@ namespace PlayerComponent
     {
         public Attack(Player player) : base(player)
         {
-            var attackStateBehaviours = _animator.GetBehaviours<AttackStateBehaviour>();
-            foreach (var behaviour in attackStateBehaviours)
-                behaviour.IAttack = this;
-
-            _stateBehaviours = attackStateBehaviours;
+            InitializeBehaviour();
         }
-        
-        private readonly int _attack = Animator.StringToHash("Attack");
-        private readonly int _isAttack = Animator.StringToHash("IsAttack");
-        private int _comboCount;
 
-        public float NextCombo { get; set; } = 0.4f;
+        private readonly int _attackHash = Animator.StringToHash("Attack");
+        private readonly int _isAttackHash = Animator.StringToHash("IsAttack");
+
+        private const string TAG_COMBO = "Combo";
+
+        private int _comboCount;
         private float _lastClickTime;
-        private float _changeTime;
         private float _moveTimer;
 
-        private bool _animationMovement;
+        private bool _enableMovement;
         private bool _isNextClick;
-        private bool _noInputTransition;
+        private bool _isTransitioning;
 
-        private Vector3 _movePos;
+        private Vector3 _moveDirection;
         private AttackStateBehaviour[] _stateBehaviours;
         private Coroutine _transitionCoroutine;
 
+        public float NextComboDelay { get; set; } = 0.4f;
+
         public void OnStateEnter()
         {
-            var iWeapon = WeaponManager.Instance.CurrentWeapon;
-            if(iWeapon != null)
-            {
-                var weaponController = iWeapon.GetWeaponController();
-                foreach (var behaviour in _stateBehaviours)
-                    behaviour.WeaponController = weaponController;
-            }
+            SetWeaponController();
 
-            _animator.SetTrigger(_attack);
-            _animator.SetBool(_isAttack, true);
+            _animator.SetTrigger(_attackHash);
+            _animator.SetBool(_isAttackHash, true);
 
             LookAtCursor();
             _lastClickTime = Time.time;            
@@ -52,30 +44,15 @@ namespace PlayerComponent
 
         public void OnStateFixedUpdate()
         {
-            if (!_animationMovement)
+            if (!_enableMovement)
                 return;
 
             _moveTimer += Time.fixedDeltaTime;
             if (_moveTimer >= 0.2f)
                 return;
 
-            var moveVector = _movePos * _constantData.DashSpeed * Time.fixedDeltaTime;
-            _rigidbody.MovePosition(_rigidbody.position + moveVector);
-        }
-
-        private IEnumerator Reservation()
-        {
-            _animator.SetBool(_isAttack, false);
-
-            yield return new WaitWhile(() =>
-            {
-                var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-            
-                return stateInfo.IsTag("Combo");
-            });
-            
-            _stateHandler.ChangeIdleORMoveState();
-            _transitionCoroutine = null;
+            var movement = _moveDirection * _constantData.DashSpeed * Time.fixedDeltaTime;
+            _rigidbody.MovePosition(_rigidbody.position + movement);
         }
 
         public void OnStateUpdate()
@@ -85,55 +62,87 @@ namespace PlayerComponent
 
             if (_comboCount >= 3)
             {
-                _transitionCoroutine = _monobehaviour.StartCoroutine(Reservation());
+                _transitionCoroutine = _monobehaviour.StartCoroutine(EndComboAfterAnimation());
                 return;
             }
 
-            if (_isNextClick)
+            bool comboDelay = Time.time - _lastClickTime > NextComboDelay;
+            if (_isNextClick && comboDelay)
             {
-                bool isNextCombo = Time.time - _lastClickTime > NextCombo;
-                if (isNextCombo)
-                {
-                    _animator.SetTrigger(_attack);
-                    LookAtCursor();
-
-                    _lastClickTime = Time.time;
-                }
+                _animator.SetTrigger(_attackHash);
+                LookAtCursor();
+                _lastClickTime = Time.time;
 
                 return;
             }
 
             var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-            bool noInput = stateInfo.IsTag("Combo") && stateInfo.normalizedTime >= 1f;
-            if (noInput && !_noInputTransition)
+            bool finishedCombo = stateInfo.IsTag(TAG_COMBO) && stateInfo.normalizedTime >= 1f;
+            if (finishedCombo && !_isTransitioning)
             {
-                _animator.SetBool(_isAttack, false);
-                _transitionCoroutine = _monobehaviour.StartCoroutine(NoInputTransition());
+                _animator.SetBool(_isAttackHash, false);
+                _transitionCoroutine = _monobehaviour.StartCoroutine(WaitForNextComboORTransition());
             }    
         }
         
-        private IEnumerator NoInputTransition()
+        public void OnStateExit()
+        {
+            ResetState();
+        }
+
+        private void InitializeBehaviour()
+        {
+            var attackStateBehaviours = _animator.GetBehaviours<AttackStateBehaviour>();
+            foreach (var behaviour in attackStateBehaviours)
+                behaviour.IAttack = this;
+
+            _stateBehaviours = attackStateBehaviours;
+        }
+
+        private void SetWeaponController()
+        {
+            var iWeapon = WeaponManager.Instance.CurrentWeapon;
+            if (iWeapon == null)
+                return;
+
+            var weaponController = iWeapon.GetWeaponController();
+            foreach (var behaviour in _stateBehaviours)
+                behaviour.WeaponController = weaponController;
+        }
+
+        private IEnumerator EndComboAfterAnimation()
+        {
+            _animator.SetBool(_isAttackHash, false);
+
+            yield return new WaitWhile(() =>
+            {
+                var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+                return stateInfo.IsTag(TAG_COMBO);
+            });
+
+            _stateHandler.ChangeIdleORMoveState();
+            _transitionCoroutine = null;
+        }
+
+        private IEnumerator WaitForNextComboORTransition()
         {
             yield return null;
-            
-            _noInputTransition = true;
+            _isTransitioning = true;
+
             while (_animator.IsInTransition(0))
             {
                 if (_isNextClick)
                 {
-                    
-                    
-                    //_comboCount = 0;
                     var nextAnim = NextComboName();
-                    if(nextAnim != null)
+                    if (nextAnim != null)
                     {
                         _isNextClick = false;
                         _lastClickTime = Time.time;
-                        _noInputTransition = false;
+                        _isTransitioning = false;
                         _transitionCoroutine = null;
-                        _animator.SetBool(_isAttack, true);
-                        _animator.Play(nextAnim, 0, 0);
 
+                        _animator.SetBool(_isAttackHash, true);
+                        _animator.Play(nextAnim, 0, 0);
                         yield break;
                     }
                 }
@@ -150,20 +159,15 @@ namespace PlayerComponent
             var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("First_Slash"))
                 return "Second_Slash";
-            else if (stateInfo.IsName("Second_Slash"))
+            if (stateInfo.IsName("Second_Slash"))
                 return "Third_Slash";
-            else
-                return null;
+
+            return null;
         }
 
-        public void OnStateExit()
+        private void ResetState()
         {
-            Init();
-        }
-
-        private void Init()
-        {
-            _noInputTransition = false;
+            _isTransitioning = false;
             _isNextClick = false;
             _lastClickTime = 0f;
             _comboCount = 0;
@@ -176,20 +180,20 @@ namespace PlayerComponent
 
         public void OnAttackAnimEnter()
         {
-            AttackMovementInitialize();
+            StartComboMovement();
             _comboCount++;
         }
 
-        private void AttackMovementInitialize()
+        private void StartComboMovement()
         {
-            _movePos = _playerTransform.forward;
-            _animationMovement = true;
+            _moveDirection = _playerTransform.forward;
+            _enableMovement = true;
             _moveTimer = 0f;
         }
 
         public void OnAttackAnimExit()
         {
-            _animationMovement = false;
+            _enableMovement = false;
             _isNextClick = false;
         }
     }
