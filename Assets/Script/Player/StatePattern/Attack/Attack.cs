@@ -121,16 +121,21 @@ namespace PlayerComponent
             {
                 if (_isNextClick)
                 {
-                    _lastClickTime = Time.time;
-                    _transitionCoroutine = null;
-                    _noInputTransition = false;
-                    _isNextClick = false;
-                    _comboCount = 0;
-                    _animator.SetBool(_isAttack, true);
-                    _animator.Play("First_Slash", 0, 0);
-
                     
-                    yield break;
+                    
+                    //_comboCount = 0;
+                    var nextAnim = NextComboName();
+                    if(nextAnim != null)
+                    {
+                        _isNextClick = false;
+                        _lastClickTime = Time.time;
+                        _noInputTransition = false;
+                        _transitionCoroutine = null;
+                        _animator.SetBool(_isAttack, true);
+                        _animator.Play(nextAnim, 0, 0);
+
+                        yield break;
+                    }
                 }
 
                 yield return null;
@@ -138,6 +143,17 @@ namespace PlayerComponent
 
             _transitionCoroutine = null;
             _stateHandler.ChangeIdleORMoveState();
+        }
+
+        private string NextComboName()
+        {
+            var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName("First_Slash"))
+                return "Second_Slash";
+            else if (stateInfo.IsName("Second_Slash"))
+                return "Third_Slash";
+            else
+                return null;
         }
 
         public void OnStateExit()
