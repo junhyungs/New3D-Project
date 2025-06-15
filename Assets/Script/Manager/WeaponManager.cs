@@ -30,7 +30,7 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
     private GameObject[] _weaponArray;
 
     private IWeapon _currentWeapon;
-    private ItemType _currentWeaponType;
+    public IWeapon CurrentWeapon => _currentWeapon;
     private WeaponInfo[] _weaponInfos;
 
     private struct WeaponInfo
@@ -49,6 +49,11 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
     {
         InitializeDictionary();
         InitializeHashSet();
+    }
+
+    private void Start()
+    {
+        SetWeapon(ItemType.Sword);
     }
 
     private void InitializeDictionary()
@@ -87,8 +92,8 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
             new(EquipTransformInfo.Holster, PlayerHand.Idle),
             new(EquipTransformInfo.WeaponR, PlayerHand.Right),
             new(EquipTransformInfo.WeaponL, PlayerHand.Left),
-            new(EquipTransformInfo.WeaponR, PlayerHand.Charge_R),
             new(EquipTransformInfo.WeaponL, PlayerHand.Charge_L),
+            new(EquipTransformInfo.WeaponR, PlayerHand.Charge_R),
         };
     }
 
@@ -137,30 +142,70 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
         }
 
         _weaponArray = WeaponPool.Instance.GetWeaponItem(itemType);
-        
-        for (int i = 0; i < _weaponInfos.Length; i++)
-            EquipWeapon(_weaponArray[i], _weaponInfos[i].Parent, itemType, _weaponInfos[i].Hand);
+        Weapon weapon = new Weapon();
 
-        _weaponArray[0].SetActive(true); //나중에 각 Weapon 컴포넌트안에서 활성화 하도록 변경.
-        _currentWeapon.InitializeWeapon(_weaponArray);
-        _currentWeaponType = itemType;
+        for (int i = 0; i < _weaponInfos.Length; i++)
+            EquipWeapon(weapon, _weaponArray[i], _weaponInfos[i].Parent, itemType, _weaponInfos[i].Hand);
+        
+        _currentWeapon.InitializeWeapon(weapon);
     }
 
-    private void EquipWeapon(GameObject weapon, Transform parent, ItemType itemType, PlayerHand hand)
+    private void EquipWeapon(Weapon weapon, GameObject weaponObject, 
+        Transform parent, ItemType itemType, PlayerHand hand)
     {
-        weapon.transform.SetParent(parent);
+        weaponObject.transform.SetParent(parent);
 
         var weaponTransform = GetWeaponTransform(itemType, hand);
         var localPos = weaponTransform.LocalPosition;
         var localEuler = weaponTransform.LocalEulerAngles;
 
-        weapon.transform.localPosition = new Vector3(localPos.x, localPos.y, localPos.z);
-        weapon.transform.localRotation = Quaternion.Euler(localEuler.x, localEuler.y, localEuler.z);
+        weaponObject.transform.localPosition = new Vector3(localPos.x, localPos.y, localPos.z);
+        weaponObject.transform.localRotation = Quaternion.Euler(localEuler.x, localEuler.y, localEuler.z);
+        weapon.AddWepons(hand, weaponObject);
+    }
+}
+
+public class Weapon
+{
+    private Dictionary<PlayerHand, GameObject> _weapons
+        = new Dictionary<PlayerHand, GameObject>();
+
+    private GameObject _currentWeapon;
+
+    public void AddWepons(PlayerHand hand, GameObject weapon)
+    {
+        if (!_weapons.ContainsKey(hand))
+            _weapons.Add(hand, weapon);
+    }
+
+    public void SetWeaponActive(PlayerHand hand)
+    {
+        if(_weapons.TryGetValue(hand, out var weapon) && weapon != null)
+        {
+            weapon.SetActive(true);
+            _currentWeapon = weapon;
+        }
+    }
+
+    public void DeActiveCurrentWeapon()
+    {
+        if(_currentWeapon != null)
+            _currentWeapon.SetActive(false);
+    }
+    
+    public void AllDisableWeapon()
+    {
+        foreach(var weapon in _weapons.Values)
+        {
+            if (weapon != null)
+                weapon.SetActive(false);
+        }
     }
 }
 
 public interface IWeapon
 {
     void UseWeapon();
-    void InitializeWeapon(GameObject[] weaponArray);
+    void InitializeWeapon(Weapon weapon);
+    Weapon GetWeaponController();
 }

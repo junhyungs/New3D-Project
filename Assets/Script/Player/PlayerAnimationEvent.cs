@@ -13,6 +13,7 @@ public class PlayerAnimationEvent : MonoBehaviour
         Animator = GetComponent<Animator>();
     }
 
+    #region Projectile
     public void SetReloadAction(Action reloadAction)
     {
         Action action = null;
@@ -34,5 +35,12 @@ public class PlayerAnimationEvent : MonoBehaviour
     public void ReloadSkill()
     {
         _reloadSkillAction?.Invoke();
+    }
+    #endregion
+
+    public void Test()
+    {
+        var stateInfo = Animator.GetCurrentAnimatorStateInfo(0);
+        Debug.Log(stateInfo.normalizedTime);
     }
 }

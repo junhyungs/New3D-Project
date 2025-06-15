@@ -52,6 +52,17 @@ namespace InventoryUI
             UIManager.TriggerUIEvent(KEY, (_itemName, isLive));
             _rawImage.texture = isLive ? _renderTexture : _weaponTexture;
         }
+
+        public void ChangeWeapon()
+        {
+            bool isData = WeaponData != null
+                && DescriptionData != null;
+
+            if (!isData)
+                return;
+
+            WeaponManager.Instance.SetWeapon(_itemName);
+        }
     }
 }
 

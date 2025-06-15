@@ -1,15 +1,28 @@
+using EnumCollection;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class PlayerWeapon : MonoBehaviour, IWeapon
 {
-    protected GameObject[] _weaponArray;
+    protected Weapon _weapon;
+    protected PlayerAnimationEvent _animEvent;
 
-    public void InitializeWeapon(GameObject[] weaponArray)
+    protected virtual void Awake()
     {
-        _weaponArray = weaponArray;
+        _animEvent = GetComponentInChildren<PlayerAnimationEvent>();
+    }
+
+    public void InitializeWeapon(Weapon weapon)
+    {
+        _weapon = weapon;
+        _weapon.SetWeaponActive(PlayerHand.Idle);
     }
 
     public abstract void UseWeapon();
+
+    public Weapon GetWeaponController()
+    {
+        return _weapon;
+    }
 }

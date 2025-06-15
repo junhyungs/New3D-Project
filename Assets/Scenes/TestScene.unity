@@ -278,7 +278,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 28842323}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 28842326}
+        m_TargetAssemblyTypeName: InventoryUI.WeaponSlot, Assembly-CSharp
+        m_MethodName: ChangeWeapon
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &28842323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13590,7 +13602,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 577220553}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 577220555}
+        m_TargetAssemblyTypeName: InventoryUI.WeaponSlot, Assembly-CSharp
+        m_MethodName: ChangeWeapon
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &577220553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14610,7 +14634,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 661927312}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 661927314}
+        m_TargetAssemblyTypeName: InventoryUI.WeaponSlot, Assembly-CSharp
+        m_MethodName: ChangeWeapon
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &661927312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17071,7 +17107,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1093771022}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1093771024}
+        m_TargetAssemblyTypeName: InventoryUI.WeaponSlot, Assembly-CSharp
+        m_MethodName: ChangeWeapon
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1093771022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18018,7 +18066,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1228854572}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1228854574}
+        m_TargetAssemblyTypeName: InventoryUI.WeaponSlot, Assembly-CSharp
+        m_MethodName: ChangeWeapon
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1228854572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18203,7 +18263,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79cea47fac71a9b43a1a969656739d50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sword: {fileID: 5668356813002213866, guid: 70a21c4ad500f974e8f1b721cfe7a03b, type: 3}
+  _startItems:
+  - {fileID: 5668356813002213866, guid: 70a21c4ad500f974e8f1b721cfe7a03b, type: 3}
+  - {fileID: 921628928444562112, guid: a262d76d8925537418a327de959bc2f0, type: 3}
+  - {fileID: 3436974765285099074, guid: 4ad05561922fc7945b388b7c9b3eacf7, type: 3}
+  - {fileID: 3118504711219632068, guid: 853429e214503a44d883c2a12e0fd8e4, type: 3}
 --- !u!1 &1255612309
 GameObject:
   m_ObjectHideFlags: 0

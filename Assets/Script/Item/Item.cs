@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EnumCollection;
 
-namespace Item
+namespace ItemComponent
 {
     public interface IPlayerItem
     {
@@ -15,12 +15,14 @@ namespace Item
     public interface IPlayerWeaponItem : IPlayerItem
     {
         string WeaponDataKey { get; }
-        string PrefabKey { get; }
     }
 
-    public abstract class Item : MonoBehaviour, IInteractionItem
+    public abstract class Item : MonoBehaviour, IInteractionItem, IPlayerItem
     {
         protected SphereCollider _collider;
+        public abstract bool CanEquip { get; }
+        public abstract ItemType SlotName { get; }
+        public abstract string DescriptionKey { get; }
 
         private void Awake()
         {
@@ -31,6 +33,7 @@ namespace Item
         {
             _collider.enabled = true;
         }
+
         protected void DisableObejct()
         {
             _collider.enabled = false;

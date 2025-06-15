@@ -7,6 +7,25 @@ using UnityEngine;
 public class WeaponPool : ObjectPool<WeaponPool>
 {
     private Dictionary<ItemType, WeaponObjectPool> _weaponDictionary = new Dictionary<ItemType, WeaponObjectPool>();
+    private Dictionary<ItemType, string> _prefabKeys;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        InitializePrefabKey();
+    }
+
+    private void InitializePrefabKey()
+    {
+        _prefabKeys = new Dictionary<ItemType, string>()
+        {
+            {ItemType.Sword, "PlayerSwordPrefab" },
+            {ItemType.Hammer, "PlayerHammerPrefab" },
+            {ItemType.Dagger, "PlayerDaggerPrefab" },
+            {ItemType.GreatSword, "PlayerGreatSwordPrefab" },
+            {ItemType.Umbrella, "PlayerUmbrellaPrefab" }
+        };
+    }
 
     private PathData GetPathData(string key)
     {
@@ -14,7 +33,7 @@ public class WeaponPool : ObjectPool<WeaponPool>
         return newPathData;
     }
 
-    public void CreatePool(ItemType weaponKey, string pathKey)
+    public void CreatePool(ItemType weaponKey)
     {
         if (_weaponDictionary.ContainsKey(weaponKey))
             return;
@@ -24,6 +43,7 @@ public class WeaponPool : ObjectPool<WeaponPool>
         var poolObject = new GameObject(gameObjectName + "Pool");
         poolObject.transform.SetParent(transform);
 
+        var pathKey = _prefabKeys[weaponKey];
         var pathData = GetPathData(pathKey);
         LoadPrefab(poolObject.transform, weaponKey, pathData.Path, gameObjectName);
     }
@@ -52,7 +72,10 @@ public class WeaponPool : ObjectPool<WeaponPool>
             return weaponItems.ObjectArray;
         }
 
-        return null;
+        CreatePool(objectKey);
+
+        var weaponItem = GetWeaponItem(objectKey);
+        return weaponItem;
     }
 
     public void SetWeaponItem(GameObject[] items, ItemType objectKey)

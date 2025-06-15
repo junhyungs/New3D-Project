@@ -9,7 +9,7 @@ public class ObjectPool<T> : Singleton_MonoBehaviour<T> where T : MonoBehaviour
 {
     protected Dictionary<ObjectKey, Pool> _poolDictionary = new Dictionary<ObjectKey, Pool>();
 
-    private void Awake()
+    protected virtual void Awake()
     {
         DataManager.Instance.TestLoadPathData(); //테스트 코드
     }
