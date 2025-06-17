@@ -26,7 +26,16 @@ namespace PlayerComponent
         private Action _unbindAction;
 
         private ISkill _currentSkill;
-        public int Cost { get; set; } = 4; //테스트 값
+        private int _cost;
+        public int Cost
+        {
+            get => _cost;
+            set
+            {
+                _cost = value;
+                UIManager.TriggerUIEvent(UIEvent.SkillCostView.ToString(), _cost);
+            }
+        }
 
         private void Awake()
         {
@@ -36,11 +45,17 @@ namespace PlayerComponent
         private void Start()
         {
             InitializeSkillDictionary();
-            ChangeSkill("1");
+            StartSkillSystem();
 
             var player = GetComponentInParent<Player>();
             player.InputHandler.ChangeSkillEvent += ChangeSkill;
             _unbindAction += () => player.InputHandler.ChangeSkillEvent += ChangeSkill;
+        }
+
+        private void StartSkillSystem()
+        {
+            ChangeSkill("1");
+            Cost = 4;
         }
 
         private void InitializeInfoDictionary()
@@ -88,6 +103,7 @@ namespace PlayerComponent
                 return;
 
             var skillType = (PlayerSkillType)key;
+            UIManager.TriggerUIEvent(UIEvent.SkillView.ToString(), skillType);
             if(_skillDictionary.TryGetValue(skillType, out var skill))
                 _currentSkill = skill;
         }

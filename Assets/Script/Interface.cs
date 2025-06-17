@@ -47,7 +47,7 @@ public interface IInteractionDialog : IInteraction
 
 public interface IInteractionGameObject : IInteraction
 {
-
+    bool IsWeaponInteractable { get; set; }
 }
 
 public interface ITakeDamage

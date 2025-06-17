@@ -28,7 +28,6 @@ namespace PlayerComponent
 
         private void SetPlayerData()
         {
-            DataManager.Instance.AddToPlayerData(null); //테스트를 위한 임시 코드.
             _data = DataManager.Instance.GetData(DataKey.Player.ToString()) as PlayerSaveData;
             _constantData = _data.ConstantData;
         }

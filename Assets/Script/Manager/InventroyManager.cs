@@ -4,11 +4,14 @@ using UnityEngine;
 using EnumCollection;
 using InventoryUI;
 using System;
-using Item;
+using ItemComponent;
 using GameData;
 
 public class InventroyManager : Singleton_MonoBehaviour<InventroyManager>
 {
+    [Header("StartItem"), SerializeField]
+    private List<Item> _startItems;
+
     private Dictionary<ItemType, Slot> _slotDictionary = new Dictionary<ItemType, Slot>();
     private Dictionary<ItemType, Action<IPlayerItem, Slot>> _refreshDictionary = new Dictionary<ItemType, Action<IPlayerItem, Slot>>();
     private Dictionary<ItemType, IPlayerItem> _refreshItemDictionary = new Dictionary<ItemType, IPlayerItem>();
@@ -16,6 +19,17 @@ public class InventroyManager : Singleton_MonoBehaviour<InventroyManager>
     private void Awake()
     {
         DataManager.Instance.TestLoadItemDescriptionData(); //테스트 코드
+    }
+
+    private void Start()
+    {
+        StartPlayerItem();
+    }
+
+    private void StartPlayerItem()
+    {
+        foreach(var item in _startItems)
+            SetItem(item);
     }
 
     public void RegisterSlot(ItemType slotName, Slot slot)
@@ -100,6 +114,8 @@ public class InventroyManager : Singleton_MonoBehaviour<InventroyManager>
             return;
 
         var dataKey = weaponItem.WeaponDataKey;
+
+        WeaponPool.Instance.CreatePool(weaponItem.SlotName);
         if (DataManager.Instance.GetData(dataKey) is not PlayerWeaponData weaponData)
             return;
 

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Left_Charge_Umbrella
   m_EditorClassIdentifier: 
   _weaponType: 9
-  _handType: 1
+  _handType: 3
   _localEulerAngles: {x: 72.55599, y: 18.640009, z: 108.606}
   _localPosition: {x: 0.084, y: 0, z: 0.004}

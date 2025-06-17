@@ -56,7 +56,7 @@ public class FireBall : PlayerSkill, ISkill
         if (!TryUse())
             return;
 
-        var fireBallObject = ObjectPool.Instance.DequeueGameObject(_objectKey);
+        var fireBallObject = ProjectilePool.Instance.DequeueGameObject(_objectKey);
         fireBallObject.transform.SetParent(_skillInfo.FireTransform);
         fireBallObject.transform.localPosition = Vector3.zero;
         fireBallObject.transform.localRotation = Quaternion.identity;

@@ -83,7 +83,8 @@ namespace PlayerComponent
             AddDictionary(E_PlayerState.Attack,
                 E_PlayerState.Idle,
                 E_PlayerState.Move,
-                E_PlayerState.Roll);
+                E_PlayerState.Roll,
+                E_PlayerState.Attack);
 
             AddDictionary(E_PlayerState.ChargeAttack,
                 E_PlayerState.Idle,

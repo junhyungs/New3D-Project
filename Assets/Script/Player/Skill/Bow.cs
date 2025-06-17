@@ -58,7 +58,7 @@ public class Bow : PlayerSkill, ISkill
         if (!TryUse())
             return;
 
-        var arrowObject = ObjectPool.Instance.DequeueGameObject(ObjectKey.PlayerArrowPrefab);
+        var arrowObject = ProjectilePool.Instance.DequeueGameObject(ObjectKey.PlayerArrowPrefab);
         arrowObject.transform.SetParent(_skillInfo.FireTransform);
         arrowObject.transform.localPosition = Vector3.zero;
         arrowObject.transform.localRotation = Quaternion.identity;

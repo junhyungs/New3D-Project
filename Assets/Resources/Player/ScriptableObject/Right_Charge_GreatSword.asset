@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Right_Charge_GreatSword
   m_EditorClassIdentifier: 
   _weaponType: 8
-  _handType: 0
+  _handType: 4
   _localEulerAngles: {x: 312.08694, y: 357.7786, z: 86.80075}
   _localPosition: {x: 0.002, y: 0.012, z: 0.014}

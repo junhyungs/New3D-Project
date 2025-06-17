@@ -7,12 +7,26 @@ public class PlayerAnimationEvent : MonoBehaviour
 {
     public Animator Animator { get; private set; }
     private Action _reloadSkillAction;
+    private Action _startWeaponAction;
 
     private void Awake()
     {
         Animator = GetComponent<Animator>();
     }
 
+    #region Weapon
+    public void SetWeaponAction(Action action)
+    {
+        _startWeaponAction = action;
+    }
+
+    public void UseWeapon()
+    {
+        _startWeaponAction?.Invoke();
+    }
+
+    #endregion
+    #region Projectile
     public void SetReloadAction(Action reloadAction)
     {
         Action action = null;
@@ -35,4 +49,5 @@ public class PlayerAnimationEvent : MonoBehaviour
     {
         _reloadSkillAction?.Invoke();
     }
+    #endregion
 }

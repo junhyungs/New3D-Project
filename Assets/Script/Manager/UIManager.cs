@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class UIManager : Singleton<UIManager>
 {
+    private Dictionary<string, GameObject> _enableUIDictionary = new Dictionary<string, GameObject>();
     private static Dictionary<string, Delegate> _uiEventDictionary = new Dictionary<string, Delegate>();
     public static event Action<bool> LoadingUIController;
-
-    private Dictionary<string, GameObject> _enableUIDictionary = new Dictionary<string, GameObject>();
+    public static event Action MoveInfoUI;
 
     public void StartLoadingUI(bool enable)
     {

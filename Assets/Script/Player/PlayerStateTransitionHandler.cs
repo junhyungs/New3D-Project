@@ -158,7 +158,7 @@ namespace PlayerComponent
             return false;
         }
 
-        private void ChangeState(E_PlayerState state)
+        public void ChangeState(E_PlayerState state)
         {
             if (!_transitionList.CanChange(state))
                 return;

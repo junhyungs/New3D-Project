@@ -72,7 +72,7 @@ public class Bomb : PlayerSkill, ISkill
         if (!TryUse())
             return;
 
-        var bombObject = ObjectPool.Instance.DequeueGameObject(_objectKey);
+        var bombObject = ProjectilePool.Instance.DequeueGameObject(_objectKey);
         bombObject.transform.SetParent(_skillInfo.FireTransform);
         bombObject.transform.localPosition = Vector3.zero;
         bombObject.transform.localRotation = Quaternion.identity;

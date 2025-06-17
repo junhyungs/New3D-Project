@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Right_Hammer
   m_EditorClassIdentifier: 
   _weaponType: 6
-  _handType: 0
+  _handType: 1
   _localEulerAngles: {x: 305.876, y: 167.53001, z: 315.594}
   _localPosition: {x: 0.439, y: 0.013, z: -0.166}

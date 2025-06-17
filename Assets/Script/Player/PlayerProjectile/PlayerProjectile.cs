@@ -48,7 +48,7 @@ public class PlayerProjectile : MonoBehaviour
     protected void ReturnObjectPool()
     {
         _isFire = false;
-        ObjectPool.Instance.EnqueueGameObject(_objectKey, gameObject);
+        ProjectilePool.Instance.EnqueueGameObject(_objectKey, gameObject);
     }
 
     public virtual void Fire()

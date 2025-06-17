@@ -23,6 +23,11 @@ namespace EnumCollection
         PlayerFireBallPrefab,
         PlayerBombPrefab,
         PlayerHookPrefab,
+        PlayerSwordPrefab,
+        PlayerHammerPrefab,
+        PlayerDaggerPrefab,
+        PlayerGreatSwordPrefab,
+        PlayerUmbrellaPrefab
 
     }
     //Path 데이터로 사용되는 경우 DataKey와 ObjectKey는 일치해야함.
@@ -44,6 +49,11 @@ namespace EnumCollection
         Teddy_Description,
         Trowel_Description,
         Surveillance_Description,
+        Sword_Data,
+        Hammer_Data,
+        Dagger_Data,
+        GreatSword_Data,
+        Umbrella_Data,
         Default
     }
 
@@ -53,7 +63,8 @@ namespace EnumCollection
         New_3D_ScreenResolution,
         New_3D_Path,
         New_3D_PlayerSkill,
-        New_3D_ItemDescription
+        New_3D_ItemDescription,
+        New_3D_PlayerWeapon
     }
 
     public enum UIEvent
@@ -61,6 +72,9 @@ namespace EnumCollection
         SaveInfoSlot_1,
         SaveInfoSlot_2,
         SaveInfoSlot_3,
+        SkillView,
+        SkillCostView,
+        HealthView
     }
 
     public enum PlayerSkillType
@@ -92,9 +106,11 @@ namespace EnumCollection
 
     public enum PlayerHand
     {
+        Idle,
         Right,
         Left,
-        Idle
+        Charge_L,
+        Charge_R
     }
 }
 

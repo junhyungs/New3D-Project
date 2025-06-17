@@ -3,18 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Item
+namespace ItemComponent
 {
-    public class TrinketItem : Item, IPlayerItem
+    public class TrinketItem : Item
     {
         [Header("SlotName"), SerializeField]
         private ItemType _slotName;
         [Header("DataKey"), SerializeField]
         private DataKey _descriptionKey;
 
-        public bool CanEquip => false;
-        public ItemType SlotName => _slotName;
-        public string DescriptionKey => _descriptionKey.ToString();
+        public override bool CanEquip => false;
+        public override ItemType SlotName => _slotName;
+        public override string DescriptionKey => _descriptionKey.ToString();
 
         public override void Interact()
         {

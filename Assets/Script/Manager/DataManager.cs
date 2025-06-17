@@ -158,7 +158,8 @@ public class DataManager : Singleton<DataManager>
         List<UniTask> taskList = new List<UniTask>()
         {
             ParsePlayerBaseDataAsync(),
-            ParsePlayerSkillDataAsync()
+            ParsePlayerSkillDataAsync(),
+            ParsePlayerWeaponDataAsync()
         };
 
         await UniTask.WhenAll(taskList);
@@ -177,6 +178,7 @@ public class DataManager : Singleton<DataManager>
         newSaveData.Health = ParseInt(item["Health"]);
         newSaveData.ConstantData = ParseConstantData(item);
 
+        //SaveManager.Instance.SavePlayerData(data);
         TryAddData(newSaveData.ID, newSaveData);
     }
 
@@ -212,6 +214,35 @@ public class DataManager : Singleton<DataManager>
 
             TryAddData(id, data);
         }
+    }
+
+    private async UniTask ParsePlayerWeaponDataAsync()
+    {
+        var path = "JsonData/New_3D_PlayerWeapon";
+        JArray jArray = await LoadJsonArrayAsync(path);
+
+        foreach(var item in jArray)
+        {
+            var id = ParseString(item["Id"]);
+            var damage = ParseInt(item["Damage"]);
+            var range = ParseVector3(item["Range"]);
+
+            PlayerWeaponData data = new PlayerWeaponData(id, damage, range);
+            TryAddData(id, data);
+        }
+    }
+
+    private Vector3 ParseVector3(JToken jToken)
+    {
+        var stringValue = ParseString(jToken);
+        var trim = stringValue.Trim('{', '}');
+        var splitArray = trim.Split(',');
+
+        var x = ParseFloat(splitArray[0]);
+        var y = ParseFloat(splitArray[1]);
+        var z = ParseFloat(splitArray[2]);
+
+        return new Vector3(x, y, z);
     }
     #endregion
     #region Resolution
@@ -307,9 +338,20 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
-    private void ParsePlayerWeaponData()
+    public void ParsePlayerWeaponData()
     {
+        var path = "JsonData/New_3D_PlayerWeapon";
+        JArray jArray = LoadJsonArray(path);
 
+        foreach (var item in jArray)
+        {
+            var id = ParseString(item["Id"]);
+            var damage = ParseInt(item["Damage"]);
+            var range = ParseVector3(item["Range"]);
+
+            PlayerWeaponData data = new PlayerWeaponData(id, damage, range);
+            TryAddData(id, data);
+        }
     }
     #endregion
 

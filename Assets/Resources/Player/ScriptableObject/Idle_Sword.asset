@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Idle_Sword
   m_EditorClassIdentifier: 
   _weaponType: 5
-  _handType: 2
-  _localEulerAngles: {x: 270, y: 0, z: 0}
-  _localPosition: {x: -0.225, y: 0.009, z: 0.235}
+  _handType: 0
+  _localEulerAngles: {x: 9.546023, y: 269.78183, z: 86.83549}
+  _localPosition: {x: -0.22, y: 0.035, z: 0.264}

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Item
+namespace ItemComponent
 {
     public class WeaponItem : Item, IPlayerWeaponItem
     {
@@ -13,9 +13,9 @@ namespace Item
         [SerializeField] private DataKey _descriptionKey;
         [SerializeField] private DataKey _weaponDataKey;
 
-        public bool CanEquip => true;
-        public ItemType SlotName => _slotName;
-        public string DescriptionKey => _descriptionKey.ToString();
+        public override bool CanEquip => true;
+        public override ItemType SlotName => _slotName;
+        public override string DescriptionKey => _descriptionKey.ToString();
         public string WeaponDataKey => _weaponDataKey.ToString();
 
         public override void Interact()
