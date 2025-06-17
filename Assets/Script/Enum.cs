@@ -72,6 +72,9 @@ namespace EnumCollection
         SaveInfoSlot_1,
         SaveInfoSlot_2,
         SaveInfoSlot_3,
+        SkillView,
+        SkillCostView,
+        HealthView
     }
 
     public enum PlayerSkillType

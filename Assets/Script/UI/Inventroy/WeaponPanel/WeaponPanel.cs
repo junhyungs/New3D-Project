@@ -16,10 +16,12 @@ namespace InventoryUI
         [SerializeField] private TextMeshProUGUI _range;
         [SerializeField] private TextMeshProUGUI _hit;
         [SerializeField] private TextMeshProUGUI _speed;
-       
+        private TextMeshProUGUI[] _abilityUI;
+
         private void Awake()
         {
             _presenter = new WeaponPresenter(this);
+            _abilityUI = new TextMeshProUGUI[] {_damage, _range, _hit, _speed};
         }
 
         protected override void OnEnablePanel()
@@ -39,22 +41,23 @@ namespace InventoryUI
 
             if (data == null)
                 return;
-
+            
             _descriptionNameText.text = data.ItemName;
             _descriptionText.text = data.Description;
         }
 
         public void UpdateWeaponAbility(PlayerWeaponData data)
         {
-            InitializeText();
+            foreach (var ui in _abilityUI)
+                ui.text = string.Empty;
 
             if (data == null)
                 return;
 
-            _damage.text = string.Empty;
-            _range.text = string.Empty;
-            _hit.text = string.Empty;
-            _speed.text = string.Empty;
+            _damage.text = data.Damage.ToString();
+            _range.text = data.Range.x.ToString();
+            _hit.text = (data.Damage + 1).ToString();
+            _speed.text = 0.4.ToString();
         }
     }
 }

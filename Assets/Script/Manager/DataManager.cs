@@ -178,6 +178,7 @@ public class DataManager : Singleton<DataManager>
         newSaveData.Health = ParseInt(item["Health"]);
         newSaveData.ConstantData = ParseConstantData(item);
 
+        //SaveManager.Instance.SavePlayerData(data);
         TryAddData(newSaveData.ID, newSaveData);
     }
 

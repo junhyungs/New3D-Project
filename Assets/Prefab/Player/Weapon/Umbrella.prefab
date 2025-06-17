@@ -135,8 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _slotName: 9
   _descriptionKey: 10
-  _weaponDataKey: 16
-  _prefabKey: 8
+  _weaponDataKey: 20
 --- !u!135 &9138555505124178080
 SphereCollider:
   m_ObjectHideFlags: 0
