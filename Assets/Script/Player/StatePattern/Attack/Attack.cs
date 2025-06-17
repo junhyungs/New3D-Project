@@ -1,7 +1,8 @@
+using EnumCollection;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
-using EnumCollection;
 
 namespace PlayerComponent
 {
@@ -20,13 +21,13 @@ namespace PlayerComponent
         private int _comboCount;
         private float _lastClickTime;
         private float _moveTimer;
+        private const float DEACTIVETIME = 0.45f;
 
         private bool _enableMovement;
         private bool _isNextClick;
         private bool _isTransitioning;
 
         private Vector3 _moveDirection;
-        private AttackStateBehaviour[] _stateBehaviours;
         private Coroutine _transitionCoroutine;
 
         public float NextComboDelay { get; set; } = 0.4f;
@@ -88,6 +89,7 @@ namespace PlayerComponent
         public void OnStateExit()
         {
             ResetState();
+            _weaponObjectController.SetWeaponActive(PlayerHand.Idle);
         }
 
         private void InitializeBehaviour()
@@ -95,19 +97,6 @@ namespace PlayerComponent
             var attackStateBehaviours = _animator.GetBehaviours<AttackStateBehaviour>();
             foreach (var behaviour in attackStateBehaviours)
                 behaviour.IAttack = this;
-
-            _stateBehaviours = attackStateBehaviours;
-        }
-
-        private void SetWeaponController()
-        {
-            var iWeapon = WeaponManager.Instance.CurrentWeapon;
-            if (iWeapon == null)
-                return;
-
-            var weaponController = iWeapon.GetWeaponController();
-            foreach (var behaviour in _stateBehaviours)
-                behaviour.WeaponController = weaponController;
         }
 
         private IEnumerator EndComboAfterAnimation()
@@ -178,9 +167,13 @@ namespace PlayerComponent
             _isNextClick = isClick; 
         }
 
-        public void OnAttackAnimEnter()
+        public void OnAttackAnimEnter(ref bool isDeactive,PlayerHand playerHand)
         {
             StartComboMovement();
+
+            isDeactive = false;
+            SwitchWeapon(playerHand);
+
             _comboCount++;
         }
 
@@ -189,6 +182,17 @@ namespace PlayerComponent
             _moveDirection = _playerTransform.forward;
             _enableMovement = true;
             _moveTimer = 0f;
+        }
+
+        public void OnAttackAnimUpdate(ref bool isDeactive, AnimatorStateInfo stateInfo)
+        {
+            bool deactiveCurrentWeapon = !isDeactive
+            && stateInfo.normalizedTime >= DEACTIVETIME;
+            if (deactiveCurrentWeapon)
+            {
+                isDeactive = true;
+                _weaponObjectController.DeActiveCurrentWeapon();
+            }
         }
 
         public void OnAttackAnimExit()
@@ -200,7 +204,8 @@ namespace PlayerComponent
 
     public interface IAttackStateEventReceiver
     {
-        public void OnAttackAnimEnter();
+        public void OnAttackAnimEnter(ref bool isDeactive, PlayerHand playerHand);
+        public void OnAttackAnimUpdate(ref bool isDeactive, AnimatorStateInfo stateInfo);
         public void OnAttackAnimExit();
     }
 }

@@ -10,6 +10,7 @@ public class Ladder : MonoBehaviour, IInteractionGameObject
 
     private float _worldLowPositionY;
     private float _worldHighPositionY;
+    public bool IsWeaponInteractable { get; set; } = false;
 
     private void Awake()
     {

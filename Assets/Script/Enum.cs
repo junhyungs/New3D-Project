@@ -49,6 +49,11 @@ namespace EnumCollection
         Teddy_Description,
         Trowel_Description,
         Surveillance_Description,
+        Sword_Data,
+        Hammer_Data,
+        Dagger_Data,
+        GreatSword_Data,
+        Umbrella_Data,
         Default
     }
 
@@ -58,7 +63,8 @@ namespace EnumCollection
         New_3D_ScreenResolution,
         New_3D_Path,
         New_3D_PlayerSkill,
-        New_3D_ItemDescription
+        New_3D_ItemDescription,
+        New_3D_PlayerWeapon
     }
 
     public enum UIEvent

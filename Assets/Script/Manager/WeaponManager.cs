@@ -1,4 +1,5 @@
 using EnumCollection;
+using GameData;
 using PlayerComponent;
 using SO;
 using System.Collections;
@@ -53,6 +54,7 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
 
     private void Start()
     {
+        DataManager.Instance.ParsePlayerWeaponData(); // 테스트 코드
         SetWeapon(ItemType.Sword);
     }
 
@@ -142,15 +144,15 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
         }
 
         _weaponArray = WeaponPool.Instance.GetWeaponItem(itemType);
-        Weapon weapon = new Weapon();
+        WeaponObjectController weaponController = new WeaponObjectController();
 
         for (int i = 0; i < _weaponInfos.Length; i++)
-            EquipWeapon(weapon, _weaponArray[i], _weaponInfos[i].Parent, itemType, _weaponInfos[i].Hand);
+            EquipWeapon(weaponController, _weaponArray[i], _weaponInfos[i].Parent, itemType, _weaponInfos[i].Hand);
         
-        _currentWeapon.InitializeWeapon(weapon);
+        _currentWeapon.InitializeWeapon(weaponController);
     }
 
-    private void EquipWeapon(Weapon weapon, GameObject weaponObject, 
+    private void EquipWeapon(WeaponObjectController weapon, GameObject weaponObject, 
         Transform parent, ItemType itemType, PlayerHand hand)
     {
         weaponObject.transform.SetParent(parent);
@@ -165,7 +167,7 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
     }
 }
 
-public class Weapon
+public class WeaponObjectController
 {
     private Dictionary<PlayerHand, GameObject> _weapons
         = new Dictionary<PlayerHand, GameObject>();
@@ -206,6 +208,7 @@ public class Weapon
 public interface IWeapon
 {
     void UseWeapon();
-    void InitializeWeapon(Weapon weapon);
-    Weapon GetWeaponController();
+    void InitializeWeapon(WeaponObjectController weapon);
+    PlayerWeaponData GetWeaponData();
+    WeaponObjectController GetWeaponController();
 }

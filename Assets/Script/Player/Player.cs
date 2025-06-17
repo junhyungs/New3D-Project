@@ -60,6 +60,14 @@ namespace PlayerComponent
 
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(_interactionInfo.InteractionTransform.position, _interactionInfo.Range);
+
+            //if (_debugBoxPos == Vector3.zero)
+            //    return;
+
+            //Gizmos.color = Color.red;
+            //Matrix4x4 rotationMatrix = Matrix4x4.TRS(_debugBoxPos, _debugBoxRot, Vector3.one);
+            //Gizmos.matrix = rotationMatrix;
+            //Gizmos.DrawWireCube(Vector3.zero, _debugBoxSize);
         }
     }
 

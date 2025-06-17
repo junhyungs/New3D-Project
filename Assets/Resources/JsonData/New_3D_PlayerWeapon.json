@@ -1,0 +1,27 @@
+[
+  {
+    "Id": "Sword_Data",
+    "Damage": "2",
+    "Range": "{2.5,1.0,1.4}"
+  },
+  {
+    "Id": "Hammer_Data",
+    "Damage": "3",
+    "Range": "{2.5,1.0,1.4}"
+  },
+  {
+    "Id": "Dagger_Data",
+    "Damage": "1",
+    "Range": "{2.5,1.0,1.4}"
+  },
+  {
+    "Id": "GreatSword_Data",
+    "Damage": "4",
+    "Range": "{2.5,1.0,1.4}"
+  },
+  {
+    "Id": "Umbrella_Data",
+    "Damage": "2",
+    "Range": "{2.5,1.0,1.4}"
+  }
+]
