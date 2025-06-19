@@ -11,7 +11,7 @@ namespace InventoryUI
         public TrinketPresenter(ITrinketView view) : base(view) { }
         private TrinketSlot _previousSlot;
 
-        protected override void UpdateView(Slot slot)
+        protected override void UpdateView(PlayerItemSlot slot)
         {
             if (_previousSlot != null)
                 _previousSlot.CaptureImage();

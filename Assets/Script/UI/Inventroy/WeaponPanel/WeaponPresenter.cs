@@ -11,7 +11,7 @@ namespace InventoryUI
         public WeaponPresenter(IWeaponView view) : base(view) { }
         private WeaponSlot _previousSlot;
 
-        protected override void UpdateView(Slot slot)
+        protected override void UpdateView(PlayerItemSlot slot)
         {
             if(_previousSlot != null)
                 _previousSlot.CaptureImage();

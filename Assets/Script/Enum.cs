@@ -74,7 +74,9 @@ namespace EnumCollection
         SaveInfoSlot_3,
         SkillView,
         SkillCostView,
-        HealthView
+        HealthView,
+        SeedView,
+        SoulView
     }
 
     public enum PlayerSkillType
@@ -101,7 +103,9 @@ namespace EnumCollection
         RustyKey,
         Teddy,
         Trowel,
-        Surveillance
+        Surveillance,
+        Seed,
+        Soul
     }
 
     public enum PlayerHand

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace InventoryUI
 {
-    public class TrinketSlot : Slot
+    public class TrinketSlot : PlayerItemSlot
     {
         [Header("ItemName"), SerializeField]
         private ItemType _itemName;
@@ -30,7 +30,7 @@ namespace InventoryUI
 
         private void Awake()
         {
-            InventroyManager.Instance.RegisterSlot(_itemName, this);
+            InventoryManager.Instance.RegisterSlot(_itemName, this);
         }
 
         private void OnDisable()

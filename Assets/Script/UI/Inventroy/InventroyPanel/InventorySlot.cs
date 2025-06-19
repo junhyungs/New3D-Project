@@ -6,7 +6,7 @@ using EnumCollection;
 
 namespace InventoryUI
 {
-    public class InventorySlot : Slot
+    public class InventorySlot : PlayerItemSlot
     {
         [Header("ItemName"), SerializeField]
         private ItemType _itemName;
@@ -30,7 +30,7 @@ namespace InventoryUI
         
         protected virtual void Awake()
         {
-            InventroyManager.Instance.RegisterSlot(_itemName, this);
+            InventoryManager.Instance.RegisterSlot(_itemName, this);
         }
     }
 }

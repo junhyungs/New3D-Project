@@ -5,16 +5,38 @@ using EnumCollection;
 
 namespace ItemComponent
 {
-    public interface IPlayerItem
+    public interface IGameItem
+    {
+        ItemType SlotName { get; }
+    }
+
+    public interface ICurrencyItem : IGameItem
+    {
+        int GetValue();
+    }
+    
+    public interface IPlayerItem : IGameItem
     {
         bool CanEquip { get; }
-        ItemType SlotName { get; }
         string DescriptionKey { get; }
     }
 
     public interface IPlayerWeaponItem : IPlayerItem
     {
         string WeaponDataKey { get; }
+    }
+
+    public abstract class CurrencyItem : MonoBehaviour, IInteractionItem, ICurrencyItem
+    {
+        protected SphereCollider _collider;
+        public abstract ItemType SlotName { get; }
+        public abstract int GetValue();
+        public abstract void Interact();
+
+        private void Awake()
+        {
+            _collider = GetComponent<SphereCollider>();
+        }
     }
 
     public abstract class Item : MonoBehaviour, IInteractionItem, IPlayerItem

@@ -7,13 +7,13 @@ using System;
 using ItemComponent;
 using GameData;
 
-public class InventroyManager : Singleton_MonoBehaviour<InventroyManager>
+public class InventoryManager : Singleton_MonoBehaviour<InventoryManager>
 {
     [Header("StartItem"), SerializeField]
     private List<Item> _startItems;
 
-    private Dictionary<ItemType, Slot> _slotDictionary = new Dictionary<ItemType, Slot>();
-    private Dictionary<ItemType, Action<IPlayerItem, Slot>> _refreshDictionary = new Dictionary<ItemType, Action<IPlayerItem, Slot>>();
+    private Dictionary<ItemType, ISlot> _slotDictionary = new Dictionary<ItemType, ISlot>();
+    private Dictionary<ItemType, Action<IPlayerItem, PlayerItemSlot>> _refreshDictionary = new Dictionary<ItemType, Action<IPlayerItem, PlayerItemSlot>>();
     private Dictionary<ItemType, IPlayerItem> _refreshItemDictionary = new Dictionary<ItemType, IPlayerItem>();
 
     private void Awake()
@@ -24,34 +24,86 @@ public class InventroyManager : Singleton_MonoBehaviour<InventroyManager>
     private void Start()
     {
         StartPlayerItem();
+        CreateCurrencySlot();
+    }
+
+    private void CreateCurrencySlot()
+    {
+        SeedSlot seedSlot = new SeedSlot();
+        SoulSlot soulSlot = new SoulSlot();
+        RegisterSlot(ItemType.Seed, seedSlot);
+        RegisterSlot(ItemType.Soul, soulSlot);
     }
 
     private void StartPlayerItem()
     {
         foreach(var item in _startItems)
-            SetItem(item);
+            SetPlayerItem(item);
     }
 
-    public void RegisterSlot(ItemType slotName, Slot slot)
+    public void RegisterSlot(ItemType slotName, ISlot slot)
     {
         if (!_slotDictionary.ContainsKey(slotName))
             _slotDictionary.Add(slotName, slot);
 
         if(_refreshItemDictionary.TryGetValue(slotName, out IPlayerItem item))
         {
-            if(_refreshDictionary.TryGetValue(slotName, out Action<IPlayerItem, Slot> callBack))
+            if(_refreshDictionary.TryGetValue(slotName, out Action<IPlayerItem, PlayerItemSlot> callBack))
             {
-                callBack?.Invoke(item, slot);
+                var playerItemslot = GetSlot(slotName) as PlayerItemSlot;
+                callBack?.Invoke(item, playerItemslot);
             }
         }
     }
 
-    private Slot GetSlot(ItemType key)
+    private ISlot GetSlot(ItemType key)
     {
-        if (_slotDictionary.TryGetValue(key, out Slot slot))
+        if (_slotDictionary.TryGetValue(key, out ISlot slot))
             return slot;
 
         return null;
+    }
+
+    public void SetGameItem(IGameItem gameItem)
+    {
+        switch (gameItem)
+        {
+            case IPlayerItem playerItem:
+                SetPlayerItem(playerItem);
+                break;
+            case ICurrencyItem currencyItem:
+                SetCurrencyItem(currencyItem);
+                break;
+        }
+    }
+
+    private void SetCurrencyItem(ICurrencyItem currencyItem)
+    {
+        var slotName = currencyItem.SlotName;
+        var slot = GetSlot(slotName) as CurrencyItemSlot;
+        slot.Currency += currencyItem.GetValue();
+    }
+
+    public bool CanUseCurrencyItem(ItemType slotName, int count)
+    {
+        var slot = GetSlot(slotName) as CurrencyItemSlot;
+        if (!slot.CanUseCurrencyItem(count))
+            return false;
+        
+        slot.UseItem(count);
+        return true;
+    }
+
+    #region PlayerItem
+    private void SetPlayerItem(IPlayerItem playerItem)
+    {
+        var slotName = playerItem.SlotName;
+
+        var slot = GetSlot(slotName) as PlayerItemSlot;
+        if(slot != null)
+            InitializePlayerItemSlot(playerItem, slot);
+        else
+            SaveItem(slotName, playerItem);
     }
 
     private void SaveItem(ItemType slotName, IPlayerItem playerItem)
@@ -62,27 +114,13 @@ public class InventroyManager : Singleton_MonoBehaviour<InventroyManager>
 
             _refreshDictionary[slotName] = (item, slot) =>
             {
-                InitializeItemSlot(item, slot);
+                InitializePlayerItemSlot(item, slot);
                 _refreshDictionary.Remove(slotName);
             };
         }
     }
 
-    public void SetItem(IPlayerItem playerItem)
-    {
-        var slotName = playerItem.SlotName;
-        var slot = GetSlot(slotName);
-
-        if (slot == null)
-        {
-            SaveItem(slotName, playerItem);
-            return;
-        }
-            
-        InitializeItemSlot(playerItem, slot);
-    }
-
-    private void InitializeItemSlot(IPlayerItem playerItem, Slot slot)
+    private void InitializePlayerItemSlot(IPlayerItem playerItem, PlayerItemSlot slot)
     {
         var dataKey = playerItem.DescriptionKey;
         if (DataManager.Instance.GetData(dataKey) is not ItemDescriptionData descriptionData)
@@ -94,17 +132,8 @@ public class InventroyManager : Singleton_MonoBehaviour<InventroyManager>
         var canEquip = playerItem.CanEquip;
         if (canEquip)
         {
-            SetUpEquipSlot(playerItem, slot);
-        }
-    }
-
-    private void SetUpEquipSlot(IPlayerItem playerItem, Slot slot)
-    {
-        switch (slot)
-        {
-            case WeaponSlot weaponSlot:
-                SetUpWeaponSlot(playerItem, weaponSlot);
-                break;
+            var weaponSlot = slot as WeaponSlot;
+            SetUpWeaponSlot(playerItem, weaponSlot);
         }
     }
 
@@ -121,4 +150,5 @@ public class InventroyManager : Singleton_MonoBehaviour<InventroyManager>
 
         slot.WeaponData = weaponData;
     }
+    #endregion
 }

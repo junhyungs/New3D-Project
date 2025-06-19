@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace InventoryUI
 {
-    public class WeaponSlot : WeaponDataSlot
+    public class WeaponSlot : WeaponItemSlot
     {
         [Header("ItemName"), SerializeField]
         private ItemType _itemName;
@@ -23,7 +23,7 @@ namespace InventoryUI
 
         private void Awake()
         {
-            InventroyManager.Instance.RegisterSlot(_itemName, this);
+            InventoryManager.Instance.RegisterSlot(_itemName, this);
         }
 
         private void OnDisable()

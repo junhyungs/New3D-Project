@@ -20,7 +20,7 @@ namespace ItemComponent
 
         public override void Interact()
         {
-            InventroyManager.Instance.SetItem(this);
+            InventoryManager.Instance.SetGameItem(this);
             DisableObejct();
         }
     }

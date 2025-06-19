@@ -21,12 +21,14 @@ namespace PlayerComponent
         private string _dataKey;
         private string _eventKey;
         private int _health;
+        public int MAXHEALTH => 4;
+
         public int Health
         {
             get => _health;
             set
             {
-                _health = value;
+                _health = Mathf.Clamp(value, 0, MAXHEALTH);
                 UIManager.TriggerUIEvent(_eventKey, _health);
             }
         }
