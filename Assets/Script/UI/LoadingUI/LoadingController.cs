@@ -18,18 +18,11 @@ public class LoadingController : MonoBehaviour
         DontDestroyOnLoad(this);
 
         UIManager.LoadingUIController += StartImageBlinkCoroutine;
-        SceneManager.sceneLoaded += LoadComplete;
     }
 
     private void OnDestroy()
     {
         UIManager.LoadingUIController -= StartImageBlinkCoroutine;
-        SceneManager.sceneLoaded -= LoadComplete;
-    }
-
-    private void LoadComplete(Scene scene, LoadSceneMode mode)
-    {
-        StartImageBlinkCoroutine(false);
     }
 
     public void StartLoadingSceneWaitForSeconds(string sceneName, string disableUIName = null)
