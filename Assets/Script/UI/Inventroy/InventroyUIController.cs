@@ -33,6 +33,7 @@ namespace InventroyUI
             var enable = _inventory.activeSelf ? false : true;
             var timeScale = enable ? 0f : 1f;
 
+            UIManager.Instance.MovePlayerInfoUI(enable);
             Time.timeScale = timeScale;
             _inventory.SetActive(enable);
         }

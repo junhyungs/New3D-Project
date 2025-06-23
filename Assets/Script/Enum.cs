@@ -79,6 +79,11 @@ namespace EnumCollection
         SoulView
     }
 
+    public enum EnableUI
+    {
+        PlayerInfoUI,
+    }
+
     public enum PlayerSkillType
     {
         PlayerBow = 1,

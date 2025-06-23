@@ -6,7 +6,9 @@ public class UIManager : Singleton<UIManager>
 {
     private Dictionary<string, GameObject> _enableUIDictionary = new Dictionary<string, GameObject>();
     private static Dictionary<string, Delegate> _uiEventDictionary = new Dictionary<string, Delegate>();
+
     public static event Action<bool> LoadingUIController;
+    public static event Action<bool> PlayerInfoUIController;
     
 
     public void StartLoadingUI(bool enable)
@@ -14,6 +16,12 @@ public class UIManager : Singleton<UIManager>
         LoadingUIController?.Invoke(enable);
     }
 
+    public void MovePlayerInfoUI(bool enable)
+    {
+        PlayerInfoUIController?.Invoke(enable);
+    }
+
+    #region EnableUI
     public void RegisterUI(string uiName, GameObject gameObject)
     {
         _enableUIDictionary.TryAdd(uiName, gameObject);
@@ -44,7 +52,8 @@ public class UIManager : Singleton<UIManager>
             ui.SetActive(false);
         }
     }
-
+    #endregion
+    #region UIEvent
     public static void RegisterUIEvent<T>(string key, Action<T> action)
     {
         if(!_uiEventDictionary.ContainsKey(key))
@@ -71,4 +80,5 @@ public class UIManager : Singleton<UIManager>
             (action as Action<T>)?.Invoke(value);
         }
     }
+    #endregion
 }
