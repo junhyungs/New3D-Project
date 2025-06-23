@@ -53,4 +53,9 @@ public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
     {
         VirtualCamera.transform.position = transform.position;
     }
+
+    public void LockPlayer(bool enable)
+    {
+        Player.InputHandler.LockPlayer(!enable);
+    }
 }

@@ -69,6 +69,11 @@ public class PlayerInputHandler : IUnbindAction
         _unbindActions.Clear();
     }
 
+    public void LockPlayer(bool enable)
+    {
+        _input.enabled = enable;
+    }
+
     private void OnMove(InputAction.CallbackContext context)
     {
         MoveEvent?.Invoke(context.ReadValue<Vector2>());

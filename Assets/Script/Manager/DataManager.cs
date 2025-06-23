@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using System.Linq;
 
 public class DataManager : Singleton<DataManager>
 {
@@ -35,6 +36,7 @@ public class DataManager : Singleton<DataManager>
             AddToPlayerDataAsync(),
             LoadPathData(),
             LoadItemDescriptionData(),
+            LoadDialogData(),
         };
         
         await UniTask.WhenAll(taskList);
@@ -55,10 +57,40 @@ public class DataManager : Singleton<DataManager>
         return JArray.Parse(textAsset.text);
     }
 
+    #region DialogData
+    private async UniTask LoadDialogData()
+    {
+        var dialogDictionary = new Dictionary<string, Dialog>();
+        JArray jArray = await LoadJsonArrayAsync("JsonData/New_3D_Dialog");
+        foreach(var item in jArray)
+        {
+            var id = ParseString(item["Id"]);
+            var name = ParseString(item["Name"]);
+            var storyList = ParseDialogList(item["Story"]);
+            var loopList = ParseDialogList(item["Loop"]);
+            var endList = ParseDialogList(item["End"]);
+
+            Dialog dialog = new Dialog(name, storyList, loopList, endList);
+            dialogDictionary.Add(id, dialog);
+        }
+
+        DialogData data = new DialogData(dialogDictionary);
+        var key = DataKey.DialogData.ToString();
+        TryAddData(key, data);
+    }
+
+    private List<string> ParseDialogList(JToken jToken)
+    {
+        var message = jToken.ToString();
+        var splitArray = message.Split("{E}");
+        var dialogList = splitArray.ToList();
+        return dialogList;
+    }
+    #endregion
     #region ItemDescriptionData
     private async UniTask LoadItemDescriptionData()
     {
-        JArray jArray = await LoadJsonArrayAsync($"JsonData/New_3D_ItemDescription");
+        JArray jArray = await LoadJsonArrayAsync("JsonData/New_3D_ItemDescription");
         foreach (var item in jArray)
         {
             string id = ParseString(item["Id"]);
@@ -69,30 +101,6 @@ public class DataManager : Singleton<DataManager>
             TryAddData(id, data);
         }
     }
-
-    public void TestLoadItemDescriptionData()
-    {
-        try
-        {
-            var textAsset = Resources.Load<TextAsset>("JsonData/New_3D_ItemDescription");
-            JArray jArray = JArray.Parse(textAsset.text);
-            foreach (var item in jArray)
-            {
-                string id = ParseString(item["Id"]);
-                string itemName = ParseString(item["ItemName"]);
-                string description = ParseString(item["Description"]);
-
-                ItemDescriptionData data = new ItemDescriptionData(id, itemName, description);
-                TryAddData(id, data);
-            }
-        }
-        catch(Exception e)
-        {
-            Debug.Log("TestLoadItemDescriptionData");
-            Debug.Log(e.Message);
-        }
-    }
-
     #endregion
     #region PathData
     private async UniTask LoadPathData()
@@ -108,26 +116,6 @@ public class DataManager : Singleton<DataManager>
             TryAddData(id, pathData);
         }
     }
-
-    public void TestLoadPathData()
-    {
-        try
-        {
-            var textAsset = Resources.Load<TextAsset>("JsonData/New_3D_Path");
-            JArray jArray = JArray.Parse(textAsset.text);
-
-            foreach (var item in jArray)
-            {
-                string id = ParseString(item["ID"]);
-                string path = ParseString(item["Path"]);
-
-                PathData pathData = new PathData(id, path);
-                TryAddData(id, pathData);
-            }
-        }
-        catch { }
-    }
-
     #endregion
     #region Player
     public async UniTask AddToPlayerDataAsync()
@@ -265,6 +253,71 @@ public class DataManager : Singleton<DataManager>
     }
     #endregion
     #region TestCode
+    public void TestLoadDialogData()
+    {
+        try
+        {
+            var dialogDictionary = new Dictionary<string, Dialog>();
+            JArray jArray = LoadJsonArray("JsonData/New_3D_Dialog");
+            foreach (var item in jArray)
+            {
+                var id = ParseString(item["Id"]);
+                var name = ParseString(item["Name"]);
+                var storyList = ParseDialogList(item["Story"]);
+                var loopList = ParseDialogList(item["Loop"]);
+                var endList = ParseDialogList(item["End"]);
+
+                Dialog dialog = new Dialog(name, storyList, loopList, endList);
+                dialogDictionary.Add(id, dialog);
+            }
+
+            DialogData data = new DialogData(dialogDictionary);
+            var key = DataKey.DialogData.ToString();
+            TryAddData(key, data);
+        }
+        catch { }
+    }
+    public void TestLoadPathData()
+    {
+        try
+        {
+            var textAsset = Resources.Load<TextAsset>("JsonData/New_3D_Path");
+            JArray jArray = JArray.Parse(textAsset.text);
+
+            foreach (var item in jArray)
+            {
+                string id = ParseString(item["ID"]);
+                string path = ParseString(item["Path"]);
+
+                PathData pathData = new PathData(id, path);
+                TryAddData(id, pathData);
+            }
+        }
+        catch { }
+    }
+    public void TestLoadItemDescriptionData()
+    {
+        try
+        {
+            var textAsset = Resources.Load<TextAsset>("JsonData/New_3D_ItemDescription");
+            JArray jArray = JArray.Parse(textAsset.text);
+            foreach (var item in jArray)
+            {
+                string id = ParseString(item["Id"]);
+                string itemName = ParseString(item["ItemName"]);
+                string description = ParseString(item["Description"]);
+
+                ItemDescriptionData data = new ItemDescriptionData(id, itemName, description);
+                TryAddData(id, data);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.Log("TestLoadItemDescriptionData");
+            Debug.Log(e.Message);
+        }
+    }
+
     public void AddToPlayerData(PlayerSaveData playerSaveData)
     {
         if (playerSaveData == null)
