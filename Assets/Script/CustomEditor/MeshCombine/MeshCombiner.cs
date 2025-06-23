@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-
+#if UNITY_EDITOR
 public class MeshCombiner : MonoBehaviour
 {
     [Header("Object"), SerializeField] private GameObject[] _gameObjects;
@@ -131,3 +131,4 @@ public class MeshCombiner : MonoBehaviour
         Debug.Log("저장되었습니다.");
     }
 }
+#endif

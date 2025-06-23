@@ -1,11 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EnumCollection;
 
 namespace GameData
 {
     [System.Serializable]
     public class Data { }
+
+    public class DialogData : Data
+    {
+        private Dictionary<string, Dialog> _dialogDictionary;
+
+        public Dialog GetMyDialog(string npcName)
+        {
+            if(_dialogDictionary.TryGetValue(npcName, out var dialog))
+            {
+                return dialog;
+            }
+
+            return null;
+        }
+
+        public DialogData(Dictionary<string, Dialog> dialogDictionary)
+        {
+            _dialogDictionary = dialogDictionary;
+        }
+    }
+
+    public class Dialog
+    {
+        public string Name { get; }
+        public List<string> StoryList { get; }
+        public List<string> LoopList { get; }
+        public List<string> EndList { get; }
+        public Dialog(string name, List<string> storyList,
+            List<string> loopList, List<string> endList)
+        {
+            Name = name;
+            StoryList = storyList;
+            LoopList = loopList;
+            EndList = endList;
+        }
+    }
 
     public class PlayerWeaponData : Data
     {

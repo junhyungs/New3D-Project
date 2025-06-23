@@ -6,6 +6,7 @@ using UnityEditor;
 using System.IO;
 using SO;
 
+#if UNITY_EDITOR
 public class SaveWeaponRotate : MonoBehaviour
 {
     [Header("FileName")]
@@ -42,3 +43,4 @@ public class SaveWeaponRotate : MonoBehaviour
         return Directory.Exists(PATH);
     }
 }
+#endif

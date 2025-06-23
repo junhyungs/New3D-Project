@@ -54,6 +54,7 @@ namespace EnumCollection
         Dagger_Data,
         GreatSword_Data,
         Umbrella_Data,
+        DialogData,
         Default
     }
 
@@ -64,7 +65,8 @@ namespace EnumCollection
         New_3D_Path,
         New_3D_PlayerSkill,
         New_3D_ItemDescription,
-        New_3D_PlayerWeapon
+        New_3D_PlayerWeapon,
+        New_3D_Dialog
     }
 
     public enum UIEvent
@@ -120,6 +122,21 @@ namespace EnumCollection
         Left,
         Charge_L,
         Charge_R
+    }
+
+    public enum Npc
+    {
+        BusNPC,
+        TelePhoneNPC,
+        HallCrow_1,
+        HallCrow_2,
+        HallCrow_3,
+        HallCrow_4,
+        HallCorw_5,
+        Bager,
+        Security,
+        Banker,
+        Agatha
     }
 }
 

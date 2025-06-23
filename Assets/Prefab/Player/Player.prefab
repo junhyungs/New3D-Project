@@ -463,7 +463,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8379743854120917769}
-  - component: {fileID: 2837943138160167427}
   m_Layer: 0
   m_Name: Weapon_L
   m_TagString: Untagged
@@ -487,22 +486,6 @@ Transform:
   - {fileID: 5420094132600527931}
   m_Father: {fileID: 4018683905990569916}
   m_LocalEulerAnglesHint: {x: 27.548063, y: 41.076538, z: 64.39182}
---- !u!114 &2837943138160167427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1225952373161737706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8531272023be4945a230a0f4c0b780a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FileName: Left_Charge_Umbrella
-  ItemType: 9
-  HandType: 1
-  WeaponObject: {fileID: 0}
 --- !u!1 &1449526137025900339
 GameObject:
   m_ObjectHideFlags: 0
@@ -1573,7 +1556,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 773913383831780141}
-  - component: {fileID: 5752795717029127833}
   m_Layer: 0
   m_Name: Weapon_R
   m_TagString: Untagged
@@ -1596,22 +1578,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3623577584200730993}
   m_LocalEulerAnglesHint: {x: -27.548058, y: 41.076538, z: -64.391815}
---- !u!114 &5752795717029127833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3456928894141151910}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8531272023be4945a230a0f4c0b780a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FileName: Right_Charge_Umbrella
-  ItemType: 9
-  HandType: 0
-  WeaponObject: {fileID: 0}
 --- !u!1 &3638704297362414404
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using UnityEditor;
 
+#if UNITY_EDITOR
 public class ImageMaker : MonoBehaviour
 {
     [Header("TargetCamera"), SerializeField]
@@ -46,3 +47,4 @@ public class ImageMaker : MonoBehaviour
         AssetDatabase.Refresh();
     }
 }
+#endif
