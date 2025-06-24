@@ -54,11 +54,10 @@ public class LoadingController : MonoBehaviour
         UIManager.Instance.DisableUI(disableUIName);
         StartImageBlinkCoroutine(true);
 
-        await UniTask.Yield();
-
         var loadAllData = DataManager.Instance.LoadAllData();
         await loadAllData;
 
+        await UniTask.Delay(2000);
         await SceneManager.LoadSceneAsync(sceneName);
     }
 
