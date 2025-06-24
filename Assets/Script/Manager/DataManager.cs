@@ -44,6 +44,7 @@ public class DataManager : Singleton<DataManager>
         await LoadItemGroup();
         await LoadDialogData();
         await LoadUpgradeGroup();
+        await LoadMapData();
     }
 
     private async UniTask LoadPlayerGroup()
@@ -344,6 +345,21 @@ public class DataManager : Singleton<DataManager>
         }
 
         return dataList;
+    }
+    #endregion
+    #region Map
+    private async UniTask LoadMapData()
+    {
+        var key = DataKey.Map_Data.ToString();
+        var mapData = await SaveManager.Instance.LoadMapSaveDataAsync();
+        if (mapData != null)
+            TryAddData(key, mapData);
+        else
+        {
+            var progressDic = new Dictionary<string, MapProgress>();
+            mapData = new MapData(progressDic);
+            TryAddData(key, mapData);
+        }
     }
     #endregion
     #region TestCode

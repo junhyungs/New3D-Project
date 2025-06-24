@@ -14,19 +14,11 @@ namespace GameData
 
     public class MapData : Data
     {
-        [JsonProperty]
-        private Dictionary<string, MapProgress> _progressDictionary;
+        public Dictionary<string, MapProgress> ProgressDictionary { get; set; }
         public string CurrentMapObjectName { get; set; }
-        public MapProgress GetMyProgress(string mapName)
-        {
-            if(_progressDictionary.TryGetValue(mapName, out var progress))
-                return progress;
-            return null;
-        }
-
         public MapData(Dictionary<string, MapProgress> progressDictionary)
         {
-            _progressDictionary = progressDictionary;
+            ProgressDictionary = progressDictionary;
         }
     }
 
@@ -34,7 +26,7 @@ namespace GameData
     {
         public bool Initialize { get; set; }
         public Vector3 PlayerPosition { get; set; }
-        public Dictionary<ItemType, bool> MapItem { get; set; }
+        public Dictionary<ItemType, bool> CollectedItemsDictionary{ get; set; }
     }
 
     public class Level_0 : MapProgress

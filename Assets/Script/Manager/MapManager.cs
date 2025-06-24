@@ -56,6 +56,4 @@ public class MapManager : MonoBehaviour
         _mapDictionary.Add(mapName, mapObject);
         return mapObject;
     }
-
-
 }
