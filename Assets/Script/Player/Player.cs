@@ -1,5 +1,7 @@
+using EnumCollection;
 using System.Collections.Generic;
 using UnityEngine;
+
 
 namespace PlayerComponent
 {
@@ -19,7 +21,7 @@ namespace PlayerComponent
 
         private void Awake()
         {
-            //DataManager.Instance.AddToPlayerData(null); //테스트 코드
+            DataManager.Instance.AddToPlayerData(null); //테스트 코드
             InitializeOnAwakePlayer();
         }
 
@@ -49,6 +51,9 @@ namespace PlayerComponent
         private void InitializeOnStartPlayer()
         {
             PlayerHealth = new PlayerHealth(StateHandler);
+
+            var key = EnableUI.PlayerUI.ToString();
+            UIManager.Instance.EnableUI(key);
         }
 
         private void AddUnbindList()

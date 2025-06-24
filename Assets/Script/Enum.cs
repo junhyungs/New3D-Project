@@ -83,7 +83,7 @@ namespace EnumCollection
 
     public enum EnableUI
     {
-        PlayerInfoUI,
+        PlayerUI,
     }
 
     public enum PlayerSkillType

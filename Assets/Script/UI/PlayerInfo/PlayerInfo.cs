@@ -37,15 +37,11 @@ namespace PlayerInfoUI
         private void OnAwakeUIManager()
         {
             UIManager.PlayerInfoUIController += InfoUIControl;
-            var key = EnableUI.PlayerInfoUI.ToString();
-            UIManager.Instance.RegisterUI(key, gameObject);
         }
 
         private void OnDestroyUIManager()
         {
             UIManager.PlayerInfoUIController -= InfoUIControl;
-            var key = EnableUI.PlayerInfoUI.ToString();
-            UIManager.Instance.UnRegisterUI(key);
         }
 
         private void GetComponent()

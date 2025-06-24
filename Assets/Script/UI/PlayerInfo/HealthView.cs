@@ -6,12 +6,11 @@ using UnityEngine;
 
 namespace PlayerInfoUI
 {
-    public class HealthView : View<HealthViewModel>
+    public class HealthView : View<HealthViewModel>, IOnAwakeRegisterView
     {
         [Header("HealthImage"), SerializeField]
         private GameObject[] _activeHealths;
-
-        private void OnEnable()
+        public void InitializeView()
         {
             Initialize();
         }

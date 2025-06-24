@@ -19,7 +19,7 @@ namespace PlayerInfoUI
         public Image IconImage;
     }
 
-    public class SkillView : View<SkillViewModel>
+    public class SkillView : View<SkillViewModel>, IOnAwakeRegisterView
     {
         [Header("Skill_Image"), SerializeField]
         private SkillImage[] _skillImages;
@@ -33,13 +33,9 @@ namespace PlayerInfoUI
         private const float MIN_ALPHA = 0.7f;
         private const float MAX_ALPHA = 1.0f;
 
-        private void Awake()
+        public void InitializeView()
         {
             InitializeDictionary();
-        }
-
-        private void OnEnable()
-        {
             Initialize();
         }
 
@@ -120,7 +116,6 @@ namespace PlayerInfoUI
             foreach (var image in _activeEnerges)
                 image.SetActive(false);
         }
-
     }
 }
 
