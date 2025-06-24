@@ -14,11 +14,19 @@ public class DataManager : Singleton<DataManager>
 {
     private Dictionary<string, Data> _dataDictionary = new Dictionary<string, Data>();
 
-    private void TryAddData(string key, Data data)
+    private bool TryAddData(string key, Data data)
     {
         Debug.Log($"TryAddData : {key}");
-        if (_dataDictionary.TryAdd(key, data)) Debug.Log($"AddData : {key}");
-        else Debug.Log($"Fail : {key}");
+        if (_dataDictionary.TryAdd(key, data))
+        {
+            Debug.Log($"AddData : {key}");
+            return true;
+        }
+        else
+        {
+            Debug.Log($"Fail : {key}");
+            return false;
+        }
     }
 
     public Data GetData(string key)
@@ -32,27 +40,37 @@ public class DataManager : Singleton<DataManager>
 
     public async UniTask LoadAllData()
     {
+        await LoadPlayerGroup();
+        await LoadItemGroup();
+        await LoadDialogData();
+        await LoadUpgradeGroup();
+    }
+
+    private async UniTask LoadPlayerGroup()
+    {
         await ParsePlayerBaseDataAsync();
-  
-        var task_Group1 = UniTask.WhenAll(
+
+        await UniTask.WhenAll(
             ParsePlayerSkillDataAsync(),
-            ParsePlayerWeaponDataAsync()
+            ParsePlayerWeaponDataAsync(),
+            LoadPlayerInventoryDataAsync()
             );
+    }
 
-        await UniTask.WhenAll(task_Group1);
-
-        var task_Group2 = UniTask.WhenAll(
+    private async UniTask LoadItemGroup()
+    {
+        await UniTask.WhenAll(
             LoadPathData(),
             LoadItemDescriptionData()
             );
+    }
 
-        await UniTask.WhenAll(task_Group2);
-
-        var task_Group3 = UniTask.WhenAll(
-            LoadDialogData()
+    private async UniTask LoadUpgradeGroup()
+    {
+        await UniTask.WhenAll(
+            LoadUpgradeAbilityDataAsync(),
+            LoadUpgradeSkillDataAsync()
             );
-
-        await UniTask.WhenAll(task_Group3);
     }
 
     private async UniTask<JArray> LoadJsonArrayAsync(string path)
@@ -178,8 +196,13 @@ public class DataManager : Singleton<DataManager>
                 newSaveData.Health = ParseInt(item["Health"]);
                 newSaveData.ConstantData = ParseConstantData(item);
 
-                //SaveManager.Instance.SavePlayerData(data);
-                TryAddData(newSaveData.ID, newSaveData);
+                if (TryAddData(newSaveData.ID, newSaveData))
+                {
+                    var directoryPath = SaveManager.DirectoryPath;
+                    await SaveManager.Instance.SavePlayer(directoryPath);
+                }
+                else
+                    throw new Exception("Player TryAddData Fail");
             }
             catch(Exception ex)
             {
@@ -233,7 +256,6 @@ public class DataManager : Singleton<DataManager>
     {
         var path = "JsonData/New_3D_PlayerWeapon";
         JArray jArray = await LoadJsonArrayAsync(path);
-        Debug.Log($"ParsePlayerWeaponDataAsync : {jArray.Count}");
 
         try
         {
@@ -250,6 +272,45 @@ public class DataManager : Singleton<DataManager>
         catch(Exception ex)
         {
             Debug.Log(ex.Message);
+        }
+    }
+
+    private async UniTask LoadPlayerInventoryDataAsync()
+    {
+        var key = DataKey.Inventory_Data.ToString();
+        PlayerInventoryData data = await SaveManager.Instance.LoadPlayerInventoryDataAsync();
+        if (data != null)
+            TryAddData(key, data);
+        else
+        {
+            data = new PlayerInventoryData();
+            TryAddData(key, data);
+        }
+    }
+
+    private async UniTask LoadUpgradeSkillDataAsync()
+    {
+        var key = DataKey.SkillUpgrade.ToString();
+        PlayerUpgradeData_Skill data = await SaveManager.Instance.LoadPlayerUpgradeData_SkillAsync();
+        if(data != null)
+            TryAddData(key, data);
+        else
+        {
+            data = new PlayerUpgradeData_Skill(0);
+            TryAddData(key, data);
+        }
+    }
+
+    private async UniTask LoadUpgradeAbilityDataAsync()
+    {
+        var key = DataKey.AbilityUpgrade.ToString();
+        PlayerUpgradeData_Ability data = await SaveManager.Instance.LoadPlayerUpgradeData_AbilityAsync();
+        if(data != null)
+            TryAddData(key, data);
+        else
+        {
+            data = new PlayerUpgradeData_Ability(0, 0f);
+            TryAddData(key, data);
         }
     }
 

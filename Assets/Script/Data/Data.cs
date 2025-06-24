@@ -2,11 +2,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EnumCollection;
+using Newtonsoft.Json;
+using System;
+using System.Linq;
+using System.Runtime.Serialization;
 
 namespace GameData
 {
     [System.Serializable]
     public class Data { }
+
+    public class MapData : Data
+    {
+        [JsonProperty]
+        private Dictionary<string, MapProgress> _progressDictionary;
+        public string CurrentMapObjectName { get; set; }
+        public MapProgress GetMyProgress(string mapName)
+        {
+            if(_progressDictionary.TryGetValue(mapName, out var progress))
+                return progress;
+            return null;
+        }
+
+        public MapData(Dictionary<string, MapProgress> progressDictionary)
+        {
+            _progressDictionary = progressDictionary;
+        }
+    }
+
+    public class MapProgress
+    {
+        public bool Initialize { get; set; }
+        public Vector3 PlayerPosition { get; set; }
+        public Dictionary<ItemType, bool> MapItem { get; set; }
+    }
+
+    public class Level_0 : MapProgress
+    {
+        public bool HallCrowScene { get; set; }
+    }
+
+    public class Level_1 : MapProgress
+    {
+        public bool ClearBoss { get; set; }
+    }
+
+    public class Level_2 : MapProgress
+    {
+
+    }
 
     public class DialogData : Data
     {
@@ -140,6 +184,43 @@ namespace GameData
             ProjectileDamage = projectileDamage;
             ProjectileCost = projectileCost;
             FlightTime = flightTime;
+        }
+    }
+
+    public class PlayerUpgradeData_Skill : Data
+    {
+        public int DamageUpgrade { get; set; }
+        public PlayerUpgradeData_Skill(int damageUpgrade)
+        {
+            DamageUpgrade = damageUpgrade;
+        }
+    }
+
+    public class PlayerUpgradeData_Ability : Data
+    {
+        public int PowerUpgrade { get; set; }
+        public float SpeedUpgrade { get; set; }
+
+        public PlayerUpgradeData_Ability(int powerUpgrade, float speedUpgrade)
+        {
+            PowerUpgrade = powerUpgrade;
+            SpeedUpgrade = speedUpgrade;
+        }
+    }
+
+    public class PlayerInventoryData : Data
+    {
+        public Dictionary<ItemType, ItemDescriptionData> DescriptionDataDictionary { get; private set; }
+        public Dictionary<ItemType, PlayerWeaponData> WeaponDataDictionary { get; private set; }
+        public HashSet<ItemType> EquipItemSet { get; private set; }
+        public int SeedCount { get; set; }
+        public int SoulCount { get; set; }
+        
+        public PlayerInventoryData()
+        {
+            DescriptionDataDictionary = new Dictionary<ItemType, ItemDescriptionData>();
+            WeaponDataDictionary = new Dictionary<ItemType, PlayerWeaponData>();
+            EquipItemSet = new HashSet<ItemType>();
         }
     }
 }

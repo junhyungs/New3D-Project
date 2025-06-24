@@ -11,20 +11,23 @@ public class InventoryManager : Singleton_MonoBehaviour<InventoryManager>
 {
     [Header("StartItem"), SerializeField]
     private List<Item> _startItems;
-
     private Dictionary<ItemType, ISlot> _slotDictionary = new Dictionary<ItemType, ISlot>();
     private Dictionary<ItemType, Action<IPlayerItem, PlayerItemSlot>> _refreshDictionary = new Dictionary<ItemType, Action<IPlayerItem, PlayerItemSlot>>();
     private Dictionary<ItemType, IPlayerItem> _refreshItemDictionary = new Dictionary<ItemType, IPlayerItem>();
-
-    private void Awake()
-    {
-        DataManager.Instance.TestLoadItemDescriptionData(); //테스트 코드
-    }
+    private PlayerInventoryData _playerInventoryData;
+    
+    //private void Awake()
+    //{
+    //    DataManager.Instance.TestLoadItemDescriptionData(); //테스트 코드
+    //}
 
     private void Start()
     {
-        StartPlayerItem();
+        var key = DataKey.Inventory_Data.ToString();
+        _playerInventoryData = DataManager.Instance.GetData(key) as PlayerInventoryData;
+
         CreateCurrencySlot();
+        StartPlayerItem();
     }
 
     private void CreateCurrencySlot()
@@ -37,7 +40,7 @@ public class InventoryManager : Singleton_MonoBehaviour<InventoryManager>
 
     private void StartPlayerItem()
     {
-        foreach(var item in _startItems)
+        foreach (var item in _startItems)
             SetPlayerItem(item);
     }
 
@@ -46,9 +49,42 @@ public class InventoryManager : Singleton_MonoBehaviour<InventoryManager>
         if (!_slotDictionary.ContainsKey(slotName))
             _slotDictionary.Add(slotName, slot);
 
-        if(_refreshItemDictionary.TryGetValue(slotName, out IPlayerItem item))
+        ApplySavedDescriptionData(slotName, slot);
+        ApplySavedWeaponData(slotName, slot);
+
+        TryInvokeRefreshCallBack(slotName);
+    }
+
+    private void ApplySavedDescriptionData(ItemType slotName, ISlot slot)
+    {
+        var saveDescriptionDic = _playerInventoryData.DescriptionDataDictionary;
+        if (saveDescriptionDic.TryGetValue(slotName, out var itemDescriptionData))
         {
-            if(_refreshDictionary.TryGetValue(slotName, out Action<IPlayerItem, PlayerItemSlot> callBack))
+            var itemSlot = slot as PlayerItemSlot;
+            itemSlot.InitializeSlot();
+            itemSlot.DescriptionData = itemDescriptionData;
+        }
+    }
+
+    private void ApplySavedWeaponData(ItemType slotName, ISlot slot)
+    {
+        var equipItemSet = _playerInventoryData.EquipItemSet;
+        if (equipItemSet.Contains(slotName))
+        {
+            var saveWeaponDic = _playerInventoryData.WeaponDataDictionary;
+            if (saveWeaponDic.TryGetValue(slotName, out var itemWeaponData))
+            {
+                var weaponSlot = slot as WeaponSlot;
+                weaponSlot.WeaponData = itemWeaponData;
+            }
+        }
+    }
+
+    private void TryInvokeRefreshCallBack(ItemType slotName)
+    {
+        if (_refreshItemDictionary.TryGetValue(slotName, out IPlayerItem item))
+        {
+            if (_refreshDictionary.TryGetValue(slotName, out Action<IPlayerItem, PlayerItemSlot> callBack))
             {
                 var playerItemslot = GetSlot(slotName) as PlayerItemSlot;
                 callBack?.Invoke(item, playerItemslot);
@@ -82,6 +118,7 @@ public class InventoryManager : Singleton_MonoBehaviour<InventoryManager>
         var slotName = currencyItem.SlotName;
         var slot = GetSlot(slotName) as CurrencyItemSlot;
         slot.Currency += currencyItem.GetValue();
+        SaveCurrency(slot);
     }
 
     public bool CanUseCurrencyItem(ItemType slotName, int count)
@@ -91,14 +128,27 @@ public class InventoryManager : Singleton_MonoBehaviour<InventoryManager>
             return false;
         
         slot.UseItem(count);
+        SaveCurrency(slot);
         return true;
+    }
+
+    private void SaveCurrency(CurrencyItemSlot slot)
+    {
+        switch (slot.GetSlotType)
+        {
+            case CurrencyItemSlot.CurrencySlot.Seed:
+                _playerInventoryData.SeedCount = slot.Currency;
+                break;
+            case CurrencyItemSlot.CurrencySlot.Soul:
+                _playerInventoryData.SoulCount = slot.Currency;
+                break;
+        }
     }
 
     #region PlayerItem
     private void SetPlayerItem(IPlayerItem playerItem)
     {
         var slotName = playerItem.SlotName;
-
         var slot = GetSlot(slotName) as PlayerItemSlot;
         if(slot != null)
             InitializePlayerItemSlot(playerItem, slot);
@@ -128,6 +178,7 @@ public class InventoryManager : Singleton_MonoBehaviour<InventoryManager>
 
         slot.InitializeSlot();
         slot.DescriptionData = descriptionData;
+        SaveDescriptionData(playerItem.SlotName, descriptionData);
 
         var canEquip = playerItem.CanEquip;
         if (canEquip)
@@ -135,6 +186,20 @@ public class InventoryManager : Singleton_MonoBehaviour<InventoryManager>
             var weaponSlot = slot as WeaponSlot;
             SetUpWeaponSlot(playerItem, weaponSlot);
         }
+    }
+
+    private void SaveDescriptionData(ItemType slotName, ItemDescriptionData itemDescriptionData)
+    {
+        var saveDescriptionDic = _playerInventoryData.DescriptionDataDictionary;
+        if (!saveDescriptionDic.ContainsKey(slotName))
+            saveDescriptionDic.Add(slotName, itemDescriptionData);
+    }
+
+    private void SaveWeaponData(ItemType slotName, PlayerWeaponData playerWeaponData)
+    {
+        var saveWeaponDataDic = _playerInventoryData.WeaponDataDictionary;
+        if(!saveWeaponDataDic.ContainsKey(slotName))
+            saveWeaponDataDic.Add(slotName, playerWeaponData);
     }
 
     private void SetUpWeaponSlot(IPlayerItem playerItem, WeaponSlot slot)
@@ -149,6 +214,7 @@ public class InventoryManager : Singleton_MonoBehaviour<InventoryManager>
             return;
 
         slot.WeaponData = weaponData;
+        SaveWeaponData(playerItem.SlotName, weaponData);
     }
     #endregion
 }

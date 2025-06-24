@@ -55,6 +55,10 @@ namespace EnumCollection
         GreatSword_Data,
         Umbrella_Data,
         DialogData,
+        Map_Data,
+        SkillUpgrade,
+        AbilityUpgrade,
+        Inventory_Data,
         Default
     }
 

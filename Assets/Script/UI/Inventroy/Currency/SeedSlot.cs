@@ -23,6 +23,8 @@ namespace InventoryUI
             }
         }
 
+        public override CurrencySlot GetSlotType => CurrencySlot.Seed;
+
         public override void InitializeSlot()
         {
             _key = UIEvent.SeedView.ToString();

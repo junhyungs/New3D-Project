@@ -33,6 +33,9 @@ namespace InventoryUI
 
         public override void InitializeSlot()
         {
+            if (_rawImage.enabled)
+                return;
+
             _rawImage.enabled = true;
             _rawImage.texture = _weaponTexture;
         }
