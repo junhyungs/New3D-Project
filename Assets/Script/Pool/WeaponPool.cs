@@ -9,9 +9,14 @@ public class WeaponPool : ObjectPool<WeaponPool>
     private Dictionary<ItemType, WeaponObjectPool> _weaponDictionary = new Dictionary<ItemType, WeaponObjectPool>();
     private Dictionary<ItemType, string> _prefabKeys;
 
-    protected override void Awake()
+    //protected override void Awake()
+    //{
+    //    base.Awake();
+    //    InitializePrefabKey();
+    //}
+
+    private void Awake()
     {
-        base.Awake();
         InitializePrefabKey();
     }
 

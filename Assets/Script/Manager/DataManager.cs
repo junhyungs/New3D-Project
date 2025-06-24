@@ -13,11 +13,16 @@ using System.Linq;
 public class DataManager : Singleton<DataManager>
 {
     private Dictionary<string, Data> _dataDictionary = new Dictionary<string, Data>();
+    private readonly object _lock = new object();
 
     private void TryAddData(string key, Data data)
     {
-        if (_dataDictionary.TryAdd(key, data)) Debug.Log($"AddData : {key}");
-        else Debug.Log($"Fail : {key}");
+        Debug.Log($"TryAddData : {key}");
+        lock (_lock)
+        {
+            if (_dataDictionary.TryAdd(key, data)) Debug.Log($"AddData : {key}");
+            else Debug.Log($"Fail : {key}");
+        }
     }
 
     public Data GetData(string key)
@@ -33,7 +38,9 @@ public class DataManager : Singleton<DataManager>
     {
         var taskList = new List<UniTask>()
         {
-            AddToPlayerDataAsync(),
+            ParsePlayerBaseDataAsync(),
+            ParsePlayerSkillDataAsync(),
+            ParsePlayerWeaponDataAsync(),
             LoadPathData(),
             LoadItemDescriptionData(),
             LoadDialogData(),
@@ -60,23 +67,36 @@ public class DataManager : Singleton<DataManager>
     #region DialogData
     private async UniTask LoadDialogData()
     {
-        var dialogDictionary = new Dictionary<string, Dialog>();
         JArray jArray = await LoadJsonArrayAsync("JsonData/New_3D_Dialog");
-        foreach(var item in jArray)
+        //var dialogDictionary = new Dictionary<string, Dialog>();
+        try
         {
-            var id = ParseString(item["Id"]);
-            var name = ParseString(item["Name"]);
-            var storyList = ParseDialogList(item["Story"]);
-            var loopList = ParseDialogList(item["Loop"]);
-            var endList = ParseDialogList(item["End"]);
+            var dialogDictionary = await UniTask.RunOnThreadPool(() =>
+            {
+                var tempDic = new Dictionary<string, Dialog>();
+                foreach (var item in jArray)
+                {
+                    var id = ParseString(item["Id"]);
+                    var name = ParseString(item["Name"]);
+                    var storyList = ParseDialogList(item["Story"]);
+                    var loopList = ParseDialogList(item["Loop"]);
+                    var endList = ParseDialogList(item["End"]);
 
-            Dialog dialog = new Dialog(name, storyList, loopList, endList);
-            dialogDictionary.Add(id, dialog);
+                    Dialog dialog = new Dialog(name, storyList, loopList, endList);
+                    tempDic.Add(id, dialog);
+                }
+
+                return tempDic;
+            });
+
+            DialogData data = new DialogData(dialogDictionary);
+            var key = DataKey.DialogData.ToString();
+            TryAddData(key, data);
         }
-
-        DialogData data = new DialogData(dialogDictionary);
-        var key = DataKey.DialogData.ToString();
-        TryAddData(key, data);
+        catch(Exception ex)
+        {
+            Debug.Log(ex.Message);
+        }
     }
 
     private List<string> ParseDialogList(JToken jToken)
@@ -91,14 +111,25 @@ public class DataManager : Singleton<DataManager>
     private async UniTask LoadItemDescriptionData()
     {
         JArray jArray = await LoadJsonArrayAsync("JsonData/New_3D_ItemDescription");
-        foreach (var item in jArray)
-        {
-            string id = ParseString(item["Id"]);
-            string itemName = ParseString(item["ItemName"]);
-            string description = ParseString(item["Description"]);
 
-            ItemDescriptionData data = new ItemDescriptionData(id, itemName, description);
-            TryAddData(id, data);
+        try
+        {
+            await UniTask.RunOnThreadPool(() =>
+            {
+                foreach (var item in jArray)
+                {
+                    string id = ParseString(item["Id"]);
+                    string itemName = ParseString(item["ItemName"]);
+                    string description = ParseString(item["Description"]);
+
+                    ItemDescriptionData data = new ItemDescriptionData(id, itemName, description);
+                    TryAddData(id, data);
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            Debug.Log(ex.Message);
         }
     }
     #endregion
@@ -107,18 +138,28 @@ public class DataManager : Singleton<DataManager>
     {
         JArray jArray = await LoadJsonArrayAsync($"JsonData/New_3D_Path");
 
-        foreach(var item in jArray)
+        try
         {
-            string id = ParseString(item["ID"]);
-            string path = ParseString(item["Path"]);
+            await UniTask.RunOnThreadPool(() =>
+            {
+                foreach (var item in jArray)
+                {
+                    string id = ParseString(item["ID"]);
+                    string path = ParseString(item["Path"]);
 
-            PathData pathData = new PathData(id, path);
-            TryAddData(id, pathData);
+                    PathData pathData = new PathData(id, path);
+                    TryAddData(id, pathData);
+                }
+            });
+        }
+        catch(Exception ex)
+        {
+            Debug.Log(ex.Message);
         }
     }
     #endregion
     #region Player
-    public async UniTask AddToPlayerDataAsync()
+    private async UniTask ParsePlayerBaseDataAsync()
     {
         var index = SaveManager.SaveIndex;
         PlayerSaveData saveData = await SaveManager.Instance.LoadPlayerSaveDataAsync(index);
@@ -132,42 +173,28 @@ public class DataManager : Singleton<DataManager>
         {
             try
             {
-                await NewPlayerDataAsync();
+                var path = $"JsonData/New_3D_Player";
+                JArray jArray = await LoadJsonArrayAsync(path);
+                var item = jArray[0];
+
+                await UniTask.RunOnThreadPool(() =>
+                {
+                    var newSaveData = new PlayerSaveData();
+                    newSaveData.ID = ParseString(item["ID"]);
+                    newSaveData.Power = ParseInt(item["Power"]);
+                    newSaveData.Speed = ParseFloat(item["Speed"]);
+                    newSaveData.Health = ParseInt(item["Health"]);
+                    newSaveData.ConstantData = ParseConstantData(item);
+
+                    //SaveManager.Instance.SavePlayerData(data);
+                    TryAddData(newSaveData.ID, newSaveData);
+                });
             }
             catch(Exception ex)
             {
                 Debug.Log(ex.Message);
             }
         }
-    }
-
-    private async UniTask NewPlayerDataAsync()
-    {
-        List<UniTask> taskList = new List<UniTask>()
-        {
-            ParsePlayerBaseDataAsync(),
-            ParsePlayerSkillDataAsync(),
-            ParsePlayerWeaponDataAsync()
-        };
-
-        await UniTask.WhenAll(taskList);
-    }
-
-    private async UniTask ParsePlayerBaseDataAsync()
-    {
-        var path = $"JsonData/New_3D_Player";
-        JArray jArray = await LoadJsonArrayAsync(path);
-        var item = jArray[0];
-
-        var newSaveData = new PlayerSaveData();
-        newSaveData.ID = ParseString(item["ID"]);
-        newSaveData.Power = ParseInt(item["Power"]);
-        newSaveData.Speed = ParseFloat(item["Speed"]);
-        newSaveData.Health = ParseInt(item["Health"]);
-        newSaveData.ConstantData = ParseConstantData(item);
-
-        //SaveManager.Instance.SavePlayerData(data);
-        TryAddData(newSaveData.ID, newSaveData);
     }
 
     private PlayerConstantData ParseConstantData(JToken item)
@@ -188,19 +215,30 @@ public class DataManager : Singleton<DataManager>
     {
         var path = $"JsonData/New_3D_PlayerSkill";
         JArray jArray = await LoadJsonArrayAsync(path);
+        Debug.Log($"ParsePlayerSkillDataAsync : {jArray.Count}");
 
-        foreach(var item in jArray)
+        try
         {
-            var id = ParseString(item["ID"]);
-            var projectileSpeed = ParseFloat(item["ProjectileSpeed"]);
-            var flightTime = ParseFloat(item["FlightTime"]);
-            var projectileDamage = ParseInt(item["ProjectileDamage"]);
-            var projectileCost = ParseInt(item["ProjectileCost"]);
+            await UniTask.RunOnThreadPool(() =>
+            {
+                foreach (var item in jArray)
+                {
+                    var id = ParseString(item["ID"]);
+                    var projectileSpeed = ParseFloat(item["ProjectileSpeed"]);
+                    var flightTime = ParseFloat(item["FlightTime"]);
+                    var projectileDamage = ParseInt(item["ProjectileDamage"]);
+                    var projectileCost = ParseInt(item["ProjectileCost"]);
 
-            PlayerSkillData data = new PlayerSkillData(id, projectileSpeed, projectileDamage,
-                projectileCost, flightTime);
+                    PlayerSkillData data = new PlayerSkillData(id, projectileSpeed, projectileDamage,
+                        projectileCost, flightTime);
 
-            TryAddData(id, data);
+                    TryAddData(id, data);
+                }
+            });
+        }
+        catch(Exception ex)
+        {
+            Debug.Log(ex.Message);
         }
     }
 
@@ -208,15 +246,26 @@ public class DataManager : Singleton<DataManager>
     {
         var path = "JsonData/New_3D_PlayerWeapon";
         JArray jArray = await LoadJsonArrayAsync(path);
+        Debug.Log($"ParsePlayerWeaponDataAsync : {jArray.Count}");
 
-        foreach(var item in jArray)
+        try
         {
-            var id = ParseString(item["Id"]);
-            var damage = ParseInt(item["Damage"]);
-            var range = ParseVector3(item["Range"]);
+            await UniTask.RunOnThreadPool(() =>
+            {
+                foreach (var item in jArray)
+                {
+                    var id = ParseString(item["Id"]);
+                    var damage = ParseInt(item["Damage"]);
+                    var range = ParseVector3(item["Range"]);
 
-            PlayerWeaponData data = new PlayerWeaponData(id, damage, range);
-            TryAddData(id, data);
+                    PlayerWeaponData data = new PlayerWeaponData(id, damage, range);
+                    TryAddData(id, data);
+                }
+            });
+        }
+        catch(Exception ex)
+        {
+            Debug.Log(ex.Message);
         }
     }
 

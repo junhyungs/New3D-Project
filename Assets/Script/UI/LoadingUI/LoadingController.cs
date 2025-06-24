@@ -41,24 +41,25 @@ public class LoadingController : MonoBehaviour
         yield return new WaitForSeconds(3f);
        asyncOperaction.allowSceneActivation = true;
     }
-
-    public async UniTask LoadingSceneGameDataAsync(string sceneName, string disableUIName)
-    {
-        UIManager.Instance.DisableUI(disableUIName);
-        StartImageBlinkCoroutine(true);
-
-        var loadAllData = DataManager.Instance.LoadAllData();
-        await loadAllData;
-
-        SceneManager.LoadScene(sceneName);
-    }
-
     private AsyncOperation AllowSceneActivationFalse(string sceneName)
     {
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
         asyncOperation.allowSceneActivation = false;
 
         return asyncOperation;
+    }
+
+    public async UniTask LoadingSceneGameDataAsync(string sceneName, string disableUIName)
+    {
+        UIManager.Instance.DisableUI(disableUIName);
+        StartImageBlinkCoroutine(true);
+
+        await UniTask.Yield();
+
+        var loadAllData = DataManager.Instance.LoadAllData();
+        await loadAllData;
+
+        await SceneManager.LoadSceneAsync(sceneName);
     }
 
     private void StartImageBlinkCoroutine(bool isStart)
@@ -85,31 +86,33 @@ public class LoadingController : MonoBehaviour
 
     private IEnumerator ImageBlink()
     {
-        Color color = _icon.color;
-
         while (true)
         {
-            yield return StartCoroutine(Blink(color, 0f, _blinkSpeed));
-            yield return StartCoroutine(Blink(color, 1f, _blinkSpeed));
+            yield return StartCoroutine(Blink(0f, _blinkSpeed));
+            yield return StartCoroutine(Blink(1f, _blinkSpeed));
         }
     }
 
-    private IEnumerator Blink(Color color, float targetAlpha, float durationTime)
+    private IEnumerator Blink(float targetAlpha, float durationTime)
     {
-        var startAlpha = color.a;
+        var startAlpha = _icon.color.a;
         var elapsed = 0f;
 
         while(elapsed < durationTime)
         {
             elapsed += Time.deltaTime;
-            color.a = Mathf.Lerp(startAlpha, targetAlpha, elapsed / durationTime);
+            var newAlpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / durationTime);
+           
+            var color = _icon.color;
+            color.a = newAlpha;
             _icon.color = color;
 
             yield return null;
         }
 
-        color.a = targetAlpha;
-        _icon.color = color;
+        var finalColor = _icon.color;
+        finalColor.a = targetAlpha;
+        _icon.color = finalColor;
     }
 
 

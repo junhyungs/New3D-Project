@@ -138,5 +138,12 @@ namespace EnumCollection
         Banker,
         Agatha
     }
+
+    public enum MapName
+    {
+        Level_0,
+        Level_1,
+        Level_2
+    }
 }
 

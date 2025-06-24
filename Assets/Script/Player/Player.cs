@@ -19,7 +19,7 @@ namespace PlayerComponent
 
         private void Awake()
         {
-            DataManager.Instance.AddToPlayerData(null); //테스트를 위한 임시 코드.
+            //DataManager.Instance.AddToPlayerData(null); //테스트 코드
             InitializeOnAwakePlayer();
         }
 
