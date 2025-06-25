@@ -12,8 +12,8 @@ public class Bow : PlayerSkill, ISkill
     {
         RequiresReload = true;
 
-        _objectKey = ObjectKey.PlayerArrowPrefab;
-        MakeProjectile(_objectKey);
+        _address = AddressablesKey.Prefab_PlayerArrow;
+        MakeProjectile(_address);
     }
 
     public override void Execute()
@@ -58,7 +58,7 @@ public class Bow : PlayerSkill, ISkill
         if (!TryUse())
             return;
 
-        var arrowObject = ProjectilePool.Instance.DequeueGameObject(ObjectKey.PlayerArrowPrefab);
+        var arrowObject = ProjectilePool.Instance.DequeueGameObject(_address);
         arrowObject.transform.SetParent(_skillInfo.FireTransform);
         arrowObject.transform.localPosition = Vector3.zero;
         arrowObject.transform.localRotation = Quaternion.identity;

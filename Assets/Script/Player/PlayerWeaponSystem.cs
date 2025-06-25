@@ -7,13 +7,16 @@ using EnumCollection;
 
 namespace PlayerComponent
 {
-    [System.Serializable]
-    public class EquipTransformInfo
+    public struct WeaponInfo
     {
-        [Header("EquipTransform")]
-        public Transform Holster;
-        public Transform WeaponL;
-        public Transform WeaponR;
+        public Transform Parent;
+        public PlayerHand Hand;
+
+        public WeaponInfo(Transform parent, PlayerHand hand)
+        {
+            this.Parent = parent;
+            this.Hand = hand;
+        }
     }
 
     public class PlayerWeaponSystem : MonoBehaviour
@@ -23,7 +26,16 @@ namespace PlayerComponent
 
         private void Awake()
         {
-            WeaponManager.Instance.EquipTransformInfo = _equipTransformInfo;
+            var weaponInfos = new WeaponInfo[]
+            {
+                new(_equipTransformInfo.Holster, PlayerHand.Idle),
+                new(_equipTransformInfo.WeaponR, PlayerHand.Right),
+                new(_equipTransformInfo.WeaponL, PlayerHand.Left),
+                new(_equipTransformInfo.WeaponL, PlayerHand.Charge_L),
+                new(_equipTransformInfo.WeaponR, PlayerHand.Charge_R),
+            };
+
+            WeaponManager.Instance.WeaponInfos = weaponInfos;
         }
     }
 }

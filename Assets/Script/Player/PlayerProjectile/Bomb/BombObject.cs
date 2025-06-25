@@ -21,7 +21,7 @@ public class BombObject : PlayerProjectile
         base.Awake();
 
         _sphereCollider = GetComponent<SphereCollider>();
-        _objectKey = ObjectKey.PlayerBombPrefab;
+        _address = AddressablesKey.Prefab_PlayerBomb;
         _targetLayer = LayerMask.GetMask("Enemy");
     }
 

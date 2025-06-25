@@ -7,7 +7,7 @@ using EnumCollection;
 public class PlayerProjectile : MonoBehaviour
 {
     protected Rigidbody _rigidBody;
-    protected ObjectKey _objectKey;
+    protected string _address;
     protected int _damage;
     protected float _timer;
     protected float _flightTime;
@@ -48,7 +48,7 @@ public class PlayerProjectile : MonoBehaviour
     protected void ReturnObjectPool()
     {
         _isFire = false;
-        ProjectilePool.Instance.EnqueueGameObject(_objectKey, gameObject);
+        ProjectilePool.Instance.EnqueueGameObject(_address, gameObject);
     }
 
     public virtual void Fire()

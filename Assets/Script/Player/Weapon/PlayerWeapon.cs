@@ -9,6 +9,7 @@ public abstract class PlayerWeapon : MonoBehaviour, IWeapon
     protected WeaponObjectController _weaponController;
     protected PlayerWeaponData _data;
     protected PlayerAnimationEvent _animEvent;
+    public abstract string AddressableKey { get; }
 
     protected virtual void Awake()
     {

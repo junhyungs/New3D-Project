@@ -17,19 +17,6 @@ namespace EnumCollection
         Skill
     }
 
-    public enum ObjectKey//PathCSV ID와 동일하게.
-    {
-        PlayerArrowPrefab,
-        PlayerFireBallPrefab,
-        PlayerBombPrefab,
-        PlayerHookPrefab,
-        PlayerSwordPrefab,
-        PlayerHammerPrefab,
-        PlayerDaggerPrefab,
-        PlayerGreatSwordPrefab,
-        PlayerUmbrellaPrefab
-
-    }
     //Path 데이터로 사용되는 경우 DataKey와 ObjectKey는 일치해야함.
     public enum DataKey //DataCSV ID와 동일하게.
     {
@@ -60,17 +47,6 @@ namespace EnumCollection
         AbilityUpgrade,
         Inventory_Data,
         Default
-    }
-
-    public enum JsonData
-    {
-        New_3D_Player,
-        New_3D_ScreenResolution,
-        New_3D_Path,
-        New_3D_PlayerSkill,
-        New_3D_ItemDescription,
-        New_3D_PlayerWeapon,
-        New_3D_Dialog
     }
 
     public enum UIEvent

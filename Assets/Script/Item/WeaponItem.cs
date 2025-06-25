@@ -5,18 +5,11 @@ using UnityEngine;
 
 namespace ItemComponent
 {
-    public class WeaponItem : Item, IPlayerWeaponItem
+    public abstract class WeaponItem : Item, IPlayerWeaponItem
     {
-        [Header("SlotName"), SerializeField]
-        private ItemType _slotName;
-        [Header("DataKey")]
-        [SerializeField] private DataKey _descriptionKey;
-        [SerializeField] private DataKey _weaponDataKey;
-
         public override bool CanEquip => true;
-        public override ItemType SlotName => _slotName;
-        public override string DescriptionKey => _descriptionKey.ToString();
-        public string WeaponDataKey => _weaponDataKey.ToString();
+        public abstract string WeaponDataKey { get; }
+        public abstract string AddressableKey { get; }
 
         public override void Interact()
         {

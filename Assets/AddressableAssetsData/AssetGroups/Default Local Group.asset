@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 19f58742566e9dc40ad6b75cca67f618
+  m_SerializeEntries:
+  - m_GUID: 916afdbf6890e7e4dbe15c395b17c8c3
+    m_Address: Map/Level_0
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f76d118ebe049743a588f4d362db4a7
+    m_Address: Map/Level_1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 05ae46a126d680a4eb80568545483304
+    m_Address: Map/Level_2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 541caa47dc875754e9aa0aa31755e240
+    m_Address: JsonData/New_3D_Dialog
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e62ba27b48e6c704f8c253b01814cae9
+    m_Address: JsonData/New_3D_ItemDescription
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e7924f92b98b2c4bba4c07ad350a335
+    m_Address: JsonData/New_3D_Player
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 67ac0f5b56a126c4caef65fcaddc5fcc
+    m_Address: JsonData/New_3D_PlayerSkill
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2ccc8edd8f2262d46a55cbbab74f472b
+    m_Address: JsonData/New_3D_PlayerWeapon
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b4da45d78d4c9714bbed309c1d6c0349
+    m_Address: JsonData/New_3D_ScreenResolution
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 500d07a0b76fa3d479503f17dff5381e
+    m_Address: Prefab/PlayerBomb
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 05a7febd39e9135459a4f64658c2cb5e
+    m_Address: Prefab/PlayerHook
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 824511ac08b240941b5e54209bfc5b43
+    m_Address: Prefab/PlayerArrow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f768178245dd7b647b70b9b583ba8e69
+    m_Address: Prefab/PlayerFireball
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ce24857da260454db5a4b6d556f1e21
+    m_Address: Prefab/PlayerDagger
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WeaponAsset
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e5cec78cf0af5146a43a2e4a8394cf4
+    m_Address: Prefab/PlayerGreatSword
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WeaponAsset
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8e1d8ecb93a4ae4d9041ab0bae20f2e
+    m_Address: Prefab/PlayerHammer
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WeaponAsset
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 98f7b4829980c9a47a8270e304861c5a
+    m_Address: Prefab/PlayerSword
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WeaponAsset
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 30131a91e34a4234bb7845299bb24fb7
+    m_Address: Prefab/PlayerUmbrella
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WeaponAsset
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 68fa7f047f245514e8fee859a6f4aba0, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: ac62a96fd28e8354488e417a0c16b19c, type: 2}
+    - {fileID: 11400000, guid: 9e140c65c4573524cb9b6d9597441a2f, type: 2}

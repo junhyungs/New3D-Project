@@ -24,6 +24,7 @@ namespace ItemComponent
     public interface IPlayerWeaponItem : IPlayerItem
     {
         string WeaponDataKey { get; }
+        string AddressableKey { get; }
     }
 
     public abstract class CurrencyItem : MonoBehaviour, IInteractionItem, ICurrencyItem

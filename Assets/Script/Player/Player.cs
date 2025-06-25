@@ -100,5 +100,14 @@ namespace PlayerComponent
         public Transform InteractionTransform;
         public LayerMask Target;
     }
+
+    [System.Serializable]
+    public class EquipTransformInfo
+    {
+        [Header("EquipTransform")]
+        public Transform Holster;
+        public Transform WeaponL;
+        public Transform WeaponR;
+    }
 }
 

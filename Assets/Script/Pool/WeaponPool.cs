@@ -3,11 +3,12 @@ using GameData;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class WeaponPool : ObjectPool<WeaponPool>
 {
-    private Dictionary<ItemType, WeaponObjectPool> _weaponDictionary = new Dictionary<ItemType, WeaponObjectPool>();
-    private Dictionary<ItemType, string> _prefabKeys;
+    private Dictionary<string, WeaponObjectPool> _weaponDictionary = new Dictionary<string, WeaponObjectPool>();
 
     //protected override void Awake() //테스트 코드
     //{
@@ -15,77 +16,54 @@ public class WeaponPool : ObjectPool<WeaponPool>
     //    InitializePrefabKey();
     //}
 
-    private void Awake()
+    public void CreatePool(string addressablesKey)
     {
-        InitializePrefabKey();
-    }
-
-    private void InitializePrefabKey()
-    {
-        _prefabKeys = new Dictionary<ItemType, string>()
-        {
-            {ItemType.Sword, "PlayerSwordPrefab" },
-            {ItemType.Hammer, "PlayerHammerPrefab" },
-            {ItemType.Dagger, "PlayerDaggerPrefab" },
-            {ItemType.GreatSword, "PlayerGreatSwordPrefab" },
-            {ItemType.Umbrella, "PlayerUmbrellaPrefab" }
-        };
-    }
-
-    private PathData GetPathData(string key)
-    {
-        var newPathData = DataManager.Instance.GetData(key) as PathData;
-        return newPathData;
-    }
-
-    public void CreatePool(ItemType weaponKey)
-    {
-        if (_weaponDictionary.ContainsKey(weaponKey))
+        if (_weaponDictionary.ContainsKey(addressablesKey))
             return;
 
-        var gameObjectName = weaponKey.ToString();
-
+        var gameObjectName = TrimStart(addressablesKey);
         var poolObject = new GameObject(gameObjectName + "Pool");
         poolObject.transform.SetParent(transform);
 
-        var pathKey = _prefabKeys[weaponKey];
-        var pathData = GetPathData(pathKey);
-        LoadPrefab(poolObject.transform, weaponKey, pathData.Path, gameObjectName);
+        StartCoroutine(LoadPrefab(poolObject.transform, addressablesKey, gameObjectName));
     }
 
-    private void LoadPrefab(Transform poolTransform, ItemType key, string path, string name)
+    private IEnumerator LoadPrefab(Transform poolTransform, string addressablesKey, string name)
     {
-        var requestAsset = Resources.Load<GameObject>(path);
-        requestAsset.name = name;
+        var handle = Addressables.LoadAssetAsync<GameObject>(addressablesKey);
+        yield return handle;
+
+        if (handle.Status != AsyncOperationStatus.Succeeded)
+            yield break;
+
+        var prefab = handle.Result;
+        prefab.name = name;
 
         var pool = new WeaponObjectPool(poolTransform, 5);
-        for (int i = 0; i < pool.ObjectArray.Length; i++)
+        for(int i = 0; i < pool.ObjectArray.Length; i++)
         {
-            var poolItem = Instantiate(requestAsset, poolTransform);
-            poolItem.SetActive(false);
-            pool.ObjectArray[i] = poolItem;
+            var poolIem = Instantiate(prefab, poolTransform);
+            poolIem.SetActive(false);
+            pool.ObjectArray[i] = poolIem;
         }
 
-        _weaponDictionary.Add(key, pool);
+        _weaponDictionary.Add(addressablesKey, pool);
     }
 
-    public GameObject[] GetWeaponItem(ItemType objectKey)
+    public GameObject[] GetWeaponItem(string addressablesKey)
     {
-        if(_weaponDictionary.TryGetValue(objectKey, out var weaponItems))
+        if(_weaponDictionary.TryGetValue(addressablesKey, out var weaponItems))
         {
             ParentSetting(weaponItems.ObjectArray);
             return weaponItems.ObjectArray;
         }
 
-        CreatePool(objectKey);
-
-        var weaponItem = GetWeaponItem(objectKey);
-        return weaponItem;
+        return null;
     }
 
-    public void SetWeaponItem(GameObject[] items, ItemType objectKey)
+    public void SetWeaponItem(GameObject[] items, string addressablesKey)
     {
-        if (!_weaponDictionary.TryGetValue(objectKey, out var weaponItems))
+        if (!_weaponDictionary.TryGetValue(addressablesKey, out var weaponItems))
             return;
 
         ParentSetting(weaponItems.ObjectArray, weaponItems.PoolTransform);

@@ -1,14 +1,12 @@
 using EnumCollection;
 using GameData;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Linq;
+using UnityEngine.AddressableAssets;
 
 public class DataManager : Singleton<DataManager>
 {
@@ -38,10 +36,11 @@ public class DataManager : Singleton<DataManager>
         return null;
     }
 
+    #region LoadAllData
     public async UniTask LoadAllData()
     {
         await LoadPlayerGroup();
-        await LoadItemGroup();
+        await LoadItemDescriptionData();
         await LoadDialogData();
         await LoadUpgradeGroup();
         await LoadMapData();
@@ -58,14 +57,6 @@ public class DataManager : Singleton<DataManager>
             );
     }
 
-    private async UniTask LoadItemGroup()
-    {
-        await UniTask.WhenAll(
-            LoadPathData(),
-            LoadItemDescriptionData()
-            );
-    }
-
     private async UniTask LoadUpgradeGroup()
     {
         await UniTask.WhenAll(
@@ -73,17 +64,18 @@ public class DataManager : Singleton<DataManager>
             LoadUpgradeSkillDataAsync()
             );
     }
-
-    private async UniTask<JArray> LoadJsonArrayAsync(string path)
+    #endregion
+    private async UniTask<JArray> LoadJsonArrayAsync(string address)
     {
-        var request = Resources.LoadAsync<TextAsset>(path);
-        await request.ToUniTask();
+        var handle = Addressables.LoadAssetAsync<TextAsset>(address);
+        var textAsset = await handle.ToUniTask();
 
-        var textAsset = request.asset as TextAsset;
-        return JArray.Parse(textAsset.text);
+        var json = JArray.Parse(textAsset.text);
+        Addressables.Release(handle);
+        return json;
     }
 
-    private JArray LoadJsonArray(string path)
+    private JArray LoadJsonArray(string path) //최종 빌드 시 삭제
     {
         var textAsset = Resources.Load<TextAsset>(path);
         return JArray.Parse(textAsset.text);
@@ -92,7 +84,8 @@ public class DataManager : Singleton<DataManager>
     #region DialogData
     private async UniTask LoadDialogData()
     {
-        JArray jArray = await LoadJsonArrayAsync("JsonData/New_3D_Dialog");
+        var address = AddressablesKey.JsonData_Dialog;
+        JArray jArray = await LoadJsonArrayAsync(address);
         var dialogDictionary = new Dictionary<string, Dialog>();
         try
         {
@@ -129,8 +122,8 @@ public class DataManager : Singleton<DataManager>
     #region ItemDescriptionData
     private async UniTask LoadItemDescriptionData()
     {
-        JArray jArray = await LoadJsonArrayAsync("JsonData/New_3D_ItemDescription");
-
+        var address = AddressablesKey.JsonData_ItemDescription;
+        JArray jArray = await LoadJsonArrayAsync(address);
         try
         {
             foreach (var item in jArray)
@@ -144,28 +137,6 @@ public class DataManager : Singleton<DataManager>
             }
         }
         catch (Exception ex)
-        {
-            Debug.Log(ex.Message);
-        }
-    }
-    #endregion
-    #region PathData
-    private async UniTask LoadPathData()
-    {
-        JArray jArray = await LoadJsonArrayAsync($"JsonData/New_3D_Path");
-
-        try
-        {
-            foreach (var item in jArray)
-            {
-                string id = ParseString(item["ID"]);
-                string path = ParseString(item["Path"]);
-
-                PathData pathData = new PathData(id, path);
-                TryAddData(id, pathData);
-            }
-        }
-        catch(Exception ex)
         {
             Debug.Log(ex.Message);
         }
@@ -186,8 +157,8 @@ public class DataManager : Singleton<DataManager>
         {
             try
             {
-                var path = $"JsonData/New_3D_Player";
-                JArray jArray = await LoadJsonArrayAsync(path);
+                var address = AddressablesKey.JsonData_PlayerBase;
+                JArray jArray = await LoadJsonArrayAsync(address);
                 var item = jArray[0];
 
                 var newSaveData = new PlayerSaveData();
@@ -228,8 +199,8 @@ public class DataManager : Singleton<DataManager>
 
     private async UniTask ParsePlayerSkillDataAsync()
     {
-        var path = $"JsonData/New_3D_PlayerSkill";
-        JArray jArray = await LoadJsonArrayAsync(path);
+        var address = AddressablesKey.JsonData_PlayerSkill;
+        JArray jArray = await LoadJsonArrayAsync(address);
         
         try
         {
@@ -255,8 +226,8 @@ public class DataManager : Singleton<DataManager>
 
     private async UniTask ParsePlayerWeaponDataAsync()
     {
-        var path = "JsonData/New_3D_PlayerWeapon";
-        JArray jArray = await LoadJsonArrayAsync(path);
+        var address = AddressablesKey.JsonData_PlayerWeapon;
+        JArray jArray = await LoadJsonArrayAsync(address);
 
         try
         {
@@ -332,8 +303,8 @@ public class DataManager : Singleton<DataManager>
     public List<(int, int)> LoadResolutionData()
     {
         var dataList = new List<(int, int)>();
-        var jsonName = JsonData.New_3D_ScreenResolution.ToString();
-        var jsonData = Resources.Load<TextAsset>($"JsonData/{jsonName}");
+        var jsonName = AddressablesKey.JsonData_ScreenResolution;
+        var jsonData = Resources.Load<TextAsset>(jsonName);
 
         JArray jArray = JArray.Parse(jsonData.text);
         foreach (var itme in jArray)
@@ -387,24 +358,7 @@ public class DataManager : Singleton<DataManager>
         }
         catch { }
     }
-    public void TestLoadPathData()
-    {
-        try
-        {
-            var textAsset = Resources.Load<TextAsset>("JsonData/New_3D_Path");
-            JArray jArray = JArray.Parse(textAsset.text);
 
-            foreach (var item in jArray)
-            {
-                string id = ParseString(item["ID"]);
-                string path = ParseString(item["Path"]);
-
-                PathData pathData = new PathData(id, path);
-                TryAddData(id, pathData);
-            }
-        }
-        catch { }
-    }
     public void TestLoadItemDescriptionData()
     {
         try
@@ -434,8 +388,8 @@ public class DataManager : Singleton<DataManager>
         {
             try
             {
-                var jsonDataName = JsonData.New_3D_Player.ToString();
-                ParsePlayerBaseData($"JsonData/{jsonDataName}");
+                var jsonDataName = AddressablesKey.JsonData_PlayerBase;
+                ParsePlayerBaseData(jsonDataName);
                 ParsePlayerSkillData();
             }
             catch
@@ -483,7 +437,7 @@ public class DataManager : Singleton<DataManager>
 
     private void ParsePlayerSkillData()
     {
-        var path = $"JsonData/{JsonData.New_3D_PlayerSkill}";
+        var path = AddressablesKey.JsonData_PlayerSkill;
         JArray jArray = LoadJsonArray(path);
 
         foreach (var item in jArray)
@@ -503,7 +457,7 @@ public class DataManager : Singleton<DataManager>
 
     public void ParsePlayerWeaponData()
     {
-        var path = "JsonData/New_3D_PlayerWeapon";
+        var path = AddressablesKey.JsonData_PlayerWeapon;
         JArray jArray = LoadJsonArray(path);
 
         foreach (var item in jArray)

@@ -31,7 +31,7 @@ public abstract class PlayerSkill : ISkill
     protected Animator _animator;
     protected SkillInfo _skillInfo;
     protected Action _fireAction;
-    protected ObjectKey _objectKey;
+    protected string _address;
     
     protected readonly int _skill = Animator.StringToHash("Skill");
     protected readonly int _skillEquals = Animator.StringToHash("SkillEquals");
@@ -53,7 +53,7 @@ public abstract class PlayerSkill : ISkill
         {
             var childObject = _skillInfo.FireTransform.GetChild(0).gameObject;
             childObject.transform.parent = null;
-            ProjectilePool.Instance.EnqueueGameObject(_objectKey, childObject);
+            ProjectilePool.Instance.EnqueueGameObject(_address, childObject);
         }
 
         _animationEvent.UnSetReloadAction();
@@ -102,9 +102,9 @@ public abstract class PlayerSkill : ISkill
         EndSkill = true;
     }
 
-    protected void MakeProjectile(ObjectKey key, int count = 1)
+    protected void MakeProjectile(string address, int count = 1)
     {
-        ProjectilePool.Instance.CreatePool(key, count);
+        ProjectilePool.Instance.CreatePool(address, count);
     }
 
     public int GetCost()

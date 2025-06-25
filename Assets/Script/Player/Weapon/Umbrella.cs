@@ -5,6 +5,8 @@ using EnumCollection;
 
 public class Umbrella : PlayerWeapon
 {
+    public override string AddressableKey => AddressablesKey.Prefab_PlayerUmbrella;
+
     private void Start()
     {
         GetWeaponData(DataKey.Umbrella_Data);

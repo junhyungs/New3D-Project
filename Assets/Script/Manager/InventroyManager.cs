@@ -209,7 +209,7 @@ public class InventoryManager : Singleton_MonoBehaviour<InventoryManager>
 
         var dataKey = weaponItem.WeaponDataKey;
 
-        WeaponPool.Instance.CreatePool(weaponItem.SlotName);
+        WeaponPool.Instance.CreatePool(weaponItem.AddressableKey);
         if (DataManager.Instance.GetData(dataKey) is not PlayerWeaponData weaponData)
             return;
 

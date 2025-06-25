@@ -12,8 +12,8 @@ public class FireBall : PlayerSkill, ISkill
     {
         RequiresReload = true;
 
-        _objectKey = ObjectKey.PlayerFireBallPrefab;
-        MakeProjectile(_objectKey);
+        _address = AddressablesKey.Prefab_PlayerFireball;
+        MakeProjectile(_address);
     }
 
     public override void Execute()
@@ -56,7 +56,7 @@ public class FireBall : PlayerSkill, ISkill
         if (!TryUse())
             return;
 
-        var fireBallObject = ProjectilePool.Instance.DequeueGameObject(_objectKey);
+        var fireBallObject = ProjectilePool.Instance.DequeueGameObject(_address);
         fireBallObject.transform.SetParent(_skillInfo.FireTransform);
         fireBallObject.transform.localPosition = Vector3.zero;
         fireBallObject.transform.localRotation = Quaternion.identity;
