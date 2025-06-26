@@ -14,6 +14,7 @@ public class MeshCombiner : MonoBehaviour
     [Header("SavePath"), SerializeField] private string _savePath;
     [Header("MakeStatic"), SerializeField] private bool _isStatic;
     [Header("DestoryObject"), SerializeField] private bool _destroy;
+    [Header("SetParent"), SerializeField] private bool _setParent;
 
     public GameObject[] GameObjects => _gameObjects;
     private List<CombineInstance> _combineInstances = new List<CombineInstance>();
@@ -29,6 +30,8 @@ public class MeshCombiner : MonoBehaviour
                 if (_gameObjects[i] != null)
                     Undo.DestroyObjectImmediate(_gameObjects[i]);
         }
+
+        ResetMeshCombiner();
     }
 
     public void ResetMeshCombiner()
@@ -70,8 +73,13 @@ public class MeshCombiner : MonoBehaviour
             CreateMesh(value, key, parentObject);
         }
 
-        parentObject.transform.position = _center.transform.position;
-        parentObject.transform.rotation = _center.transform.rotation;
+        parentObject.transform.position = _center.position;
+        parentObject.transform.rotation = _center.rotation;
+
+        if (_setParent)
+        {
+            parentObject.transform.SetParent(_center);
+        }
     }
 
     private void CreateMesh(List<MeshFilter> meshFilters, Material material, GameObject parentObject)
