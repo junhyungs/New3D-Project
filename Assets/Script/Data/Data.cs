@@ -29,17 +29,17 @@ namespace GameData
         public Dictionary<ItemType, bool> CollectedItemsDictionary{ get; set; }
     }
 
-    public class Level_0 : MapProgress
+    public class Level_0_progress : MapProgress
     {
         public bool HallCrowScene { get; set; }
     }
 
-    public class Level_1 : MapProgress
+    public class Level_1_progress : MapProgress
     {
         public bool ClearBoss { get; set; }
     }
 
-    public class Level_2 : MapProgress
+    public class Level_2_progress : MapProgress
     {
 
     }

@@ -14,7 +14,6 @@ public class SaveInfoView : View<SaveInfoViewModel>
     [Header("SaveIndex"), SerializeField] private int _saveIndex;
     [Header("SaveInfoSlot"), SerializeField] private UIEvent _eventKey;
     [Header("DateText"), SerializeField] private TextMeshProUGUI _dateText;
-    [Header("LoadingCanvas"), SerializeField] private LoadingController _loadingController;
 
     private void OnEnable()
     {
@@ -34,6 +33,6 @@ public class SaveInfoView : View<SaveInfoViewModel>
     public async void OnClickStartGame()
     {
         SaveManager.SaveIndex = _saveIndex;
-        await _loadingController.LoadingSceneGameDataAsync("MainScene", "GamePanel");
+        await LoadSceneManager.Instance.LoadingSceneGameDataAsync("MainScene", "GamePanel");
     }
 }

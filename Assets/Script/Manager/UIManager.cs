@@ -6,16 +6,8 @@ public class UIManager : Singleton<UIManager>
 {
     private Dictionary<string, GameObject> _enableUIDictionary = new Dictionary<string, GameObject>();
     private static Dictionary<string, Delegate> _uiEventDictionary = new Dictionary<string, Delegate>();
-
-    public static event Action<bool> LoadingUIController;
     public static event Action<bool> PlayerInfoUIController;
     
-
-    public void StartLoadingUI(bool enable)
-    {
-        LoadingUIController?.Invoke(enable);
-    }
-
     public void MovePlayerInfoUI(bool enable)
     {
         PlayerInfoUIController?.Invoke(enable);

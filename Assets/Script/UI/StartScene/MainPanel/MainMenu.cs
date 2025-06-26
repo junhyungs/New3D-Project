@@ -4,13 +4,16 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using StartSceneUI;
+using UnityEngine.UI;
 
 public class MainMenu : MenuUI
 {
     [Header("Menu"), SerializeField] private Menu[] _menus;
 
     private Dictionary<GameObject, Menu> _menuDictionary;
+    private Button[] _menuButtons;
     private GameObject _currentUI;
+    private bool _enableButtons;
 
     protected override void Awake()
     {
@@ -21,8 +24,15 @@ public class MainMenu : MenuUI
     private void OnAwakeMainMenu()
     {
         _menuDictionary = new Dictionary<GameObject, Menu>();
+        _menuButtons = new Button[_menus.Length];
+
         for(int i = 0; i < _menus.Length; i++)
         {
+            var buttonComponent = _menus[i].GetComponent<Button>();
+            if(buttonComponent != null)
+            {
+                _menuButtons[i] = buttonComponent;
+            }
             _menuDictionary.Add(_menus[i].gameObject, _menus[i]);
         }
     }
@@ -64,6 +74,9 @@ public class MainMenu : MenuUI
 
     public override void CallBackContext(InputAction.CallbackContext context)
     {
+        if (!_enableButtons)
+            return;
+
         Menu menu = GetCurrentMenu(_currentUI);
         menu?.DeSelectMenu();
 
@@ -87,6 +100,14 @@ public class MainMenu : MenuUI
             return menu;
 
         return null;
+    }
+
+    public void EnableButtons(bool enabled)
+    {
+        _enableButtons = enabled;
+
+        foreach(var button in _menuButtons)
+            button.enabled = enabled;
     }
 
     public void OnClickStartButton()

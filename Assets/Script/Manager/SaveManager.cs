@@ -232,9 +232,9 @@ public class SaveManager : Singleton<SaveManager>
             {
                 KnownTypes = new List<Type>
                 {
-                    typeof(Level_0),
-                    typeof(Level_1),
-                    typeof(Level_2)
+                    typeof(Level_0_progress),
+                    typeof(Level_1_progress),
+                    typeof(Level_2_progress)
                 }
             }
         };

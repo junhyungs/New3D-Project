@@ -1,18 +1,13 @@
+using GameData;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Map : MonoBehaviour
+namespace MapComponent
 {
-    // Start is called before the first frame update
-    void Start()
+    public abstract class Map : MonoBehaviour
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public Dictionary<string, MapProgress> ProgressDictionary { get; set; }
+        public virtual void Initialize() { }
     }
 }
