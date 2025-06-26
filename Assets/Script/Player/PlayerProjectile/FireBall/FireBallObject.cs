@@ -11,7 +11,7 @@ public class FireBallObject : PlayerProjectile
     protected override void Awake()
     {
         base.Awake();
-        _objectKey = ObjectKey.PlayerFireBallPrefab;
+        _address = AddressablesKey.Prefab_PlayerFireball;
     }
 
     protected override void OnEnable()

@@ -19,10 +19,10 @@ public class DialogManager : Singleton_MonoBehaviour<DialogManager>
     private Vector3 _minScale = Vector3.zero;
     private Vector3 _maxScale = Vector3.one;
 
-    private void Awake()
-    {
-        DataManager.Instance.TestLoadDialogData(); //테스트 코드
-    }
+    //private void Awake()
+    //{
+    //    DataManager.Instance.TestLoadDialogData(); //테스트 코드
+    //}
 
     private void ResetText()
     {

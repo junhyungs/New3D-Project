@@ -11,20 +11,6 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
 {
     [Header("WeaponTransforms"), SerializeField]
     private WeaponTransform[] _weaponTransforms;
-    private EquipTransformInfo _equipTransformInfo;
-    public EquipTransformInfo EquipTransformInfo
-    {
-        get => _equipTransformInfo;
-        set
-        {
-            if(_equipTransformInfo == null)
-            {
-                _equipTransformInfo = value;
-                InitializeWeaponInfo();
-            }
-        }
-    }
-
     private Dictionary<ItemType, Dictionary<PlayerHand, WeaponTransform>> _weaponTransformDictionary
             = new Dictionary<ItemType, Dictionary<PlayerHand, WeaponTransform>>();
     private HashSet<ItemType> _weaponTypeSet;
@@ -32,19 +18,7 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
 
     private IWeapon _currentWeapon;
     public IWeapon CurrentWeapon => _currentWeapon;
-    private WeaponInfo[] _weaponInfos;
-
-    private struct WeaponInfo
-    {
-        public Transform Parent;
-        public PlayerHand Hand;
-
-        public WeaponInfo(Transform parent, PlayerHand hand)
-        {
-            this.Parent = parent;
-            this.Hand = hand;
-        }
-    }
+    public WeaponInfo[] WeaponInfos { get; set; }
 
     private void Awake()
     {
@@ -54,7 +28,7 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
 
     private void Start()
     {
-        DataManager.Instance.ParsePlayerWeaponData(); // 테스트 코드
+        //DataManager.Instance.ParsePlayerWeaponData(); // 테스트 코드
         SetWeapon(ItemType.Sword);
     }
 
@@ -87,18 +61,6 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
         };
     }
 
-    private void InitializeWeaponInfo()
-    {
-        _weaponInfos = new WeaponInfo[]
-        {
-            new(EquipTransformInfo.Holster, PlayerHand.Idle),
-            new(EquipTransformInfo.WeaponR, PlayerHand.Right),
-            new(EquipTransformInfo.WeaponL, PlayerHand.Left),
-            new(EquipTransformInfo.WeaponL, PlayerHand.Charge_L),
-            new(EquipTransformInfo.WeaponR, PlayerHand.Charge_R),
-        };
-    }
-
     private WeaponTransform GetWeaponTransform(ItemType type, PlayerHand hand)
     {
         if (_weaponTransformDictionary.TryGetValue(type, out var handDictionary))
@@ -116,9 +78,9 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
             return;
 
         var player = PlayerManager.Instance.Player;
-        
-        if(_weaponArray != null)
-            WeaponPool.Instance.SetWeaponItem(_weaponArray, itemType);
+
+        if (_weaponArray != null && _currentWeapon != null)
+            WeaponPool.Instance.SetWeaponItem(_weaponArray, _currentWeapon.AddressableKey);
 
         Component component = player.GetComponent<IWeapon>() as Component;
         if(component != null)
@@ -143,16 +105,35 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
                 break;
         }
 
-        _weaponArray = WeaponPool.Instance.GetWeaponItem(itemType);
-        WeaponObjectController weaponController = new WeaponObjectController();
-
-        for (int i = 0; i < _weaponInfos.Length; i++)
-            EquipWeapon(weaponController, _weaponArray[i], _weaponInfos[i].Parent, itemType, _weaponInfos[i].Hand);
-        
-        _currentWeapon.InitializeWeapon(weaponController);
+        StartCoroutine(GetWeaponArray(_currentWeapon, itemType));
     }
 
-    private void EquipWeapon(WeaponObjectController weapon, GameObject weaponObject, 
+    private IEnumerator GetWeaponArray(IWeapon currentWeapon, ItemType itemType)
+    {
+        var addressKey = currentWeapon.AddressableKey;
+        
+        var weaponArray = WeaponPool.Instance.GetWeaponItem(addressKey);
+        if(weaponArray == null)
+        {
+            WeaponPool.Instance.CreatePool(addressKey);
+            yield return new WaitUntil(() => 
+            WeaponPool.Instance.GetWeaponItem(addressKey) != null);
+            weaponArray = WeaponPool.Instance.GetWeaponItem(addressKey);
+        }
+
+        _weaponArray = weaponArray;
+
+        WeaponObjectController controller = new WeaponObjectController();
+        for(int i = 0; i < WeaponInfos.Length; i++)
+        {
+            EquipWeapon(controller, _weaponArray[i],
+                WeaponInfos[i].Parent, itemType, WeaponInfos[i].Hand);
+        }
+
+        currentWeapon.InitializeWeapon(controller);
+    }
+    
+    private void EquipWeapon(WeaponObjectController weaponObjectController, GameObject weaponObject,
         Transform parent, ItemType itemType, PlayerHand hand)
     {
         weaponObject.transform.SetParent(parent);
@@ -163,7 +144,7 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
 
         weaponObject.transform.localPosition = new Vector3(localPos.x, localPos.y, localPos.z);
         weaponObject.transform.localRotation = Quaternion.Euler(localEuler.x, localEuler.y, localEuler.z);
-        weapon.AddWepons(hand, weaponObject);
+        weaponObjectController.AddWepons(hand, weaponObject);
     }
 }
 
@@ -208,6 +189,7 @@ public class WeaponObjectController
 public interface IWeapon
 {
     void UseWeapon();
+    string AddressableKey { get; }
     void InitializeWeapon(WeaponObjectController weapon);
     PlayerWeaponData GetWeaponData();
     WeaponObjectController GetWeaponController();

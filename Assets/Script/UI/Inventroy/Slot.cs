@@ -13,9 +13,16 @@ namespace InventoryUI
 
     public abstract class CurrencyItemSlot : ISlot
     {
+        public enum CurrencySlot
+        {
+            Seed,
+            Soul
+        }
+
         protected string _key;
         protected int _currency;
         public abstract int Currency { get; set; }
+        public abstract CurrencySlot GetSlotType { get; }
         public abstract bool CanUseCurrencyItem(int count);
         public abstract void UseItem(int count);
         public abstract void InitializeSlot();

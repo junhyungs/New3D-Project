@@ -4,35 +4,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using EnumCollection;
 using GameData;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class ObjectPool<T> : Singleton_MonoBehaviour<T> where T : MonoBehaviour
 {
-    protected Dictionary<ObjectKey, Pool> _poolDictionary = new Dictionary<ObjectKey, Pool>();
+    protected Dictionary<string, Pool> _poolDictionary = new Dictionary<string, Pool>();
 
-    protected virtual void Awake()
-    {
-        DataManager.Instance.TestLoadPathData(); //테스트 코드
-    }
+    //protected virtual void Awake()
+    //{
+    //    DataManager.Instance.TestLoadPathData(); //테스트 코드
+    //}
 
-    protected virtual PathData GetPathData(ObjectKey objectKey)
+    protected string TrimStart(string targetString)
     {
-        var key = objectKey.ToString();
-        var newPathData = DataManager.Instance.GetData(key) as PathData;
-        return newPathData;
+        var trim = "Prefab/";
+        if(targetString.StartsWith(trim))
+            return targetString.Substring(trim.Length);
+
+        return targetString;
     }
 
     protected IEnumerator LoadPrefab(Pool pool, string path, string name, int count)
     {
-        var request = Resources.LoadAsync<GameObject>(path);
-        yield return new WaitUntil(() => request.isDone);
+        var handle = Addressables.LoadAssetAsync<GameObject>(path);
+        yield return handle;
 
-        var requestAsset = request.asset as GameObject;
-        requestAsset.name = name;
-        pool.SaveItem = requestAsset;
+        if(handle.Status != AsyncOperationStatus.Succeeded)
+            yield break;
+
+        var prefab = handle.Result;
+        prefab.name = name;
+        pool.SaveItem = prefab;
 
         for (int i = 0; i < count; i++)
         {
-            var poolItem = Instantiate(requestAsset, pool.PoolTrasnform);
+            var poolItem = Instantiate(prefab, pool.PoolTrasnform);
             poolItem.SetActive(false);
             pool.Enqueue(poolItem);
 
@@ -44,10 +51,10 @@ public class ObjectPool<T> : Singleton_MonoBehaviour<T> where T : MonoBehaviour
 
 public interface IObjectPool
 {
-    void CreatePool(ObjectKey objectKey, int count = 1);
-    void AllDisableGameObject(ObjectKey objectKey);
-    void EnqueueGameObject(ObjectKey objectKey, GameObject gameObject);
-    GameObject DequeueGameObject(ObjectKey objectKey);
+    void CreatePool(string address, int count = 1);
+    void AllDisableGameObject(string address);
+    void EnqueueGameObject(string addressablesKey, GameObject gameObject);
+    GameObject DequeueGameObject(string addressablesKey);
 }
 
 public class Pool

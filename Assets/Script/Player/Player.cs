@@ -1,5 +1,7 @@
+using EnumCollection;
 using System.Collections.Generic;
 using UnityEngine;
+
 
 namespace PlayerComponent
 {
@@ -19,7 +21,7 @@ namespace PlayerComponent
 
         private void Awake()
         {
-            DataManager.Instance.AddToPlayerData(null); //테스트를 위한 임시 코드.
+            //DataManager.Instance.AddToPlayerData(null); //테스트 코드
             InitializeOnAwakePlayer();
         }
 
@@ -49,6 +51,9 @@ namespace PlayerComponent
         private void InitializeOnStartPlayer()
         {
             PlayerHealth = new PlayerHealth(StateHandler);
+
+            var key = EnableUI.PlayerUI.ToString();
+            UIManager.Instance.EnableUI(key);
         }
 
         private void AddUnbindList()
@@ -94,6 +99,15 @@ namespace PlayerComponent
         public float Range;
         public Transform InteractionTransform;
         public LayerMask Target;
+    }
+
+    [System.Serializable]
+    public class EquipTransformInfo
+    {
+        [Header("EquipTransform")]
+        public Transform Holster;
+        public Transform WeaponL;
+        public Transform WeaponR;
     }
 }
 

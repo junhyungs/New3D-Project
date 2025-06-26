@@ -12,8 +12,8 @@ public class Bomb : PlayerSkill, ISkill
     {
         RequiresReload = true;
 
-        _objectKey = ObjectKey.PlayerBombPrefab;
-        MakeProjectile(_objectKey);
+        _address = AddressablesKey.Prefab_PlayerBomb;
+        MakeProjectile(_address);
     }
 
     private const string _arrowBombEnd = "Arrow_bomb_end";
@@ -72,7 +72,7 @@ public class Bomb : PlayerSkill, ISkill
         if (!TryUse())
             return;
 
-        var bombObject = ProjectilePool.Instance.DequeueGameObject(_objectKey);
+        var bombObject = ProjectilePool.Instance.DequeueGameObject(_address);
         bombObject.transform.SetParent(_skillInfo.FireTransform);
         bombObject.transform.localPosition = Vector3.zero;
         bombObject.transform.localRotation = Quaternion.identity;

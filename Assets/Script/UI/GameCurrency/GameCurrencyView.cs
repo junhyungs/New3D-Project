@@ -8,13 +8,13 @@ using TMPro;
 
 namespace PlayerInfoUI
 {
-    public class GameCurrencyView : View<GameCurrencyViewModel>
+    public class GameCurrencyView : View<GameCurrencyViewModel>, IOnAwakeRegisterView
     {
         [Header("ValueText")]
         [SerializeField] private TextMeshProUGUI _seedValueText;
         [SerializeField] private TextMeshProUGUI _soulValueText;
 
-        private void OnEnable()
+        public void InitializeView()
         {
             Initialize();
         }

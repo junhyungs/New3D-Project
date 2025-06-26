@@ -13,7 +13,7 @@ namespace PlayerComponent
         protected override void Awake()
         {
             base.Awake();
-            _objectKey = ObjectKey.PlayerArrowPrefab;
+            _address = AddressablesKey.Prefab_PlayerArrow;
         }
 
         protected override void OnDisable()

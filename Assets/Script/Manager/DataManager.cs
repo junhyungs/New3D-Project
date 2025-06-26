@@ -1,23 +1,30 @@
 using EnumCollection;
 using GameData;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Linq;
+using UnityEngine.AddressableAssets;
 
 public class DataManager : Singleton<DataManager>
 {
     private Dictionary<string, Data> _dataDictionary = new Dictionary<string, Data>();
 
-    private void TryAddData(string key, Data data)
+    private bool TryAddData(string key, Data data)
     {
-        if (_dataDictionary.TryAdd(key, data)) Debug.Log($"AddData : {key}");
-        else Debug.Log($"Fail : {key}");
+        Debug.Log($"TryAddData : {key}");
+        if (_dataDictionary.TryAdd(key, data))
+        {
+            Debug.Log($"AddData : {key}");
+            return true;
+        }
+        else
+        {
+            Debug.Log($"Fail : {key}");
+            return false;
+        }
     }
 
     public Data GetData(string key)
@@ -29,29 +36,46 @@ public class DataManager : Singleton<DataManager>
         return null;
     }
 
+    #region LoadAllData
     public async UniTask LoadAllData()
     {
-        var taskList = new List<UniTask>()
-        {
-            AddToPlayerDataAsync(),
-            LoadPathData(),
-            LoadItemDescriptionData(),
-            LoadDialogData(),
-        };
-        
-        await UniTask.WhenAll(taskList);
+        await LoadPlayerGroup();
+        await LoadItemDescriptionData();
+        await LoadDialogData();
+        await LoadUpgradeGroup();
+        await LoadMapData();
     }
 
-    private async UniTask<JArray> LoadJsonArrayAsync(string path)
+    private async UniTask LoadPlayerGroup()
     {
-        var request = Resources.LoadAsync<TextAsset>(path);
-        await request.ToUniTask();
+        await ParsePlayerBaseDataAsync();
 
-        var textAsset = request.asset as TextAsset;
-        return JArray.Parse(textAsset.text);
+        await UniTask.WhenAll(
+            ParsePlayerSkillDataAsync(),
+            ParsePlayerWeaponDataAsync(),
+            LoadPlayerInventoryDataAsync()
+            );
     }
 
-    private JArray LoadJsonArray(string path)
+    private async UniTask LoadUpgradeGroup()
+    {
+        await UniTask.WhenAll(
+            LoadUpgradeAbilityDataAsync(),
+            LoadUpgradeSkillDataAsync()
+            );
+    }
+    #endregion
+    private async UniTask<JArray> LoadJsonArrayAsync(string address)
+    {
+        var handle = Addressables.LoadAssetAsync<TextAsset>(address);
+        var textAsset = await handle.ToUniTask();
+
+        var json = JArray.Parse(textAsset.text);
+        Addressables.Release(handle);
+        return json;
+    }
+
+    private JArray LoadJsonArray(string path) //최종 빌드 시 삭제
     {
         var textAsset = Resources.Load<TextAsset>(path);
         return JArray.Parse(textAsset.text);
@@ -60,23 +84,31 @@ public class DataManager : Singleton<DataManager>
     #region DialogData
     private async UniTask LoadDialogData()
     {
+        var address = AddressablesKey.JsonData_Dialog;
+        JArray jArray = await LoadJsonArrayAsync(address);
         var dialogDictionary = new Dictionary<string, Dialog>();
-        JArray jArray = await LoadJsonArrayAsync("JsonData/New_3D_Dialog");
-        foreach(var item in jArray)
+        try
         {
-            var id = ParseString(item["Id"]);
-            var name = ParseString(item["Name"]);
-            var storyList = ParseDialogList(item["Story"]);
-            var loopList = ParseDialogList(item["Loop"]);
-            var endList = ParseDialogList(item["End"]);
+            foreach (var item in jArray)
+            {
+                var id = ParseString(item["Id"]);
+                var name = ParseString(item["Name"]);
+                var storyList = ParseDialogList(item["Story"]);
+                var loopList = ParseDialogList(item["Loop"]);
+                var endList = ParseDialogList(item["End"]);
 
-            Dialog dialog = new Dialog(name, storyList, loopList, endList);
-            dialogDictionary.Add(id, dialog);
+                Dialog dialog = new Dialog(name, storyList, loopList, endList);
+                dialogDictionary.Add(id, dialog);
+            }
+
+            DialogData data = new DialogData(dialogDictionary);
+            var key = DataKey.DialogData.ToString();
+            TryAddData(key, data);
         }
-
-        DialogData data = new DialogData(dialogDictionary);
-        var key = DataKey.DialogData.ToString();
-        TryAddData(key, data);
+        catch(Exception ex)
+        {
+            Debug.Log(ex.Message);
+        }
     }
 
     private List<string> ParseDialogList(JToken jToken)
@@ -90,35 +122,28 @@ public class DataManager : Singleton<DataManager>
     #region ItemDescriptionData
     private async UniTask LoadItemDescriptionData()
     {
-        JArray jArray = await LoadJsonArrayAsync("JsonData/New_3D_ItemDescription");
-        foreach (var item in jArray)
+        var address = AddressablesKey.JsonData_ItemDescription;
+        JArray jArray = await LoadJsonArrayAsync(address);
+        try
         {
-            string id = ParseString(item["Id"]);
-            string itemName = ParseString(item["ItemName"]);
-            string description = ParseString(item["Description"]);
+            foreach (var item in jArray)
+            {
+                string id = ParseString(item["Id"]);
+                string itemName = ParseString(item["ItemName"]);
+                string description = ParseString(item["Description"]);
 
-            ItemDescriptionData data = new ItemDescriptionData(id, itemName, description);
-            TryAddData(id, data);
+                ItemDescriptionData data = new ItemDescriptionData(id, itemName, description);
+                TryAddData(id, data);
+            }
         }
-    }
-    #endregion
-    #region PathData
-    private async UniTask LoadPathData()
-    {
-        JArray jArray = await LoadJsonArrayAsync($"JsonData/New_3D_Path");
-
-        foreach(var item in jArray)
+        catch (Exception ex)
         {
-            string id = ParseString(item["ID"]);
-            string path = ParseString(item["Path"]);
-
-            PathData pathData = new PathData(id, path);
-            TryAddData(id, pathData);
+            Debug.Log(ex.Message);
         }
     }
     #endregion
     #region Player
-    public async UniTask AddToPlayerDataAsync()
+    private async UniTask ParsePlayerBaseDataAsync()
     {
         var index = SaveManager.SaveIndex;
         PlayerSaveData saveData = await SaveManager.Instance.LoadPlayerSaveDataAsync(index);
@@ -132,42 +157,30 @@ public class DataManager : Singleton<DataManager>
         {
             try
             {
-                await NewPlayerDataAsync();
+                var address = AddressablesKey.JsonData_PlayerBase;
+                JArray jArray = await LoadJsonArrayAsync(address);
+                var item = jArray[0];
+
+                var newSaveData = new PlayerSaveData();
+                newSaveData.ID = ParseString(item["ID"]);
+                newSaveData.Power = ParseInt(item["Power"]);
+                newSaveData.Speed = ParseFloat(item["Speed"]);
+                newSaveData.Health = ParseInt(item["Health"]);
+                newSaveData.ConstantData = ParseConstantData(item);
+
+                if (TryAddData(newSaveData.ID, newSaveData))
+                {
+                    var directoryPath = SaveManager.DirectoryPath;
+                    await SaveManager.Instance.SavePlayer(directoryPath);
+                }
+                else
+                    throw new Exception("Player TryAddData Fail");
             }
             catch(Exception ex)
             {
                 Debug.Log(ex.Message);
             }
         }
-    }
-
-    private async UniTask NewPlayerDataAsync()
-    {
-        List<UniTask> taskList = new List<UniTask>()
-        {
-            ParsePlayerBaseDataAsync(),
-            ParsePlayerSkillDataAsync(),
-            ParsePlayerWeaponDataAsync()
-        };
-
-        await UniTask.WhenAll(taskList);
-    }
-
-    private async UniTask ParsePlayerBaseDataAsync()
-    {
-        var path = $"JsonData/New_3D_Player";
-        JArray jArray = await LoadJsonArrayAsync(path);
-        var item = jArray[0];
-
-        var newSaveData = new PlayerSaveData();
-        newSaveData.ID = ParseString(item["ID"]);
-        newSaveData.Power = ParseInt(item["Power"]);
-        newSaveData.Speed = ParseFloat(item["Speed"]);
-        newSaveData.Health = ParseInt(item["Health"]);
-        newSaveData.ConstantData = ParseConstantData(item);
-
-        //SaveManager.Instance.SavePlayerData(data);
-        TryAddData(newSaveData.ID, newSaveData);
     }
 
     private PlayerConstantData ParseConstantData(JToken item)
@@ -186,37 +199,90 @@ public class DataManager : Singleton<DataManager>
 
     private async UniTask ParsePlayerSkillDataAsync()
     {
-        var path = $"JsonData/New_3D_PlayerSkill";
-        JArray jArray = await LoadJsonArrayAsync(path);
-
-        foreach(var item in jArray)
+        var address = AddressablesKey.JsonData_PlayerSkill;
+        JArray jArray = await LoadJsonArrayAsync(address);
+        
+        try
         {
-            var id = ParseString(item["ID"]);
-            var projectileSpeed = ParseFloat(item["ProjectileSpeed"]);
-            var flightTime = ParseFloat(item["FlightTime"]);
-            var projectileDamage = ParseInt(item["ProjectileDamage"]);
-            var projectileCost = ParseInt(item["ProjectileCost"]);
+            foreach (var item in jArray)
+            {
+                var id = ParseString(item["ID"]);
+                var projectileSpeed = ParseFloat(item["ProjectileSpeed"]);
+                var flightTime = ParseFloat(item["FlightTime"]);
+                var projectileDamage = ParseInt(item["ProjectileDamage"]);
+                var projectileCost = ParseInt(item["ProjectileCost"]);
 
-            PlayerSkillData data = new PlayerSkillData(id, projectileSpeed, projectileDamage,
-                projectileCost, flightTime);
+                PlayerSkillData data = new PlayerSkillData(id, projectileSpeed, projectileDamage,
+                    projectileCost, flightTime);
 
-            TryAddData(id, data);
+                TryAddData(id, data);
+            }
+        }
+        catch(Exception ex)
+        {
+            Debug.Log(ex.Message);
         }
     }
 
     private async UniTask ParsePlayerWeaponDataAsync()
     {
-        var path = "JsonData/New_3D_PlayerWeapon";
-        JArray jArray = await LoadJsonArrayAsync(path);
+        var address = AddressablesKey.JsonData_PlayerWeapon;
+        JArray jArray = await LoadJsonArrayAsync(address);
 
-        foreach(var item in jArray)
+        try
         {
-            var id = ParseString(item["Id"]);
-            var damage = ParseInt(item["Damage"]);
-            var range = ParseVector3(item["Range"]);
+            foreach (var item in jArray)
+            {
+                var id = ParseString(item["Id"]);
+                var damage = ParseInt(item["Damage"]);
+                var range = ParseVector3(item["Range"]);
 
-            PlayerWeaponData data = new PlayerWeaponData(id, damage, range);
-            TryAddData(id, data);
+                PlayerWeaponData data = new PlayerWeaponData(id, damage, range);
+                TryAddData(id, data);
+            }
+        }
+        catch(Exception ex)
+        {
+            Debug.Log(ex.Message);
+        }
+    }
+
+    private async UniTask LoadPlayerInventoryDataAsync()
+    {
+        var key = DataKey.Inventory_Data.ToString();
+        PlayerInventoryData data = await SaveManager.Instance.LoadPlayerInventoryDataAsync();
+        if (data != null)
+            TryAddData(key, data);
+        else
+        {
+            data = new PlayerInventoryData();
+            TryAddData(key, data);
+        }
+    }
+
+    private async UniTask LoadUpgradeSkillDataAsync()
+    {
+        var key = DataKey.SkillUpgrade.ToString();
+        PlayerUpgradeData_Skill data = await SaveManager.Instance.LoadPlayerUpgradeData_SkillAsync();
+        if(data != null)
+            TryAddData(key, data);
+        else
+        {
+            data = new PlayerUpgradeData_Skill(0);
+            TryAddData(key, data);
+        }
+    }
+
+    private async UniTask LoadUpgradeAbilityDataAsync()
+    {
+        var key = DataKey.AbilityUpgrade.ToString();
+        PlayerUpgradeData_Ability data = await SaveManager.Instance.LoadPlayerUpgradeData_AbilityAsync();
+        if(data != null)
+            TryAddData(key, data);
+        else
+        {
+            data = new PlayerUpgradeData_Ability(0, 0f);
+            TryAddData(key, data);
         }
     }
 
@@ -237,8 +303,8 @@ public class DataManager : Singleton<DataManager>
     public List<(int, int)> LoadResolutionData()
     {
         var dataList = new List<(int, int)>();
-        var jsonName = JsonData.New_3D_ScreenResolution.ToString();
-        var jsonData = Resources.Load<TextAsset>($"JsonData/{jsonName}");
+        var jsonName = AddressablesKey.JsonData_ScreenResolution;
+        var jsonData = Resources.Load<TextAsset>(jsonName);
 
         JArray jArray = JArray.Parse(jsonData.text);
         foreach (var itme in jArray)
@@ -250,6 +316,21 @@ public class DataManager : Singleton<DataManager>
         }
 
         return dataList;
+    }
+    #endregion
+    #region Map
+    private async UniTask LoadMapData()
+    {
+        var key = DataKey.Map_Data.ToString();
+        var mapData = await SaveManager.Instance.LoadMapSaveDataAsync();
+        if (mapData != null)
+            TryAddData(key, mapData);
+        else
+        {
+            var progressDic = new Dictionary<string, MapProgress>();
+            mapData = new MapData(progressDic);
+            TryAddData(key, mapData);
+        }
     }
     #endregion
     #region TestCode
@@ -277,24 +358,7 @@ public class DataManager : Singleton<DataManager>
         }
         catch { }
     }
-    public void TestLoadPathData()
-    {
-        try
-        {
-            var textAsset = Resources.Load<TextAsset>("JsonData/New_3D_Path");
-            JArray jArray = JArray.Parse(textAsset.text);
 
-            foreach (var item in jArray)
-            {
-                string id = ParseString(item["ID"]);
-                string path = ParseString(item["Path"]);
-
-                PathData pathData = new PathData(id, path);
-                TryAddData(id, pathData);
-            }
-        }
-        catch { }
-    }
     public void TestLoadItemDescriptionData()
     {
         try
@@ -324,8 +388,8 @@ public class DataManager : Singleton<DataManager>
         {
             try
             {
-                var jsonDataName = JsonData.New_3D_Player.ToString();
-                ParsePlayerBaseData($"JsonData/{jsonDataName}");
+                var jsonDataName = AddressablesKey.JsonData_PlayerBase;
+                ParsePlayerBaseData(jsonDataName);
                 ParsePlayerSkillData();
             }
             catch
@@ -373,7 +437,7 @@ public class DataManager : Singleton<DataManager>
 
     private void ParsePlayerSkillData()
     {
-        var path = $"JsonData/{JsonData.New_3D_PlayerSkill}";
+        var path = AddressablesKey.JsonData_PlayerSkill;
         JArray jArray = LoadJsonArray(path);
 
         foreach (var item in jArray)
@@ -393,7 +457,7 @@ public class DataManager : Singleton<DataManager>
 
     public void ParsePlayerWeaponData()
     {
-        var path = "JsonData/New_3D_PlayerWeapon";
+        var path = AddressablesKey.JsonData_PlayerWeapon;
         JArray jArray = LoadJsonArray(path);
 
         foreach (var item in jArray)

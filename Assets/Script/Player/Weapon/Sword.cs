@@ -6,6 +6,8 @@ using System;
 
 public class Sword : PlayerWeapon
 {
+    public override string AddressableKey => AddressablesKey.Prefab_PlayerSword;
+
     private void Start()
     {
         GetWeaponData(DataKey.Sword_Data);
