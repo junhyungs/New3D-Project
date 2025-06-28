@@ -11,11 +11,6 @@ public class ObjectPool<T> : Singleton_MonoBehaviour<T> where T : MonoBehaviour
 {
     protected Dictionary<string, Pool> _poolDictionary = new Dictionary<string, Pool>();
 
-    //protected virtual void Awake()
-    //{
-    //    DataManager.Instance.TestLoadPathData(); //테스트 코드
-    //}
-
     protected string TrimStart(string targetString)
     {
         var trim = "Prefab/";

@@ -7,8 +7,9 @@ namespace PlayerComponent
 {
     public class Player : MonoBehaviour, ITakeDamage
     {
-        [Header("Interaction")]
-        [Header("InteractionInfo"), SerializeField] private InteractionInfo _interactionInfo;
+        [Header("Info")]
+        [SerializeField] private InteractionInfo _interactionInfo;
+        [SerializeField] private EquipTransformInfo _equipTransform;
 
         public PlayerInputHandler InputHandler { get; private set; }    
         public PlayerHealth PlayerHealth { get; private set; }
@@ -46,6 +47,21 @@ namespace PlayerComponent
             Interaction = new PlayerInteraction(this, _interactionInfo);
             
             AddUnbindList();
+            MakeWeaponInfo();
+        }
+
+        private void MakeWeaponInfo()
+        {
+            var weaponInfos = new WeaponInfo[]
+            {
+                new(_equipTransform.Holster, PlayerHand.Idle),
+                new(_equipTransform.WeaponR, PlayerHand.Right),
+                new(_equipTransform.WeaponL, PlayerHand.Left),
+                new(_equipTransform.WeaponL, PlayerHand.Charge_L),
+                new(_equipTransform.WeaponR, PlayerHand.Charge_R),
+            };
+
+            WeaponManager.Instance.WeaponInfos = weaponInfos;
         }
 
         private void InitializeOnStartPlayer()
@@ -108,6 +124,18 @@ namespace PlayerComponent
         public Transform Holster;
         public Transform WeaponL;
         public Transform WeaponR;
+    }
+
+    public struct WeaponInfo
+    {
+        public Transform Parent;
+        public PlayerHand Hand;
+
+        public WeaponInfo(Transform parent, PlayerHand hand)
+        {
+            this.Parent = parent;
+            this.Hand = hand;
+        }
     }
 }
 

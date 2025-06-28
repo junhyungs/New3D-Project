@@ -9,10 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b8adc9b832108546af6656e13110404, type: 3}
-  m_Name: Idle_Umbrella
+  m_Script: {fileID: 11500000, guid: d6fa2d92fc1b3f34da284357edf89c3b, type: 3}
+  m_Name: Intro_EnablePlayer
   m_EditorClassIdentifier: 
-  _weaponType: 9
-  _handType: 0
-  _localEulerAngles: {x: 350.6699, y: 163.2219, z: 9.329356}
-  _localPosition: {x: -0.116, y: -0.265, z: -0.349}

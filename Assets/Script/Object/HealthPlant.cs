@@ -35,7 +35,7 @@ public class HealthPlant : MonoBehaviour, IInteractionItem
         }
         else
         {
-            var player = PlayerManager.Instance.Player;
+            var player = PlayerManager.Instance.PlayerComponent;
             var playerHealth = player.PlayerHealth;
             if (playerHealth.Health >= playerHealth.MAXHEALTH)
                 return;

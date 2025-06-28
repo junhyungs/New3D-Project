@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.InputSystem;
+using UnityEngine.Playables;
 
 public class DialogManager : Singleton_MonoBehaviour<DialogManager>
 {

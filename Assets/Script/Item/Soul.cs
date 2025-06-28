@@ -56,8 +56,8 @@ namespace ItemComponent
                 yield return null;
             }
 
-            var player = PlayerManager.Instance.Player;
-            var playerTransform = player.transform;
+            var playerObject = PlayerManager.Instance.PlayerObject;
+            var playerTransform = playerObject.transform;
             var speed = _speed * 2;
             while (_isMove)
             {

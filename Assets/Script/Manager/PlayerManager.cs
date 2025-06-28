@@ -3,15 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using PlayerComponent;
 using Cinemachine;
+using EnumCollection;
 
 public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
 {
-    [Header("PlayerPrefab"), SerializeField] private GameObject _playerPrefab; //TODO Resources File
-    [Header("PlayerVirtualCamera"), SerializeField] private GameObject _virtualCamera; //TODO Resources File
-    public Player Player { get; private set; }
-    public GameObject VirtualCamera { get; private set; }
+    [Header("PlayerPrefab")]
+    [SerializeField] private GameObject _playerPrefab;
+    [Header("VirtualCamera")]
+    [SerializeField] private GameObject _cameraPrefab;
+
+    public Player PlayerComponent { get; private set; }
+    public CinemachineVirtualCamera VirtualCameraComponent { get; private set; }    
+    public CinemachineTransposer VirtualCameraTransposer { get; private set; }
+    public GameObject PlayerObject => PlayerComponent.gameObject;
+    public GameObject VirtualCameraObject => VirtualCameraComponent.gameObject;
 
     private void Awake()
+    {
+        
+    }
+    private void Start()
     {
         CreatePlayer();
         CreateVirtualCamera();
@@ -20,42 +31,33 @@ public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
     private void CreatePlayer()
     {
         var playerObject = Instantiate(_playerPrefab);
-        Player = playerObject.GetComponent<Player>();
+        PlayerComponent = playerObject.GetComponent<Player>();
+
+        WeaponManager.Instance.SetWeapon(ItemType.Sword);
+        playerObject.SetActive(false);
     }
 
     private void CreateVirtualCamera()
     {
-        VirtualCamera = Instantiate(_virtualCamera);
-        VirtualCamera.transform.rotation = Quaternion.Euler(51f, 0f, 0f);
+        var virtualCameraObject = Instantiate(_cameraPrefab);
+        //virtualCameraObject.transform.rotation = Quaternion.Euler(51f, 0f, 0f);
 
-        CinemachineVirtualCamera virtualCameraComponent = VirtualCamera.GetComponent<CinemachineVirtualCamera>();
-        virtualCameraComponent.Follow = Player.transform;
-        virtualCameraComponent.LookAt = Player.transform;
+        VirtualCameraComponent = virtualCameraObject.GetComponent<CinemachineVirtualCamera>();
+        VirtualCameraComponent.Follow = PlayerObject.transform;
+        VirtualCameraComponent.LookAt = PlayerObject.transform;
 
-        var doNothing = virtualCameraComponent.GetCinemachineComponent<CinemachineComposer>();
-        if(doNothing != null)
-            Destroy(doNothing);
+        VirtualCameraTransposer = VirtualCameraComponent.GetCinemachineComponent<CinemachineTransposer>();
+        VirtualCameraTransposer.m_BindingMode = CinemachineTransposer.BindingMode.WorldSpace;
+        //VirtualCameraTransposer.m_FollowOffset = new Vector3(0f, 10f, -8f);
+        VirtualCameraTransposer.m_XDamping = 0f;
+        VirtualCameraTransposer.m_YDamping = 0f;
+        VirtualCameraTransposer.m_ZDamping = 0f;
 
-        var transPoser = virtualCameraComponent.GetCinemachineComponent<CinemachineTransposer>();
-        transPoser.m_BindingMode = CinemachineTransposer.BindingMode.WorldSpace;
-        transPoser.m_FollowOffset = new Vector3(0f, 10f, -8f);
-        transPoser.m_XDamping = 0f;
-        transPoser.m_YDamping = 0f;
-        transPoser.m_ZDamping = 0f;
-    }
-
-    public void ForceMovePlayer(Transform transform)
-    {
-        Player.transform.position = transform.position; 
-    }
-
-    public void ForceMoveVirtualCamera(Transform transform)
-    {
-        VirtualCamera.transform.position = transform.position;
+        virtualCameraObject.SetActive(false);
     }
 
     public void LockPlayer(bool enable)
     {
-        Player.InputHandler.LockPlayer(!enable);
+        PlayerComponent.InputHandler.LockPlayer(!enable);
     }
 }

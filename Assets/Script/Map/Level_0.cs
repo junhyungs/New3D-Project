@@ -2,11 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GameData;
+using UnityEngine.Playables;
+using TimeLineComponent;
 
 namespace MapComponent
 {
     public class Level_0 : Map
     {
+        [Header("TimeLine")]
+        [SerializeField] private TimeLine _intro;
+        [SerializeField] private TimeLine _hallCrow;
+
         private Level_0_progress _myProgress;
         public override void Initialize()
         {
@@ -21,10 +27,11 @@ namespace MapComponent
         private void Start()
         {
             bool isStart = _myProgress.Initialize;
-            if (isStart)
+            if (!isStart)
             {
                 //TODO
-                _myProgress.Initialize = false;
+                _intro.PlayTimeLine();
+                _myProgress.Initialize = true;
             }
         }
     }

@@ -27,6 +27,11 @@ public abstract class PlayerWeapon : MonoBehaviour, IWeapon
         _weaponController = weapon;
         _weaponController.SetWeaponActive(PlayerHand.Idle);
 
+        bool isNull = _animEvent == null ? true : false;
+        if (isNull)
+        {
+            Debug.Log("Null");
+        }
         _animEvent.SetWeaponAction(UseWeapon);
     }
 

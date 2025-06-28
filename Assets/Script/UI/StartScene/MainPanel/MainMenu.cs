@@ -13,7 +13,7 @@ public class MainMenu : MenuUI
     private Dictionary<GameObject, Menu> _menuDictionary;
     private Button[] _menuButtons;
     private GameObject _currentUI;
-    private bool _enableButtons;
+    private bool _enableButtons = true;
 
     protected override void Awake()
     {
