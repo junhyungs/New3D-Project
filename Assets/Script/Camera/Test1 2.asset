@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc8c384439bd5204ab776413349bbeac, type: 3}
   m_Name: Test1 2
   m_EditorClassIdentifier: 
-  _followOffset: {x: 0, y: 5, z: -8}
+  _followOffset: {x: 0, y: 7.48, z: -14}
   _blendSpeed: 2
   _fieldOfView: 45
