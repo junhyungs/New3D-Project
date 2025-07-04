@@ -2,7 +2,6 @@ using EnumCollection;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 namespace PlayerComponent
 {
     public class Player : MonoBehaviour, ITakeDamage

@@ -6,7 +6,8 @@ using UnityEngine;
 
 namespace PlayerComponent
 {
-    public class Attack : PlayerAttackState, ICharacterState<Attack>, IAttackStateEventReceiver
+    public class Attack : PlayerAttackState, ICharacterState<Attack>,
+        IAttackStateEventReceiver, IEnableObject
     {
         public Attack(Player player) : base(player)
         {
@@ -199,6 +200,11 @@ namespace PlayerComponent
         {
             _enableMovement = false;
             _isNextClick = false;
+        }
+
+        public void OnEnableObject()
+        {
+            InitializeBehaviour();
         }
     }
 

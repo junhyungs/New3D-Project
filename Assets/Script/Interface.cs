@@ -65,3 +65,8 @@ public interface IBurnable
     void Ignite();
     bool IsBurning();
 }
+
+public interface IEnableObject
+{
+    void OnEnableObject();
+}

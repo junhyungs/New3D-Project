@@ -19,6 +19,8 @@ namespace State
         private ICharacterState _state;
         private TEnum _currentType;
 
+        public Dictionary<TEnum, ICharacterState> StateDictionary => _stateDictionary;
+
         public void FixedUpdate()
         {
             _state.OnStateFixedUpdate();
