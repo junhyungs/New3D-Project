@@ -29,6 +29,8 @@ public class MeshCombiner : MonoBehaviour
                 if (_gameObjects[i] != null)
                     Undo.DestroyObjectImmediate(_gameObjects[i]);
         }
+
+        ResetMeshCombiner();
     }
 
     public void ResetMeshCombiner()
@@ -69,6 +71,9 @@ public class MeshCombiner : MonoBehaviour
             var value = item.Value;
             CreateMesh(value, key, parentObject);
         }
+
+        parentObject.transform.position = _center.position;
+        parentObject.transform.rotation = _center.rotation;
     }
 
     private void CreateMesh(List<MeshFilter> meshFilters, Material material, GameObject parentObject)

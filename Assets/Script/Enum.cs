@@ -119,6 +119,11 @@ namespace EnumCollection
         Agatha
     }
 
+    public enum TimeLine
+    {
+        Intro,
+    }
+
     public enum MapName
     {
         Level_0,

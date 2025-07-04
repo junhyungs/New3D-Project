@@ -14,7 +14,12 @@ public class MapManager : MonoBehaviour
 
     private async void Start()
     {
-        await LoadMapAsync(AddressablesKey.Map_Level_0);
+        var key = DataKey.Map_Data.ToString();
+        var mapData = DataManager.Instance.GetData(key) as MapData;
+
+        var startMapName = mapData.CurrentMapObjectName != null ?
+            mapData.CurrentMapObjectName : AddressablesKey.Map_Level_0;
+        await LoadMapAsync(startMapName);
     }
 
     private void OnDestroy()
@@ -52,8 +57,7 @@ public class MapManager : MonoBehaviour
 
         if(nextMap.TryGetComponent(out Map mapCompnent))
         {
-            mapCompnent.ProgressDictionary = mapData.ProgressDictionary;
-            mapCompnent.Initialize();
+            mapCompnent.Initialize(mapData.ProgressDictionary);
         }
         else
         {

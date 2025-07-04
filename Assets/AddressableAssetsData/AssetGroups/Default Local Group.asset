@@ -22,11 +22,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7f76d118ebe049743a588f4d362db4a7
-    m_Address: Map/Level_1
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 05ae46a126d680a4eb80568545483304
     m_Address: Map/Level_2
     m_ReadOnly: 0
@@ -111,6 +106,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - WeaponAsset
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f76d118ebe049743a588f4d362db4a7
+    m_Address: Map/Level_1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 68fa7f047f245514e8fee859a6f4aba0, type: 2}

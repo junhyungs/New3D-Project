@@ -15,7 +15,7 @@ public class InventoryManager : Singleton_MonoBehaviour<InventoryManager>
     private Dictionary<ItemType, Action<IPlayerItem, PlayerItemSlot>> _refreshDictionary = new Dictionary<ItemType, Action<IPlayerItem, PlayerItemSlot>>();
     private Dictionary<ItemType, IPlayerItem> _refreshItemDictionary = new Dictionary<ItemType, IPlayerItem>();
     private PlayerInventoryData _playerInventoryData;
-    
+
     //private void Awake()
     //{
     //    DataManager.Instance.TestLoadItemDescriptionData(); //테스트 코드

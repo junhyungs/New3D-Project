@@ -18,6 +18,7 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
 
     private IWeapon _currentWeapon;
     public IWeapon CurrentWeapon => _currentWeapon;
+    public ItemType WeaponType { get; private set; }
     public WeaponInfo[] WeaponInfos { get; set; }
 
     private void Awake()
@@ -29,7 +30,6 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
     private void Start()
     {
         //DataManager.Instance.ParsePlayerWeaponData(); // 테스트 코드
-        SetWeapon(ItemType.Sword);
     }
 
     private void InitializeDictionary()
@@ -77,35 +77,36 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
         if (!_weaponTypeSet.Contains(itemType))
             return;
 
-        var player = PlayerManager.Instance.Player;
+        var playerObject = PlayerManager.Instance.PlayerObject;
 
         if (_weaponArray != null && _currentWeapon != null)
             WeaponPool.Instance.SetWeaponItem(_weaponArray, _currentWeapon.AddressableKey);
 
-        Component component = player.GetComponent<IWeapon>() as Component;
+        Component component = playerObject.GetComponent<IWeapon>() as Component;
         if(component != null)
             Destroy(component);
 
         switch (itemType)
         {
             case ItemType.Sword:
-                _currentWeapon = player.AddComponent<Sword>();
+                _currentWeapon = playerObject.AddComponent<Sword>();
                 break;
             case ItemType.Hammer:
-                _currentWeapon = player.AddComponent<Hammer>();
+                _currentWeapon = playerObject.AddComponent<Hammer>();
                 break;
             case ItemType.Dagger:
-                _currentWeapon = player.AddComponent<Dagger>();
+                _currentWeapon = playerObject.AddComponent<Dagger>();
                 break;
             case ItemType.GreatSword:
-                _currentWeapon = player.AddComponent<GreatSword>();
+                _currentWeapon = playerObject.AddComponent<GreatSword>();
                 break;
             case ItemType.Umbrella:
-                _currentWeapon = player.AddComponent<Umbrella>();
+                _currentWeapon = playerObject.AddComponent<Umbrella>();
                 break;
         }
 
         StartCoroutine(GetWeaponArray(_currentWeapon, itemType));
+        WeaponType = itemType;
     }
 
     private IEnumerator GetWeaponArray(IWeapon currentWeapon, ItemType itemType)

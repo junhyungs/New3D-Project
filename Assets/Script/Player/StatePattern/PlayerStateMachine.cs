@@ -10,6 +10,19 @@ namespace PlayerComponent
     {
         private CharacterStateMachine<Player, E_PlayerState, PlayerStateFactory> _stateMachine;
 
+        private void OnEnable()
+        {
+            if (_stateMachine == null)
+                return;
+
+            var stateDic = _stateMachine.StateDictionary;
+            foreach(var state in stateDic.Values)
+            {
+                if (state is IEnableObject enableObject)
+                    enableObject.OnEnableObject();
+            }
+        }
+
         private void Start()
         {
             InitializeOnStart();

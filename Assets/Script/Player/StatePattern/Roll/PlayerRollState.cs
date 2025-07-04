@@ -9,7 +9,7 @@ namespace PlayerComponent
     { 
         public PlayerRollState(Player player) : base(player)
         {
-            _behaviour = _animator.GetBehaviour<T>();
+            GetBehaviour();
         }
 
         protected T _behaviour;
@@ -19,6 +19,14 @@ namespace PlayerComponent
         protected Vector3 _direction;
 
         public bool IsRoll { get; set; }
+
+        protected void GetBehaviour()
+        {
+            if (_behaviour != null)
+                return;
+
+            _behaviour = _animator.GetBehaviour<T>();
+        }
 
         protected void Movement()
         {

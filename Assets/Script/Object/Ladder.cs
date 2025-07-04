@@ -35,16 +35,16 @@ public class Ladder : MonoBehaviour, IInteractionGameObject
 
     public void Interact()
     {
-        Player player = PlayerManager.Instance.Player;
-
-        if (player == null)
+        var playerComponent = PlayerManager.Instance.PlayerComponent;
+        
+        if (playerComponent == null)
             return;
 
         var ladderSize = (_worldLowPositionY,  _worldHighPositionY);
-        player.StateHandler.ToClimbingState(ladderSize);
-        player.transform.SetParent(transform);
-        player.transform.localPosition = Vector3.zero;
-        player.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
+        playerComponent.StateHandler.ToClimbingState(ladderSize);
+        playerComponent.transform.SetParent(transform);
+        playerComponent.transform.localPosition = Vector3.zero;
+        playerComponent.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
     }
 
     private void OnDrawGizmos()

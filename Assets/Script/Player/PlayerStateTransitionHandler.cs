@@ -62,14 +62,6 @@ namespace PlayerComponent
             ChangeState(nextState);
         }
 
-        public void IsFalling(E_PlayerState state, bool isGround)
-        {
-            if(state == E_PlayerState.Falling && !isGround)
-                ChangeState(E_PlayerState.Falling);
-            else if(state == E_PlayerState.Idle && isGround)
-                ChangeState(E_PlayerState.Idle);
-        }
-
         public void ToRollState()
         {
             if (EqualsCurrentState<Roll>())

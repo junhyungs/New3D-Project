@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponType: 9
   _handType: 0
-  _localEulerAngles: {x: 350.66992, y: 163.2219, z: 9.329356}
+  _localEulerAngles: {x: 350.6699, y: 163.2219, z: 9.329356}
   _localPosition: {x: -0.116, y: -0.265, z: -0.349}

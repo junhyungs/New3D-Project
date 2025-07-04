@@ -2294,7 +2294,6 @@ Transform:
   m_Children:
   - {fileID: 6757082115356573437}
   - {fileID: 277292250513719131}
-  - {fileID: 9135576059019384241}
   - {fileID: 715217063820256890}
   - {fileID: 4673631980739229849}
   m_Father: {fileID: 0}
@@ -2317,6 +2316,10 @@ MonoBehaviour:
     Target:
       serializedVersion: 2
       m_Bits: 64
+  _equipTransform:
+    Holster: {fileID: 1455983548442531145}
+    WeaponL: {fileID: 8379743854120917769}
+    WeaponR: {fileID: 773913383831780141}
 --- !u!114 &3409865199495657385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2798,54 +2801,6 @@ Transform:
   - {fileID: 4315546003742907835}
   m_Father: {fileID: 8036803966025412197}
   m_LocalEulerAnglesHint: {x: -0.0000004110247, y: -5.4524136, z: 0.000000019571504}
---- !u!1 &5954261055567840249
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9135576059019384241}
-  - component: {fileID: 8211973954733074486}
-  m_Layer: 0
-  m_Name: WeaponSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &9135576059019384241
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5954261055567840249}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3400116411029245379}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8211973954733074486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5954261055567840249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4ea3ceeceb77224cb71930b845baa60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _equipTransformInfo:
-    Holster: {fileID: 1455983548442531145}
-    WeaponL: {fileID: 8379743854120917769}
-    WeaponR: {fileID: 773913383831780141}
 --- !u!1 &6096582642035357267
 GameObject:
   m_ObjectHideFlags: 0

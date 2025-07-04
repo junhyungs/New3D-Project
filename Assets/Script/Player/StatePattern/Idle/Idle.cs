@@ -23,8 +23,17 @@ namespace PlayerComponent
 
         public void OnStateFixedUpdate()
         {
-            IsFalling(E_PlayerState.Falling);
+            CheckGround();
             _stateHandler.ChangeIdleORMoveState();
+        }
+
+        protected override void CheckGround()
+        {
+            var origin = _playerTransform.position + Vector3.up * 0.1f;
+
+            bool isGround = Physics.Raycast(origin, Vector3.down, RAYDISTANCE, _ground);
+            if (!isGround)
+                _stateHandler.ChangeState(E_PlayerState.Falling);
         }
     }
 }
