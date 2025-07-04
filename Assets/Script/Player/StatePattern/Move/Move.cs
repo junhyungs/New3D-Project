@@ -22,13 +22,12 @@ namespace PlayerComponent
 
         public void OnStateFixedUpdate()
         {
+            CheckGround();
             Movement();
         }
 
         public void OnStateUpdate()
         {
-            IsFalling(E_PlayerState.Falling);
-
             var normalizedSpeed = _currentSpeed / _data.Speed;
             _animator.SetFloat(_moveValue, normalizedSpeed);
         }
@@ -36,6 +35,24 @@ namespace PlayerComponent
         public void OnStateExit()
         {
             _rigidBody.velocity = Vector3.zero;
+        }
+
+        protected override void CheckGround()
+        {
+            var origin = _playerTransform.position + Vector3.up * 0.1f;
+
+            bool isGround = Physics.Raycast(origin, Vector3.down, out RaycastHit hit, RAYDISTANCE, _ground);            
+            if (!isGround)
+            {
+                _stateHandler.ChangeState(E_PlayerState.Falling);
+                return;
+            }
+
+            bool isStairs = hit.collider.tag == "Stairs";
+            if (!isStairs)
+                return;
+
+            _rigidBody.AddForce(Vector3.down * 15f, ForceMode.Acceleration);
         }
 
         private void Movement()
@@ -74,7 +91,8 @@ namespace PlayerComponent
                 _currentSpeed = _targetSpeed;
 
             Vector3 direction = new Vector3(_stateHandler.MoveVector.x, 0f, _stateHandler.MoveVector.y).normalized;
-            if(direction != Vector3.zero)
+
+            if (direction != Vector3.zero)
             {
                 _targetRotation = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
 

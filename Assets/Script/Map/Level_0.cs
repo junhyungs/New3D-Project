@@ -14,13 +14,14 @@ namespace MapComponent
         [SerializeField] private TimeLine _hallCrow;
 
         private Level_0_progress _myProgress;
-        public override void Initialize()
+        public override void Initialize(Dictionary<string, MapProgress> progressDictionary)
         {
-            if (ProgressDictionary == null)
-                return;
-
-            if(!ProgressDictionary.TryGetValue(nameof(Level_0), out var progress))
+            if(!progressDictionary.TryGetValue(nameof(Level_0), out var progress))
+            {
                 progress = new Level_0_progress();
+                progressDictionary.Add(nameof(Level_0), progress);
+            }
+
             _myProgress = progress as Level_0_progress;
         }
 
@@ -29,8 +30,8 @@ namespace MapComponent
             bool isStart = _myProgress.Initialize;
             if (!isStart)
             {
-                //TODO
                 _intro.PlayTimeLine();
+                _hallCrow.gameObject.SetActive(true);
                 _myProgress.Initialize = true;
             }
         }

@@ -16,7 +16,8 @@ namespace PlayerComponent
         protected Rigidbody _rigidBody;
         protected Transform _playerTransform;
 
-        protected float _checkSphereRadius = 0.5f;
+        protected const float RAYDISTANCE = 1.5f;
+        protected float _checkSphereRadius = 1f;
         protected LayerMask _ground = LayerMask.GetMask("Ground");
 
         private void Initialize(Player player)
@@ -26,11 +27,7 @@ namespace PlayerComponent
             _playerTransform = player.GetComponent<Transform>();
         }
 
-        protected void IsFalling(E_PlayerState state)
-        {
-            bool isGround = Physics.CheckSphere(_playerTransform.position, _checkSphereRadius, _ground);
-            _stateHandler.IsFalling(state, isGround);
-        }
+        protected virtual void CheckGround() { }
     }
 }
 

@@ -18,10 +18,6 @@ public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
     public GameObject PlayerObject => PlayerComponent.gameObject;
     public GameObject VirtualCameraObject => VirtualCameraComponent.gameObject;
 
-    private void Awake()
-    {
-        
-    }
     private void Start()
     {
         CreatePlayer();

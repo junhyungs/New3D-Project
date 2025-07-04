@@ -17,11 +17,20 @@ public class Falling : PlayerMoveState, ICharacterState<Falling>
 
     public void OnStateFixedUpdate()
     {
-        IsFalling(E_PlayerState.Idle);
+        CheckGround();
     }
 
     public void OnStateExit()
     {
         _animator.SetBool(_falling, false);
+    }
+
+    protected override void CheckGround()
+    {
+        var origin = _playerTransform.position + Vector3.up * 0.1f;
+
+        bool isGround = Physics.Raycast(origin, Vector3.down, RAYDISTANCE, _ground);
+        if (isGround)
+            _stateHandler.ChangeState(E_PlayerState.Idle);
     }
 }
