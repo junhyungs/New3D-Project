@@ -9,7 +9,12 @@ namespace TimeLineComponent
     {
         protected PlayableDirector _playableDirector;
         public abstract void PlayTimeLine();
-        protected virtual void Awake()
+        private void Awake()
+        {
+            Init();
+        }
+
+        protected virtual void Init()
         {
             _playableDirector = GetComponent<PlayableDirector>();
         }

@@ -7,13 +7,12 @@ using TimeLineComponent;
 
 namespace MapComponent
 {
-    public class Level_0 : Map
+    public class Level_0 : MapBase<Level_0_progress>
     {
         [Header("TimeLine")]
         [SerializeField] private TimeLine _intro;
         [SerializeField] private TimeLine _hallCrow;
 
-        private Level_0_progress _myProgress;
         public override void Initialize(Dictionary<string, MapProgress> progressDictionary)
         {
             if(!progressDictionary.TryGetValue(nameof(Level_0), out var progress))

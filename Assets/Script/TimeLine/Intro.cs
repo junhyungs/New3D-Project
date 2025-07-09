@@ -47,10 +47,9 @@ namespace TimeLineComponent
 
         public void Signal_MovePlayer()
         {
-            var playerObject = PlayerManager.Instance.PlayerObject;
-            playerObject.transform.position = _dummyPlayer.transform.position;
-            playerObject.transform.rotation = _dummyPlayer.transform.rotation;
-            playerObject.SetActive(true);
+            var targetPosition = _dummyPlayer.transform.position;
+            var targetRotation = _dummyPlayer.transform.rotation;
+            PlayerManager.Instance.EnablePlayer(targetPosition, targetRotation);
 
             IntroCameraSetting();
         }
@@ -60,16 +59,14 @@ namespace TimeLineComponent
             var introCameraComponent = _introCamera.GetComponent<CinemachineVirtualCamera>();
             var introCameraTransposer = introCameraComponent.GetCinemachineComponent<CinemachineTransposer>();
 
-            var playerCameraObject = PlayerManager.Instance.VirtualCameraObject;
-            playerCameraObject.transform.position = _introCamera.transform.position;
+            var playerCameraSetting = new PlayerCameraSetting
+            {
+                Position = _introCamera.transform.position,
+                FollowOffset = introCameraTransposer.m_FollowOffset,
+                FieldOfView = introCameraComponent.m_Lens.FieldOfView,
+            };
 
-            var playerCameraComponent = PlayerManager.Instance.VirtualCameraComponent;
-            playerCameraComponent.m_Lens.FieldOfView = introCameraComponent.m_Lens.FieldOfView;
-            
-            var playerCameraTransposer = PlayerManager.Instance.VirtualCameraTransposer;
-            playerCameraTransposer.m_FollowOffset = introCameraTransposer.m_FollowOffset;
-
-            playerCameraObject.SetActive(true);
+            PlayerManager.Instance.EnablePlayerCamera(playerCameraSetting, true);
         }
     }
 }

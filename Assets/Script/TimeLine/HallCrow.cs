@@ -16,12 +16,12 @@ namespace TimeLineComponent
         private GameObject _dummyPlayer;
         private BoxCollider _collider;
 
-        protected override void Awake()
+        protected override void Init()
         {
-            base.Awake();
+            base.Init();
             _collider = GetComponent<BoxCollider>();
         }
-
+        
         public override void PlayTimeLine()
         {
             if(_collider != null)
