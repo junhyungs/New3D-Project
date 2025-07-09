@@ -124,11 +124,19 @@ namespace EnumCollection
         Intro,
     }
 
-    public enum MapName
+    public enum LinkedMap
     {
         Level_0,
         Level_1,
         Level_2
+    }
+
+    public enum LinkedDoor
+    {
+        Level_0_Level_1,
+        Level_0_Level_2,
+        Level_1_Level_2,
+        Default
     }
 }
 

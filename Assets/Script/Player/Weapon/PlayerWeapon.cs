@@ -13,7 +13,7 @@ public abstract class PlayerWeapon : MonoBehaviour, IWeapon
 
     protected virtual void Awake()
     {
-        _animEvent = GetComponentInChildren<PlayerAnimationEvent>();
+        _animEvent = GetComponent<PlayerAnimationEvent>();
     }
 
     protected void GetWeaponData(DataKey dataKey)

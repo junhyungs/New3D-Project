@@ -15,7 +15,10 @@ namespace GameData
     public class MapData : Data
     {
         public Dictionary<string, MapProgress> ProgressDictionary { get; set; }
-        public string CurrentMapObjectName { get; set; }
+        public string MapAddressablesKey { get; set; }
+        //Newtonsoft.Json에서 Vector3, Quaternion직렬화 지원. 이외에는 x,y,z,w 등으로 직접 기록해야함.
+        public Vector3 PlayerPosition { get; set; }
+        public Quaternion PlayerRotation { get; set; }  
         public MapData(Dictionary<string, MapProgress> progressDictionary)
         {
             ProgressDictionary = progressDictionary;
@@ -25,7 +28,6 @@ namespace GameData
     public class MapProgress
     {
         public bool Initialize { get; set; }
-        public Vector3 PlayerPosition { get; set; }
         public Dictionary<ItemType, bool> CollectedItemsDictionary{ get; set; }
     }
 

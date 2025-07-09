@@ -87,8 +87,13 @@ public class SaveManager : Singleton<SaveManager>
 
     public async UniTask SaveMap(string directoryPath)
     {
+        var playerObject = PlayerManager.Instance.PlayerObject;
+        var playerTransform = playerObject.transform;
+
         var key = DataKey.Map_Data.ToString();
         var mapData = DataManager.Instance.GetData(key) as MapData;
+        mapData.PlayerPosition = playerTransform.position;
+        mapData.PlayerRotation = playerTransform.rotation;
 
         var setting = GetMapSetting();
         var path = Path.Combine(directoryPath, "MapData.json");

@@ -6,8 +6,9 @@ using Cysharp.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 using GameData;
 using MapComponent;
+using System;
 
-public class MapManager : MonoBehaviour
+public class MapManager : Singleton_MonoBehaviour<MapManager>
 {
     private Dictionary<string, GameObject> _mapDictionary = new Dictionary<string, GameObject>();
     private GameObject _currentMap;
@@ -17,9 +18,13 @@ public class MapManager : MonoBehaviour
         var key = DataKey.Map_Data.ToString();
         var mapData = DataManager.Instance.GetData(key) as MapData;
 
-        var startMapName = mapData.CurrentMapObjectName != null ?
-            mapData.CurrentMapObjectName : AddressablesKey.Map_Level_0;
-        await LoadMapAsync(startMapName);
+        var startMapAddressables = mapData.MapAddressablesKey != null ?
+            mapData.MapAddressablesKey : AddressablesKey.Map_Level_0;
+        await LoadMapAsync(startMapAddressables);
+
+        if(mapData.PlayerPosition != Vector3.zero &&
+            mapData.PlayerRotation != Quaternion.identity)
+            PlayerManager.Instance.EnablePlayer(mapData.PlayerPosition, mapData.PlayerRotation);    
     }
 
     private void OnDestroy()
@@ -34,7 +39,23 @@ public class MapManager : MonoBehaviour
                 Addressables.ReleaseInstance(mapInstance);
     }
 
-    public async UniTask LoadMapAsync(string addressableKey)
+    public void ChangeMapAsync(string addressableKey, LinkedDoor linkedDoor)
+    {
+        RunAsync(addressableKey, linkedDoor).Forget();
+        async UniTask RunAsync(string addressableKey, LinkedDoor linkedDoor)
+        {
+            try
+            {
+                await LoadMapAsync(addressableKey, linkedDoor);
+            }
+            catch (Exception ex)
+            {
+                LoadSceneManager.Instance.LoadSceneAndReportError("StartScene", ex.Message);
+            }
+        }
+    }
+
+    public async UniTask LoadMapAsync(string addressableKey, LinkedDoor linkedDoor = LinkedDoor.Default)
     {
         LoadSceneManager.Instance.StartLoadingUICoroutine(true);
 
@@ -53,11 +74,12 @@ public class MapManager : MonoBehaviour
 
         var dataKey = DataKey.Map_Data.ToString();
         var mapData = DataManager.Instance.GetData(dataKey) as MapData;
-        mapData.CurrentMapObjectName = nextMap.name;
+        mapData.MapAddressablesKey = addressableKey;
 
         if(nextMap.TryGetComponent(out Map mapCompnent))
         {
             mapCompnent.Initialize(mapData.ProgressDictionary);
+            mapCompnent.LinkedDoor = linkedDoor;
         }
         else
         {
