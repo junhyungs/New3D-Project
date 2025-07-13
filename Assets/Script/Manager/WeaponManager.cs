@@ -29,7 +29,7 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
 
     private void Start()
     {
-        //DataManager.Instance.ParsePlayerWeaponData(); // 테스트 코드
+        DataManager.Instance.ParsePlayerWeaponData(); // 테스트 코드
     }
 
     private void InitializeDictionary()

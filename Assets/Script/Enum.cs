@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace EnumCollection
 {
+    public enum E_MageState
+    {
+        Idle,
+    }
+
     public enum E_PlayerState
     {
         Idle,

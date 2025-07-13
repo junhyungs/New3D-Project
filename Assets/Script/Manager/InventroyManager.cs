@@ -16,15 +16,15 @@ public class InventoryManager : Singleton_MonoBehaviour<InventoryManager>
     private Dictionary<ItemType, IPlayerItem> _refreshItemDictionary = new Dictionary<ItemType, IPlayerItem>();
     private PlayerInventoryData _playerInventoryData;
 
-    //private void Awake()
-    //{
-    //    DataManager.Instance.TestLoadItemDescriptionData(); //테스트 코드
-    //}
+    private void Awake()
+    {
+        DataManager.Instance.TestLoadItemDescriptionData(); //테스트 코드
+    }
 
     private void Start()
     {
-        var key = DataKey.Inventory_Data.ToString();
-        _playerInventoryData = DataManager.Instance.GetData(key) as PlayerInventoryData;
+        //var key = DataKey.Inventory_Data.ToString();
+        //_playerInventoryData = DataManager.Instance.GetData(key) as PlayerInventoryData;
 
         CreateCurrencySlot();
         StartPlayerItem();
@@ -49,8 +49,8 @@ public class InventoryManager : Singleton_MonoBehaviour<InventoryManager>
         if (!_slotDictionary.ContainsKey(slotName))
             _slotDictionary.Add(slotName, slot);
 
-        ApplySavedDescriptionData(slotName, slot);
-        ApplySavedWeaponData(slotName, slot);
+        //ApplySavedDescriptionData(slotName, slot);
+        //ApplySavedWeaponData(slotName, slot);
 
         TryInvokeRefreshCallBack(slotName);
     }
