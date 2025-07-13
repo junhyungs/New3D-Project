@@ -40,19 +40,15 @@ public class DataManager : Singleton<DataManager>
     public async UniTask LoadAllData()
     {
         await LoadPlayerGroup();
-        await LoadItemDescriptionData();
-        await LoadDialogData();
         await LoadUpgradeGroup();
         await LoadMapData();
+        await LoadDialogData();
     }
 
     private async UniTask LoadPlayerGroup()
     {
-        await ParsePlayerBaseDataAsync();
-
         await UniTask.WhenAll(
-            ParsePlayerSkillDataAsync(),
-            ParsePlayerWeaponDataAsync(),
+            ParsePlayerBaseDataAsync(),
             LoadPlayerInventoryDataAsync()
             );
     }
@@ -119,29 +115,6 @@ public class DataManager : Singleton<DataManager>
         return dialogList;
     }
     #endregion
-    #region ItemDescriptionData
-    private async UniTask LoadItemDescriptionData()
-    {
-        var address = AddressablesKey.JsonData_ItemDescription;
-        JArray jArray = await LoadJsonArrayAsync(address);
-        try
-        {
-            foreach (var item in jArray)
-            {
-                string id = ParseString(item["Id"]);
-                string itemName = ParseString(item["ItemName"]);
-                string description = ParseString(item["Description"]);
-
-                ItemDescriptionData data = new ItemDescriptionData(id, itemName, description);
-                TryAddData(id, data);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.Log(ex.Message);
-        }
-    }
-    #endregion
     #region Player
     private async UniTask ParsePlayerBaseDataAsync()
     {
@@ -197,56 +170,6 @@ public class DataManager : Singleton<DataManager>
         return constantData;
     }
 
-    private async UniTask ParsePlayerSkillDataAsync()
-    {
-        var address = AddressablesKey.JsonData_PlayerSkill;
-        JArray jArray = await LoadJsonArrayAsync(address);
-        
-        try
-        {
-            foreach (var item in jArray)
-            {
-                var id = ParseString(item["ID"]);
-                var projectileSpeed = ParseFloat(item["ProjectileSpeed"]);
-                var flightTime = ParseFloat(item["FlightTime"]);
-                var projectileDamage = ParseInt(item["ProjectileDamage"]);
-                var projectileCost = ParseInt(item["ProjectileCost"]);
-
-                PlayerSkillData data = new PlayerSkillData(id, projectileSpeed, projectileDamage,
-                    projectileCost, flightTime);
-
-                TryAddData(id, data);
-            }
-        }
-        catch(Exception ex)
-        {
-            Debug.Log(ex.Message);
-        }
-    }
-
-    private async UniTask ParsePlayerWeaponDataAsync()
-    {
-        var address = AddressablesKey.JsonData_PlayerWeapon;
-        JArray jArray = await LoadJsonArrayAsync(address);
-
-        try
-        {
-            foreach (var item in jArray)
-            {
-                var id = ParseString(item["Id"]);
-                var damage = ParseInt(item["Damage"]);
-                var range = ParseVector3(item["Range"]);
-
-                PlayerWeaponData data = new PlayerWeaponData(id, damage, range);
-                TryAddData(id, data);
-            }
-        }
-        catch(Exception ex)
-        {
-            Debug.Log(ex.Message);
-        }
-    }
-
     private async UniTask LoadPlayerInventoryDataAsync()
     {
         var key = DataKey.Inventory_Data.ToString();
@@ -286,18 +209,7 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
-    private Vector3 ParseVector3(JToken jToken)
-    {
-        var stringValue = ParseString(jToken);
-        var trim = stringValue.Trim('{', '}');
-        var splitArray = trim.Split(',');
-
-        var x = ParseFloat(splitArray[0]);
-        var y = ParseFloat(splitArray[1]);
-        var z = ParseFloat(splitArray[2]);
-
-        return new Vector3(x, y, z);
-    }
+    
     #endregion
     #region Resolution
     public List<(int, int)> LoadResolutionData()
@@ -359,29 +271,6 @@ public class DataManager : Singleton<DataManager>
         catch { }
     }
 
-    public void TestLoadItemDescriptionData()
-    {
-        try
-        {
-            var textAsset = Resources.Load<TextAsset>("JsonData/New_3D_ItemDescription");
-            JArray jArray = JArray.Parse(textAsset.text);
-            foreach (var item in jArray)
-            {
-                string id = ParseString(item["Id"]);
-                string itemName = ParseString(item["ItemName"]);
-                string description = ParseString(item["Description"]);
-
-                ItemDescriptionData data = new ItemDescriptionData(id, itemName, description);
-                TryAddData(id, data);
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.Log("TestLoadItemDescriptionData");
-            Debug.Log(e.Message);
-        }
-    }
-
     public void AddToPlayerData(PlayerSaveData playerSaveData)
     {
         if (playerSaveData == null)
@@ -390,7 +279,6 @@ public class DataManager : Singleton<DataManager>
             {
                 var jsonDataName = AddressablesKey.JsonData_PlayerBase;
                 ParsePlayerBaseData(jsonDataName);
-                ParsePlayerSkillData();
             }
             catch
             {
@@ -434,42 +322,6 @@ public class DataManager : Singleton<DataManager>
         //SaveManager.Instance.SavePlayerData(data); 주석 마지막에 풀어줘야함.
         TryAddData(id, data);
     }
-
-    private void ParsePlayerSkillData()
-    {
-        var path = AddressablesKey.JsonData_PlayerSkill;
-        JArray jArray = LoadJsonArray(path);
-
-        foreach (var item in jArray)
-        {
-            string id = ParseString(item["ID"]);
-            float projectileSpeed = ParseFloat(item["ProjectileSpeed"]);
-            float flightTime = ParseFloat(item["FlightTime"]);
-            int projectileDamage = ParseInt(item["ProjectileDamage"]);
-            int projectileCost = ParseInt(item["ProjectileCost"]);
-
-            PlayerSkillData data = new PlayerSkillData(
-                id, projectileSpeed, projectileDamage, projectileCost, flightTime);
-
-            TryAddData(id, data);
-        }
-    }
-
-    public void ParsePlayerWeaponData()
-    {
-        var path = AddressablesKey.JsonData_PlayerWeapon;
-        JArray jArray = LoadJsonArray(path);
-
-        foreach (var item in jArray)
-        {
-            var id = ParseString(item["Id"]);
-            var damage = ParseInt(item["Damage"]);
-            var range = ParseVector3(item["Range"]);
-
-            PlayerWeaponData data = new PlayerWeaponData(id, damage, range);
-            TryAddData(id, data);
-        }
-    }
     #endregion
 
     private string ParseString(JToken jToken)
@@ -491,6 +343,19 @@ public class DataManager : Singleton<DataManager>
             return 0;
 
         return value;
+    }
+
+    private Vector3 ParseVector3(JToken jToken)
+    {
+        var stringValue = ParseString(jToken);
+        var trim = stringValue.Trim('{', '}');
+        var splitArray = trim.Split(',');
+
+        var x = ParseFloat(splitArray[0]);
+        var y = ParseFloat(splitArray[1]);
+        var z = ParseFloat(splitArray[2]);
+
+        return new Vector3(x, y, z);
     }
 
 }

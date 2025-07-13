@@ -1,11 +1,12 @@
+using EnumCollection;
+using GameData;
+using ModelViewPresenter;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using EnumCollection;
-using System;
 using UnityEngine.InputSystem;
-using ModelViewPresenter;
-using GameData;
 
 namespace InventoryUI
 {
@@ -27,15 +28,18 @@ namespace InventoryUI
             StartCoroutine(WaitForCurrentSelectedGameObject());
         }
 
-        public void UpdateDescription(ItemDescriptionData data)
+        public void UpdateDescription(TrinketItemData data)
         {
             InitializeText();
 
             if (data == null)
                 return;
 
+            var description = data.ItemDescription;
+            description = description.Replace("\\n", "\n");
+
             _descriptionNameText.text = data.ItemName;
-            _descriptionText.text = data.Description;
+            _descriptionText.text = description;
         }
     }
 }

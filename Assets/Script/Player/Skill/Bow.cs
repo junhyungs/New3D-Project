@@ -47,10 +47,13 @@ public class Bow : PlayerSkill, ISkill
         IsComplete(success);
     }
 
-    public override void InitializeSkill(SkillInfo info, PlayerSkillData data)
+    public override void InitializeSkill(SkillInfo info)
     {
-        _data = data;
         _skillInfo = info;
+
+        var dataSO = info.PlayerSkillDataSO;
+        if (dataSO != null)
+            _data = dataSO.SkillData;
     }
 
     public override void Reloading()
@@ -67,7 +70,7 @@ public class Bow : PlayerSkill, ISkill
         if(arrowComponent != null)
         {
             arrowComponent.SetData(_data.FlightTime,
-                _data.ProjectileSpeed, _data.ProjectileDamage);
+                _data.Speed, _data.Damage);
 
             Action action = null;
             action = () =>

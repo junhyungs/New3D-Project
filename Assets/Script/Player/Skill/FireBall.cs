@@ -45,10 +45,13 @@ public class FireBall : PlayerSkill, ISkill
         IsComplete(success);
     }
 
-    public override void InitializeSkill(SkillInfo info, PlayerSkillData data)
+    public override void InitializeSkill(SkillInfo info)
     {
-        _data = data;
         _skillInfo = info;
+
+        var dataSO = info.PlayerSkillDataSO;
+        if (dataSO != null)
+            _data = dataSO.SkillData;
     }
 
     public override void Reloading()
@@ -64,8 +67,8 @@ public class FireBall : PlayerSkill, ISkill
         var fireBallComponent = fireBallObject.GetComponent<FireBallObject>();
         if(fireBallComponent != null)
         {
-            fireBallComponent.SetData(_data.FlightTime, _data.ProjectileSpeed,
-                _data.ProjectileDamage);
+            fireBallComponent.SetData(_data.FlightTime, _data.Speed,
+                _data.Damage);
 
             fireBallComponent.PlayParticleSystem(true);
 

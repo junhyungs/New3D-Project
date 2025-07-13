@@ -1,124 +1,144 @@
+using EnumCollection;
+using GameData;
+using InventoryUI;
+using ItemComponent;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using EnumCollection;
-using InventoryUI;
-using System;
-using ItemComponent;
-using GameData;
+
 
 public class InventoryManager : Singleton_MonoBehaviour<InventoryManager>
 {
-    [Header("StartItem"), SerializeField]
-    private List<Item> _startItems;
-    private Dictionary<ItemType, ISlot> _slotDictionary = new Dictionary<ItemType, ISlot>();
-    private Dictionary<ItemType, Action<IPlayerItem, PlayerItemSlot>> _refreshDictionary = new Dictionary<ItemType, Action<IPlayerItem, PlayerItemSlot>>();
-    private Dictionary<ItemType, IPlayerItem> _refreshItemDictionary = new Dictionary<ItemType, IPlayerItem>();
-    private PlayerInventoryData _playerInventoryData;
+    [Header("StartingWeapon")]
+    [SerializeField] private Item _startingWeapon;
+    [Header("StartingItems")]
+    [SerializeField] private Item[] _startingItems;
 
-    private void Awake()
-    {
-        DataManager.Instance.TestLoadItemDescriptionData(); //테스트 코드
-    }
+    private PlayerInventoryData _saveData;
+    private Dictionary<ItemType, PlayerItemSlot> _slotDictionary = new Dictionary<ItemType, PlayerItemSlot>();
+    private Dictionary<ItemType, Action<IInventoryItem, PlayerItemSlot>> _refreshDictionary = new Dictionary<ItemType, Action<IInventoryItem, PlayerItemSlot>>();
+    private Dictionary<ItemType, IInventoryItem> _refreshItemDictionary = new Dictionary<ItemType, IInventoryItem>();
+
+    //private void Awake()
+    //{
+    //    DataManager.Instance.TestLoadItemDescriptionData(); //테스트 코드
+    //}
 
     private void Start()
     {
         //var key = DataKey.Inventory_Data.ToString();
         //_playerInventoryData = DataManager.Instance.GetData(key) as PlayerInventoryData;
-
-        CreateCurrencySlot();
-        StartPlayerItem();
     }
 
-    private void CreateCurrencySlot()
+    public void InitializeInventory() //TODO 나중에 게임 매니저에서 일괄적으로 관리.
     {
-        SeedSlot seedSlot = new SeedSlot();
-        SoulSlot soulSlot = new SoulSlot();
-        RegisterSlot(ItemType.Seed, seedSlot);
-        RegisterSlot(ItemType.Soul, soulSlot);
+        var key = DataKey.Inventory_Data.ToString();
+        var saveData = DataManager.Instance.GetData(key) as PlayerInventoryData;
+        if (saveData.InitInventory)
+        {
+            var saveWeapon = _saveData.SaveWeapon;
+            var saveWeaponType = saveWeapon.WeaponType;
+            WeaponManager.Instance.SetWeapon(saveWeaponType, saveWeapon);
+        }
+        else
+        {
+            if (_startingWeapon is WeaponItem weaponItem)
+            {
+                weaponItem.StartWeapon();
+                SetItem(_startingWeapon);
+            }
+
+            foreach (var item in _startingItems)
+                SetItem(item);
+
+            saveData.InitInventory = true;
+        }
+
+        _saveData = saveData;
     }
 
-    private void StartPlayerItem()
-    {
-        foreach (var item in _startItems)
-            SetPlayerItem(item);
-    }
-
-    public void RegisterSlot(ItemType slotName, ISlot slot)
+    public void RegisterSlot(ItemType slotName, PlayerItemSlot slot)
     {
         if (!_slotDictionary.ContainsKey(slotName))
             _slotDictionary.Add(slotName, slot);
 
-        //ApplySavedDescriptionData(slotName, slot);
-        //ApplySavedWeaponData(slotName, slot);
-
+        ApplySaveData(slotName, slot);
         TryInvokeRefreshCallBack(slotName);
     }
 
-    private void ApplySavedDescriptionData(ItemType slotName, ISlot slot)
+    private void TryApply<TSlot, TData>(TSlot slot, TData data, Action<TData> applyAction)
+        where TSlot : PlayerItemSlot
+        where TData : class
     {
-        var saveDescriptionDic = _playerInventoryData.DescriptionDataDictionary;
-        if (saveDescriptionDic.TryGetValue(slotName, out var itemDescriptionData))
+        if(data != null)
         {
-            var itemSlot = slot as PlayerItemSlot;
-            itemSlot.InitializeSlot();
-            itemSlot.DescriptionData = itemDescriptionData;
+            slot.InitializeSlot();
+            applyAction?.Invoke(data);
         }
     }
 
-    private void ApplySavedWeaponData(ItemType slotName, ISlot slot)
+    private void TryApply<TSlot>(TSlot slot, int data, Func<int, bool> checkFuc)
+        where TSlot : CurrencyItemSlot
     {
-        var equipItemSet = _playerInventoryData.EquipItemSet;
-        if (equipItemSet.Contains(slotName))
+        if(checkFuc != null && checkFuc(data))
         {
-            var saveWeaponDic = _playerInventoryData.WeaponDataDictionary;
-            if (saveWeaponDic.TryGetValue(slotName, out var itemWeaponData))
-            {
-                var weaponSlot = slot as WeaponSlot;
-                weaponSlot.WeaponData = itemWeaponData;
-            }
+            slot.InitializeSlot();
+            slot.Currency = data;
+        }
+    }
+
+    private void ApplySaveData(ItemType slotName, PlayerItemSlot slot)
+    {
+        if (_saveData == null)
+            return;
+
+        switch (slot)
+        {
+            case WeaponSlot weaponSlot:
+                TryApply(weaponSlot, _saveData.GetWeaponData(slotName), 
+                    (data) => weaponSlot.WeaponData = data);
+                break;
+            case InventorySlot inventorySlot:
+                TryApply(inventorySlot, _saveData.GetInventoryItemData(slotName),
+                    (data) => inventorySlot.InventoryItemData = data);
+                break;
+            case TrinketSlot trinketSlot:
+                TryApply(trinketSlot, _saveData.GetTrinketItemData(slotName), 
+                    (data) => trinketSlot.TrinketItemData = data);
+                break;
+            case SoulSlot soulSlot:
+                TryApply(soulSlot, _saveData.SoulCount, (data) => data > 0);
+                break;
+            case SeedSlot seedSlot:
+                TryApply(seedSlot, _saveData.SoulCount, (data) => data > 0);
+                break;
         }
     }
 
     private void TryInvokeRefreshCallBack(ItemType slotName)
     {
-        if (_refreshItemDictionary.TryGetValue(slotName, out IPlayerItem item))
+        if (_refreshItemDictionary.TryGetValue(slotName, out IInventoryItem item))
         {
-            if (_refreshDictionary.TryGetValue(slotName, out Action<IPlayerItem, PlayerItemSlot> callBack))
+            if (_refreshDictionary.TryGetValue(slotName, out Action<IInventoryItem, PlayerItemSlot> callBack))
             {
-                var playerItemslot = GetSlot(slotName) as PlayerItemSlot;
+                var playerItemslot = GetSlot(slotName);
                 callBack?.Invoke(item, playerItemslot);
             }
         }
     }
 
-    private ISlot GetSlot(ItemType key)
+    private PlayerItemSlot GetSlot(ItemType key)
     {
-        if (_slotDictionary.TryGetValue(key, out ISlot slot))
+        if (_slotDictionary.TryGetValue(key, out PlayerItemSlot slot))
             return slot;
 
         return null;
     }
 
-    public void SetGameItem(IGameItem gameItem)
+    public void SetItem(IInventoryItem item)
     {
-        switch (gameItem)
-        {
-            case IPlayerItem playerItem:
-                SetPlayerItem(playerItem);
-                break;
-            case ICurrencyItem currencyItem:
-                SetCurrencyItem(currencyItem);
-                break;
-        }
-    }
-
-    private void SetCurrencyItem(ICurrencyItem currencyItem)
-    {
-        var slotName = currencyItem.SlotName;
-        var slot = GetSlot(slotName) as CurrencyItemSlot;
-        slot.Currency += currencyItem.GetValue();
-        SaveCurrency(slot);
+        SetInventoryItem(item);
     }
 
     public bool CanUseCurrencyItem(ItemType slotName, int count)
@@ -128,93 +148,112 @@ public class InventoryManager : Singleton_MonoBehaviour<InventoryManager>
             return false;
         
         slot.UseItem(count);
-        SaveCurrency(slot);
         return true;
     }
 
-    private void SaveCurrency(CurrencyItemSlot slot)
+    #region PlayerItem
+    private void SetInventoryItem(IInventoryItem inventoryItem)
     {
-        switch (slot.GetSlotType)
+        var slotName = inventoryItem.SlotName;
+        var slot = GetSlot(slotName);
+        if(slot != null)
+            InitializeInventorySlot(inventoryItem, slot, slotName);
+        else
+            RefreshItem(slotName, inventoryItem);
+    }
+
+    private void InitializeInventorySlot(IInventoryItem inventoryItem, PlayerItemSlot slot,
+        ItemType slotName)
+    {
+        slot.InitializeSlot();
+        var itemDataSO = inventoryItem.ItemDataSO;
+        if (itemDataSO == null)
+            return;
+
+        bool canEquip = itemDataSO.Equip;
+        if (canEquip && slot is WeaponSlot weaponSlot)
         {
-            case CurrencyItemSlot.CurrencySlot.Seed:
-                _playerInventoryData.SeedCount = slot.Currency;
-                break;
-            case CurrencyItemSlot.CurrencySlot.Soul:
-                _playerInventoryData.SoulCount = slot.Currency;
-                break;
+            var playerWeaponDataSO = itemDataSO as PlayerWeaponDataSO;
+            if(playerWeaponDataSO != null)
+            {
+                var weaponData = playerWeaponDataSO.WeaponData;
+                weaponSlot.WeaponData = weaponData;
+                WeaponPool.Instance.CreatePool(playerWeaponDataSO.AddressKey);
+
+                var targetDictionary = _saveData.WeaponDataDictionary;
+                SaveItem(targetDictionary, slotName, weaponData);
+            }
+        }
+        else
+        {
+            switch (slot)
+            {
+                case InventorySlot inventorySlot:
+                    var inventoryItemDataSO = itemDataSO as InventoryItemDataSO;
+                    if(inventoryItemDataSO != null)
+                    {
+                        var inventoryData = inventoryItemDataSO.InventoryItemData;
+                        inventorySlot.InventoryItemData = inventoryData;
+                        inventorySlot.OnItemUI();
+
+                        var targetDictionary = _saveData.InventoryDataDictionary;
+                        SaveItem(targetDictionary, slotName, inventoryData);
+                    }
+                    break;
+                case TrinketSlot trinketSlot:
+                    var trinketItemDataSO = itemDataSO as TrinketItemDataSO;
+                    if(trinketItemDataSO != null)
+                    {
+                        var trinketData = trinketItemDataSO.TrinketItemData;
+                        trinketSlot.TrinketItemData = trinketData;
+
+                        var targetDictionary = _saveData.TrinketDataDictionary;
+                        SaveItem(targetDictionary, slotName, trinketData);
+                    }
+                    break;
+                case SoulSlot soulSlot:
+                    var soulItemDataSO = itemDataSO as SoulItemDataSO;
+                    if(soulItemDataSO != null &&
+                        inventoryItem is ICurrencyItem soulItem)
+                    {
+                        soulSlot.Currency += soulItem.GetValue();
+                        soulSlot.SaveCurrency(_saveData);
+                    }
+                    break;
+                case SeedSlot seedSlot:
+                    var seedItemDataSO = itemDataSO as SeedItemDataSO;
+                    if(seedItemDataSO != null &&
+                        inventoryItem is ICurrencyItem seedItem)
+                    {
+                        seedSlot.Currency += seedItem.GetValue();
+                        seedSlot.SaveCurrency(_saveData);
+                    }
+                    break;
+            }
         }
     }
 
-    #region PlayerItem
-    private void SetPlayerItem(IPlayerItem playerItem)
+    private void SaveItem<T>(Dictionary<ItemType, T> targetDictionary, ItemType itemType, T tData)
     {
-        var slotName = playerItem.SlotName;
-        var slot = GetSlot(slotName) as PlayerItemSlot;
-        if(slot != null)
-            InitializePlayerItemSlot(playerItem, slot);
-        else
-            SaveItem(slotName, playerItem);
+        if (targetDictionary == null)
+            return;
+
+        if (!targetDictionary.ContainsKey(itemType))
+            targetDictionary.Add(itemType, tData);
     }
 
-    private void SaveItem(ItemType slotName, IPlayerItem playerItem)
+    private void RefreshItem(ItemType slotName, IInventoryItem inventoryItem)
     {
         if (!_refreshItemDictionary.ContainsKey(slotName))
         {
-            _refreshItemDictionary.Add(slotName, playerItem);
+            _refreshItemDictionary.Add(slotName, inventoryItem);
 
             _refreshDictionary[slotName] = (item, slot) =>
             {
-                InitializePlayerItemSlot(item, slot);
+                InitializeInventorySlot(item, slot, slotName);
                 _refreshDictionary.Remove(slotName);
             };
         }
-    }
-
-    private void InitializePlayerItemSlot(IPlayerItem playerItem, PlayerItemSlot slot)
-    {
-        var dataKey = playerItem.DescriptionKey;
-        if (DataManager.Instance.GetData(dataKey) is not ItemDescriptionData descriptionData)
-            return;
-
-        slot.InitializeSlot();
-        slot.DescriptionData = descriptionData;
-        SaveDescriptionData(playerItem.SlotName, descriptionData);
-
-        var canEquip = playerItem.CanEquip;
-        if (canEquip)
-        {
-            var weaponSlot = slot as WeaponSlot;
-            SetUpWeaponSlot(playerItem, weaponSlot);
-        }
-    }
-
-    private void SaveDescriptionData(ItemType slotName, ItemDescriptionData itemDescriptionData)
-    {
-        var saveDescriptionDic = _playerInventoryData.DescriptionDataDictionary;
-        if (!saveDescriptionDic.ContainsKey(slotName))
-            saveDescriptionDic.Add(slotName, itemDescriptionData);
-    }
-
-    private void SaveWeaponData(ItemType slotName, PlayerWeaponData playerWeaponData)
-    {
-        var saveWeaponDataDic = _playerInventoryData.WeaponDataDictionary;
-        if(!saveWeaponDataDic.ContainsKey(slotName))
-            saveWeaponDataDic.Add(slotName, playerWeaponData);
-    }
-
-    private void SetUpWeaponSlot(IPlayerItem playerItem, WeaponSlot slot)
-    {
-        if (playerItem is not IPlayerWeaponItem weaponItem)
-            return;
-
-        var dataKey = weaponItem.WeaponDataKey;
-
-        WeaponPool.Instance.CreatePool(weaponItem.AddressableKey);
-        if (DataManager.Instance.GetData(dataKey) is not PlayerWeaponData weaponData)
-            return;
-
-        slot.WeaponData = weaponData;
-        SaveWeaponData(playerItem.SlotName, weaponData);
     }
     #endregion
 }

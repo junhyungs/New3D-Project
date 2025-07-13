@@ -1,19 +1,14 @@
 using EnumCollection;
+using GameData;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace ItemComponent
 {
-    public class Soul : CurrencyItem
+    public class Soul : Item, ICurrencyItem
     {
-        [Header("Movement")]
-        [SerializeField] private float _maxTime;
-        [SerializeField] private float _speed;
-        [Header("SoulValue"), SerializeField]
-        private int _soulValue;
         private bool _isMove;
-
         public override ItemType SlotName => ItemType.Soul;
 
         private void OnEnable()
@@ -28,7 +23,7 @@ namespace ItemComponent
                 return;
 
             ColliderANDMoveControl(false);
-            InventoryManager.Instance.SetGameItem(this);
+            InventoryManager.Instance.SetItem(this);
             gameObject.SetActive(false);
         }
 
@@ -45,11 +40,17 @@ namespace ItemComponent
 
         private IEnumerator StartMovement()
         {
+            var soulDataSO = ItemDataSO as SoulItemDataSO;
+            if (soulDataSO == null)
+                yield break;
+            
             var time = 0f;
+            var maxTime = soulDataSO.MaxTime;
             var moveDirection = Vector3.up;
-            while(time < _maxTime)
+
+            while(time < maxTime)
             {
-                var moveVector = moveDirection * _speed * Time.deltaTime;
+                var moveVector = moveDirection * soulDataSO.MoveSpeed * Time.deltaTime;
                 transform.Translate(moveVector);
 
                 time += Time.deltaTime;
@@ -58,7 +59,8 @@ namespace ItemComponent
 
             var playerObject = PlayerManager.Instance.PlayerObject;
             var playerTransform = playerObject.transform;
-            var speed = _speed * 2;
+            var speed = soulDataSO.MoveSpeed * 2;
+
             while (_isMove)
             {
                 var targetPosition = playerTransform.position + Vector3.up * 0.7f;
@@ -67,9 +69,13 @@ namespace ItemComponent
             }
         }
 
-        public override int GetValue()
+        public int GetValue()
         {
-            return _soulValue;
+            var soulDataSO = ItemDataSO as SoulItemDataSO;
+            if (soulDataSO == null)
+                return 1;
+
+            return soulDataSO.SoulValue;
         }
     }
 }

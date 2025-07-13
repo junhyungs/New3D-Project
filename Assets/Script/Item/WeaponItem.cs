@@ -1,19 +1,17 @@
 using EnumCollection;
+using GameData;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace ItemComponent
 {
-    public abstract class WeaponItem : Item, IPlayerWeaponItem
+    public abstract class WeaponItem : Item
     {
-        public override bool CanEquip => true;
-        public abstract string WeaponDataKey { get; }
-        public abstract string AddressableKey { get; }
-
+        public abstract void StartWeapon();
         public override void Interact()
         {
-            InventoryManager.Instance.SetGameItem(this);
+            InventoryManager.Instance.SetItem(this);
             DisableObejct();
         }
     }

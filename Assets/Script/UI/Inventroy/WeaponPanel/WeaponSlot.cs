@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace InventoryUI
 {
-    public class WeaponSlot : WeaponItemSlot
+    public class WeaponSlot : PlayerItemSlot
     {
         [Header("ItemName"), SerializeField]
         private ItemType _itemName;
@@ -17,9 +17,7 @@ namespace InventoryUI
         private RawImage _rawImage;
 
         private const string KEY = "EnableItem";
-
-        public override PlayerWeaponData WeaponData { get; set; }
-        public override ItemDescriptionData DescriptionData { get; set; }
+        public WeaponData WeaponData { get; set; }
 
         private void Awake()
         {
@@ -58,13 +56,11 @@ namespace InventoryUI
 
         public void ChangeWeapon()
         {
-            bool isData = WeaponData != null
-                && DescriptionData != null;
-
+            bool isData = WeaponData != null;
             if (!isData)
                 return;
 
-            WeaponManager.Instance.SetWeapon(_itemName);
+            WeaponManager.Instance.SetWeapon(_itemName, WeaponData);
         }
     }
 }

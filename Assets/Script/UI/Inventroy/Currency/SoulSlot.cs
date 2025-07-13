@@ -1,4 +1,5 @@
 using EnumCollection;
+using GameData;
 using ItemComponent;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,9 +9,10 @@ namespace InventoryUI
 {
     public class SoulSlot : CurrencyItemSlot
     {
-        public SoulSlot()
+        private void Start()
         {
-            InitializeSlot();
+            _key = UIEvent.SoulView.ToString();
+            InventoryManager.Instance.RegisterSlot(ItemType.Soul, this);
         }
 
         public override int Currency
@@ -19,30 +21,13 @@ namespace InventoryUI
             set
             {
                 _currency = value;
-                TriggerUIEvent();
+                UIManager.TriggerUIEvent(_key, _currency);
             }
         }
 
-        public override CurrencySlot GetSlotType => CurrencySlot.Soul;
-
-        public override void InitializeSlot()
+        public override void SaveCurrency(PlayerInventoryData inventoryData)
         {
-            _key = UIEvent.SoulView.ToString();
-            TriggerUIEvent();
-        }
-
-        public override bool CanUseCurrencyItem(int count)
-        {
-            var carculate = Currency - count;
-            if (carculate < 0)
-                return false;
-
-            return true;
-        }
-
-        public override void UseItem(int count)
-        {
-            Currency -= count;
+            inventoryData.SoulCount = _currency;
         }
     }
 }

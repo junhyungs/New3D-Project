@@ -17,10 +17,8 @@ namespace GameData
         [Header("FlightTime"), SerializeField]
         private float _flightTime;
 
-        public float ProjectileSpeed => _projectileSpeed;
-        public int Damage => _damage;
-        public int Cost => _cost;
-        public float FlightTime => _flightTime;
+        public SkillData SkillData => new SkillData(_projectileSpeed, 
+            _damage, _cost, _flightTime);
     }
 }
 

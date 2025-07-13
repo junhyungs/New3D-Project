@@ -1,16 +1,14 @@
 using EnumCollection;
-using ItemComponent;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using GameData;
 
 namespace InventoryUI
 {
     public class SeedSlot : CurrencyItemSlot
     {
-        public SeedSlot()
+        private void Start()
         {
-            InitializeSlot();
+            _key = UIEvent.SeedView.ToString();
+            InventoryManager.Instance.RegisterSlot(ItemType.Seed, this);
         }
 
         public override int Currency
@@ -19,29 +17,13 @@ namespace InventoryUI
             set
             {
                 _currency = value;
-                TriggerUIEvent();
+                UIManager.TriggerUIEvent(_key, _currency);
             }
         }
 
-        public override CurrencySlot GetSlotType => CurrencySlot.Seed;
-
-        public override void InitializeSlot()
+        public override void SaveCurrency(PlayerInventoryData inventoryData)
         {
-            _key = UIEvent.SeedView.ToString();
-            TriggerUIEvent();
-        }
-
-        public override bool CanUseCurrencyItem(int count)
-        {
-            var carculate = Currency - count;
-            if(carculate < 0)
-                return false;
-            return true;
-        }
-
-        public override void UseItem(int count)
-        {
-            Currency -= count;
+            inventoryData.SeedCount = _currency;
         }
     }
 }

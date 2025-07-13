@@ -1,48 +1,35 @@
-
 using GameData;
 using System.Collections.Generic;
 using UnityEngine;
 using ItemComponent;
 
 namespace InventoryUI
-{
-    public interface ISlot
+{   
+    public abstract class PlayerItemSlot : MonoBehaviour
     {
-        void InitializeSlot();
+        public abstract void InitializeSlot();
     }
 
-    public abstract class CurrencyItemSlot : ISlot
+    public abstract class CurrencyItemSlot : PlayerItemSlot
     {
-        public enum CurrencySlot
-        {
-            Seed,
-            Soul
-        }
-
         protected string _key;
         protected int _currency;
         public abstract int Currency { get; set; }
-        public abstract CurrencySlot GetSlotType { get; }
-        public abstract bool CanUseCurrencyItem(int count);
-        public abstract void UseItem(int count);
-        public abstract void InitializeSlot();
-        protected void TriggerUIEvent()
+        public virtual bool CanUseCurrencyItem(int count)
         {
-            UIManager.TriggerUIEvent(_key, _currency);
+            var carculate = Currency - count;
+            if (carculate < 0)
+                return false;
+            return true;
         }
-    }
 
-    public abstract class PlayerItemSlot : MonoBehaviour, ISlot
-    {
-        protected ItemDescriptionData _descriptionData;
-        public abstract ItemDescriptionData DescriptionData { get; set; }
-        public abstract void InitializeSlot();
-    }
+        public virtual void UseItem(int count)
+        {
+            Currency -= count;
+        }
 
-    public abstract class WeaponItemSlot : PlayerItemSlot
-    {
-        protected PlayerWeaponData _weaponData;
-        public abstract PlayerWeaponData WeaponData { get; set; }
+        public override void InitializeSlot() { }
+        public abstract void SaveCurrency(PlayerInventoryData inventoryData);        
     }
 }
 

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478f377ed9ccad54da7ba9d8a6098ae3, type: 3}
+  m_Name: SwordSO
+  m_EditorClassIdentifier: 
+  _itemName: "\uC0AC\uC2E0\uC758 \uAC80"
+  _itemDescription: "\uAC00\uC7A5 \uAE30\uBCF8\uC801\uC778 \uC601\uD63C \uC218\uD655\uC6A9
+    \uAC80."
+  _equip: 1
+  _addressKey: Prefab/PlayerSword
+  _damage: 2
+  _range: {x: 2.5, y: 1, z: 1.4}
+  _itemType: 5

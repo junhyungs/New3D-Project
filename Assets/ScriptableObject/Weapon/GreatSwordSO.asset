@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478f377ed9ccad54da7ba9d8a6098ae3, type: 3}
+  m_Name: GreatSwordSO
+  m_EditorClassIdentifier: 
+  _itemName: "\uC0AC\uC2E0\uC758 \uB300\uAC80"
+  _itemDescription: "\uC0AC\uC2E0\uC758 \uAC80\uC774\uB77C\uAE30\uC5D4 \uB108\uBB34
+    \uD06C\uACE0, \uBB34\uAE30\uB3C4\\n\uD45C\uC900\uD615 \uAC80\uBCF4\uB2E4 \uB450
+    \uBC30\uB85C \uBB34\uAC81\uAE30\uC5D0\\n\uBBFC\uCCA9\uC131\uC744 \uD3EC\uAE30\uD558\uACE0
+    \uB354 \uB9CE\uC740 \uD53C\uD574\uB97C \uC785\uD790 \uC218 \uC788\uB2E4.\\n\uC774\uC804
+    \uC18C\uC720\uC790\uB294 \uB369\uCE58\uAC00 \uC5C4\uCCAD \uCEF8\uC744 \uAC83
+    \uAC19\uB2E4..."
+  _equip: 1
+  _addressKey: Prefab/PlayerGreatSword
+  _damage: 4
+  _range: {x: 2.5, y: 1, z: 1.4}
+  _itemType: 8

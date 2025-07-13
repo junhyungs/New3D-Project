@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478f377ed9ccad54da7ba9d8a6098ae3, type: 3}
+  m_Name: UmbrellaSO
+  m_EditorClassIdentifier: 
+  _itemName: "\uBC84\uB824\uC9C4 \uC6B0\uC0B0"
+  _itemDescription: "\uC804\uD22C\uC5D0 \uC6B0\uC0B0\uC740 \uBD84\uBA85 \uC720\uC6A9\uD55C\\n\uBB3C\uAC74\uC740
+    \uC544\uB2C8\uB2E4...\uD558\uC9C0\uB9CC \uC545\uCC9C\uD6C4\uC5D0 \uBD84\uBA85
+    \uAE43\uD138\uC744\\n\uC816\uC9C0 \uC54A\uAC8C \uD574\uC904 \uAC83\uC774\uB2E4."
+  _equip: 1
+  _addressKey: Prefab/PlayerUmbrella
+  _damage: 2
+  _range: {x: 2.5, y: 1, z: 1.4}
+  _itemType: 9

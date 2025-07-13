@@ -14,6 +14,7 @@ namespace PlayerComponent
         public int AnimationCode;
         public Transform FireTransform;
         public GameObject SkillItem;
+        public PlayerSkillDataSO PlayerSkillDataSO;
     }
 
     public class PlayerSkillSystem : MonoBehaviour, IUnbindAction
@@ -66,12 +67,12 @@ namespace PlayerComponent
 
         private void InitializeSkillDictionary()
         {
-            var enumArray = (PlayerSkillType[])Enum.GetValues(typeof(PlayerSkillType));
-            foreach(var enumValue in enumArray)
+            foreach(var info in _infoDictionary.Values)
             {
                 PlayerSkill playerSkill = null;
 
-                switch (enumValue)
+                var type = info.Type;
+                switch (type)
                 {
                     case PlayerSkillType.PlayerBow:
                         playerSkill = new Bow(_animationEvent, this);
@@ -87,12 +88,8 @@ namespace PlayerComponent
                         break;
                 }
 
-                var info = _infoDictionary[enumValue];
-                var key = enumValue.ToString();
-                var data = DataManager.Instance.GetData(key) as PlayerSkillData;
-                playerSkill.InitializeSkill(info, data);
-
-                _skillDictionary.Add(enumValue, playerSkill);
+                playerSkill.InitializeSkill(info);
+                _skillDictionary.Add(type, playerSkill);
             }
         }
 

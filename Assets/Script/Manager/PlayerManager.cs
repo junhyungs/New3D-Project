@@ -24,12 +24,12 @@ public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
         CreateVirtualCamera();
     }
 
-    private void CreatePlayer()
+    private void CreatePlayer() //TODO 나중에 게임 매니저에서 일괄적으로 관리.
     {
         var playerObject = Instantiate(_playerPrefab);
         PlayerComponent = playerObject.GetComponent<Player>();
 
-        WeaponManager.Instance.SetWeapon(ItemType.Sword);
+        InventoryManager.Instance.InitializeInventory();
         playerObject.SetActive(false);
     }
 

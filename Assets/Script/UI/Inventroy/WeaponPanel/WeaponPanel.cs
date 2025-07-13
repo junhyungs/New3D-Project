@@ -1,11 +1,12 @@
+using EnumCollection;
+using GameData;
+using ModelViewPresenter;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using EnumCollection;
-using UnityEngine.InputSystem;
-using ModelViewPresenter;
-using GameData;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace InventoryUI
 {
@@ -35,18 +36,7 @@ namespace InventoryUI
             StartCoroutine(WaitForCurrentSelectedGameObject());
         }
 
-        public void UpdateDescription(ItemDescriptionData data)
-        {
-            InitializeText();
-
-            if (data == null)
-                return;
-            
-            _descriptionNameText.text = data.ItemName;
-            _descriptionText.text = data.Description;
-        }
-
-        public void UpdateWeaponAbility(PlayerWeaponData data)
+        public void UpdateWeaponAbility(WeaponData data)
         {
             foreach (var ui in _abilityUI)
                 ui.text = string.Empty;
@@ -58,6 +48,20 @@ namespace InventoryUI
             _range.text = data.Range.x.ToString();
             _hit.text = (data.Damage + 1).ToString();
             _speed.text = 0.4.ToString();
+        }
+
+        public void UpdateDescription(WeaponData data)
+        {
+            InitializeText();
+
+            if (data == null)
+                return;
+
+            var description = data.ItemDescription;
+            description = description.Replace("\\n", "\n");
+
+            _descriptionNameText.text = data.WeaponName;
+            _descriptionText.text = description;
         }
     }
 }

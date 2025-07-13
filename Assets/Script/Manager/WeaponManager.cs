@@ -27,10 +27,10 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
         InitializeHashSet();
     }
 
-    private void Start()
-    {
-        DataManager.Instance.ParsePlayerWeaponData(); // 테스트 코드
-    }
+    //private void Start()
+    //{
+    //    DataManager.Instance.ParsePlayerWeaponData(); // 테스트 코드
+    //}
 
     private void InitializeDictionary()
     {
@@ -72,7 +72,7 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
         return null;
     }
 
-    public void SetWeapon(ItemType itemType)
+    public void SetWeapon(ItemType itemType, WeaponData weaponData)
     {
         if (!_weaponTypeSet.Contains(itemType))
             return;
@@ -105,11 +105,12 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
                 break;
         }
 
-        StartCoroutine(GetWeaponArray(_currentWeapon, itemType));
+        StartCoroutine(GetWeaponArray(_currentWeapon, itemType, weaponData));
         WeaponType = itemType;
+        weaponData.WeaponType = itemType;
     }
 
-    private IEnumerator GetWeaponArray(IWeapon currentWeapon, ItemType itemType)
+    private IEnumerator GetWeaponArray(IWeapon currentWeapon, ItemType itemType, WeaponData weaponData)
     {
         var addressKey = currentWeapon.AddressableKey;
         
@@ -131,7 +132,7 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
                 WeaponInfos[i].Parent, itemType, WeaponInfos[i].Hand);
         }
 
-        currentWeapon.InitializeWeapon(controller);
+        currentWeapon.InitializeWeapon(controller, weaponData);
     }
     
     private void EquipWeapon(WeaponObjectController weaponObjectController, GameObject weaponObject,
@@ -191,7 +192,7 @@ public interface IWeapon
 {
     void UseWeapon();
     string AddressableKey { get; }
-    void InitializeWeapon(WeaponObjectController weapon);
-    PlayerWeaponData GetWeaponData();
+    void InitializeWeapon(WeaponObjectController weapon, WeaponData weaponData);
+    WeaponData GetWeaponData();
     WeaponObjectController GetWeaponController();
 }

@@ -29,7 +29,7 @@ public class Hook : PlayerSkill, ISkill
         if (hookComponent != null)
         {
             hookComponent.CallBackCollisionVector3(SetMovePosition);
-            hookComponent.SetData(0, _data.ProjectileSpeed, _data.ProjectileDamage);
+            hookComponent.SetData(0, _data.Speed, _data.Damage);
             hookComponent.Fire();
         }
         else
@@ -129,9 +129,12 @@ public class Hook : PlayerSkill, ISkill
             _player.transform.LookAt(lookPos);
     }
 
-    public override void InitializeSkill(SkillInfo info, PlayerSkillData data)
+    public override void InitializeSkill(SkillInfo info)
     {
-        _data = data;
         _skillInfo = info;
+
+        var dataSO = info.PlayerSkillDataSO;
+        if (dataSO != null)
+            _data = dataSO.SkillData;
     }
 }
