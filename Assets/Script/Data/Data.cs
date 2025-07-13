@@ -96,6 +96,17 @@ namespace GameData
         }
     }
 
+    public class WeaponData
+    {
+        public int Damage { get; set; }
+        public Vector3 Range { get; set; }
+        public WeaponData(int damage, Vector3 range)
+        {
+            Damage=damage;
+            Range=range;
+        }
+    }
+
     public class ItemDescriptionData : Data
     {
         public string Id { get; set; }
