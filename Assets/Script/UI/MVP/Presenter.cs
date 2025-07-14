@@ -1,3 +1,4 @@
+using GameData;
 using InventoryUI;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,10 +14,9 @@ namespace ModelViewPresenter
 
         protected Dictionary<GameObject, PlayerItemSlot> _modelDictionary;
         public virtual void RequestUpdate(GameObject gameObject) { }
-        protected virtual void UpdateView(PlayerItemSlot slot) { }
     }
 
-    public class Presenter<T> : Presenter where T : IView
+    public abstract class Presenter<T> : Presenter where T : IView
     {
         public Presenter(T view)
         {
@@ -41,11 +41,7 @@ namespace ModelViewPresenter
             _modelDictionary.Add(gameObject, model);
         }
 
-        protected override void UpdateView(PlayerItemSlot slot)
-        {
-            var data = slot.DescriptionData;
-            _view.UpdateDescription(data);
-        }
+        protected abstract void UpdateView(PlayerItemSlot slot);
     }
 }
 

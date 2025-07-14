@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 478f377ed9ccad54da7ba9d8a6098ae3, type: 3}
+  m_Name: HammerSO
+  m_EditorClassIdentifier: 
+  _key: 24
+  _itemName: "\uCC9C\uB465 \uB9DD\uCE58"
+  _itemDescription: "\uBC88\uAC1C\uC758 \uAE30\uC6B4\uC774 \uB2F4\uAE34 \uBB34\uAC81\uACE0
+    \uAC15\uB825\uD55C \uBB34\uAE30.\\n\uC804\uC124\uC5D0 \uC758\uD558\uBA74 \uC61B
+    \uC2E0\uB4E4 \uC911 \uD558\uB098\uAC00\\n\uC774\uB7F0 \uB9DD\uCE58\uB97C \uB4E4\uACE0
+    \uB2E4\uB154\uB2E4\uB294 \uC774\uC57C\uAE30\uAC00 \uC788\uC9C0\uB9CC,\\n\uADF8
+    \uC2E0\uC758 \uC774\uB984\uC740 \uC2DC\uAC04\uC758 \uD750\uB984 \uC18D\uC5D0\\n\uC78A\uD600\uC84C\uB2E4."
+  _equip: 1
+  _addressKey: Prefab/PlayerHammer
+  _damage: 3
+  _range: {x: 2.5, y: 1, z: 1.4}
+  _itemType: 6

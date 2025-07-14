@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EnumCollection;
+using GameData;
 
 namespace ItemComponent
 {
@@ -10,51 +11,46 @@ namespace ItemComponent
         ItemType SlotName { get; }
     }
 
-    public interface ICurrencyItem : IGameItem
+    public interface IInventoryItem : IGameItem
+    {
+        ItemDataSO ItemDataSO { get; }
+    }
+
+    public interface ICurrencyItem : IInventoryItem
     {
         int GetValue();
     }
-    
-    public interface IPlayerItem : IGameItem
-    {
-        bool CanEquip { get; }
-        string DescriptionKey { get; }
-    }
-
-    public interface IPlayerWeaponItem : IPlayerItem
-    {
-        string WeaponDataKey { get; }
-        string AddressableKey { get; }
-    }
-
-    public abstract class CurrencyItem : MonoBehaviour, IInteractionItem, ICurrencyItem
+   
+    public abstract class CurrencyItem : MonoBehaviour, IInteractionItem
     {
         protected SphereCollider _collider;
-        public abstract ItemType SlotName { get; }
-        public abstract int GetValue();
+
+        private void Awake()
+        {
+            _collider = GetComponent<SphereCollider>();
+        }
+        protected void DisableObejct()
+        {
+            _collider.enabled = false;
+            gameObject.SetActive(false);
+        }
+
         public abstract void Interact();
-
-        private void Awake()
-        {
-            _collider = GetComponent<SphereCollider>();
-        }
     }
 
-    public abstract class Item : MonoBehaviour, IInteractionItem, IPlayerItem
+    public abstract class Item : MonoBehaviour, IInteractionItem, IInventoryItem
     {
+        [Header("DataSOKey"), SerializeField]
+        private ScriptableDataKey _key;
         protected SphereCollider _collider;
-        public abstract bool CanEquip { get; }
+
+        public ItemDataSO ItemDataSO => DataManager.Instance.GetScriptableData(_key) as ItemDataSO;
+        
         public abstract ItemType SlotName { get; }
-        public abstract string DescriptionKey { get; }
 
         private void Awake()
         {
             _collider = GetComponent<SphereCollider>();
-        }
-
-        private void OnEnable()
-        {
-            _collider.enabled = true;
         }
 
         protected void DisableObejct()

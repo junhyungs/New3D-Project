@@ -3080,18 +3080,22 @@ MonoBehaviour:
   _animationEvent: {fileID: 1423114334790698971}
   _skillInfos:
   - Type: 1
+    DataKey: 19
     AnimationCode: 1
     FireTransform: {fileID: 5751960965367423460}
     SkillItem: {fileID: 4644295648158746241}
   - Type: 2
+    DataKey: 20
     AnimationCode: 2
     FireTransform: {fileID: 5913786334030577083}
     SkillItem: {fileID: 0}
   - Type: 3
+    DataKey: 18
     AnimationCode: 3
     FireTransform: {fileID: 1263957418956963954}
     SkillItem: {fileID: 0}
   - Type: 4
+    DataKey: 21
     AnimationCode: 4
     FireTransform: {fileID: 4009575937215833676}
     SkillItem: {fileID: 0}

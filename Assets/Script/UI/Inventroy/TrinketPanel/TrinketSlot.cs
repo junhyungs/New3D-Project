@@ -20,7 +20,7 @@ namespace InventoryUI
 
         private const string KEY = "EnableItem";
 
-        public override ItemDescriptionData DescriptionData { get; set; }
+        public TrinketItemData TrinketItemData { get; set; }
 
         public override void InitializeSlot()
         {

@@ -5,16 +5,16 @@ using UnityEngine;
 
 namespace ModelViewPresenter
 {
-    public interface IView
+    public interface IView { }
+    public interface IView<T> : IView
     {
-        void UpdateDescription(ItemDescriptionData data);
+        void UpdateDescription(T data);
     }
-
-    public interface IInventoryView : IView { }
-    public interface ITrinketView : IView { }
-    public interface IWeaponView : IView
+    public interface IInventoryView : IView<InventoryItemData> { }
+    public interface ITrinketView : IView<TrinketItemData> { }
+    public interface IWeaponView : IView<WeaponData>
     {
-        void UpdateWeaponAbility(PlayerWeaponData data);
+        void UpdateWeaponAbility(WeaponData data);
     }
 }
 

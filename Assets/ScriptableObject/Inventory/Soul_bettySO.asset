@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdf6c225fa89b9a4183be09b98495a22, type: 3}
+  m_Name: Soul_bettySO
+  m_EditorClassIdentifier: 
+  _itemName: "\uBCA0\uD2F0\uC758 \uAC70\uB300 \uC601\uD63C"
+  _itemDescription: "\uD639\uC790\uC5D0\uAC90 \uC2E0\uC73C\uB85C, \uD639\uC790\uC5D0\uAC90\\n\uAE38\uB4E4\uC77C
+    \uC218 \uC5C6\uB294 \uC57C\uC218\uB85C\uC11C\\n\uB450\uB824\uC6C0\uC758 \uB300\uC0C1\uC774
+    \uB41C \uC790. \uD63C\uC5D0\uC11C\\n\uD0DC\uACE0\uC758 \uC815\uC81C\uB418\uC9C0
+    \uC54A\uB294 \uAE30\uC6B4\uC774\\n\uBFDC\uC5B4\uC838 \uB098\uC624\uBA70, \uAE38\uC783\uC740
+    \uD63C\uC758\\n\uAE30\uC6B4\uC744 \uD761\uC218\uD558\uC9C0 \uC54A\uACE0\uB3C4\\n\uC790\uC5F0\uC2A4\uB7FD\uAC8C
+    \uAC70\uB300\uD55C \uBAA8\uC2B5\uC744 \uAC16\uAC8C\\n\uB418\uC5C8\uB2E4. \uC544\uB9C8
+    \uAC70\uC778\uC758 \uD6C4\uC190\uC774\\n\uC544\uB2C8\uC5C8\uC744\uAE4C \uC2F6\uB2E4."
+  _equip: 0

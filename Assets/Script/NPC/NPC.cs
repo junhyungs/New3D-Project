@@ -8,33 +8,27 @@ namespace NPC_Component
 {
     public abstract class NPC : MonoBehaviour, IInteractionDialog
     {
-        protected Dialog _myDialog;
+        [Header("DiaogSOKey")]
+        [SerializeField] private ScriptableDataKey _key;
         protected Coroutine _dialogCoroutine;
-        protected Npc _npcName;
-        protected readonly string _order_Stroy = "Story";
-        protected readonly string _order_Loop = "Loop";
-        protected readonly string _order_End = "End";
-        protected readonly string _dataKey = DataKey.DialogData.ToString();
-
-        private void Start()
+        
+        public abstract void Interact();
+        protected abstract IEnumerator StartDialog(string npcName, List<string> dialogList);
+        protected bool CanDialog(out DialogDataSO dialogDataSO)
         {
-            var dialogData = DataManager.Instance.GetData(_dataKey) as DialogData;
-            if (dialogData == null)
+            dialogDataSO = DataManager.Instance.GetScriptableData(_key) as DialogDataSO;
+            if (dialogDataSO != null && _dialogCoroutine == null)
+                return true;
+
+            return false;
+        }
+        protected void LockPlayer(bool isLocked)
+        {
+            var playerManager = PlayerManager.Instance;
+            if (playerManager == null)
                 return;
 
-            _myDialog = dialogData.GetMyDialog(_npcName.ToString());
-        }
-
-        public abstract void Interact();
-        protected abstract IEnumerator StartDialog();
-        protected void LockPlayer(bool islock)
-        {
-            PlayerManager.Instance.LockPlayer(islock);
-        }
-
-        protected bool CanNotDialog()
-        {
-            return _myDialog == null || _dialogCoroutine != null;
+            playerManager.LockPlayer(isLocked);
         }
     }
 }

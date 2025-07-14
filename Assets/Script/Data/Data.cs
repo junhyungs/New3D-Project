@@ -82,43 +82,59 @@ namespace GameData
         }
     }
 
-    public class PlayerWeaponData : Data
+    public class ItemData : Data { }
+
+    public class SkillData : ItemData
     {
-        public string Id { get; set; }
+        public float Speed { get; set; }
+        public int Damage { get; set; }
+        public int Cost { get; set; }
+        public float FlightTime { get; set; }
+        public SkillData(float speed, int damage, int cost, float flightTime)
+        {
+            Speed=speed;
+            Damage=damage;
+            Cost=cost;
+            FlightTime=flightTime;
+        }
+    }
+
+    public class WeaponData : ItemData
+    {
+        public ItemType WeaponType { get; set; }
+        public string WeaponName { get; set; }
+        public string ItemDescription { get; set; }
         public int Damage { get; set; }
         public Vector3 Range { get; set; }
-
-        public PlayerWeaponData(string id, int damage, Vector3 range)
+        public WeaponData(int damage, Vector3 range, string weaponName, string itemDescription, ItemType itemType)
         {
-            Id = id;
-            Damage = damage;
-            Range = range;
+            Damage=damage;
+            Range=range;
+            WeaponName=weaponName;
+            ItemDescription=itemDescription;
+            WeaponType = itemType;
         }
     }
 
-    public class ItemDescriptionData : Data
+    public class InventoryItemData : ItemData
     {
-        public string Id { get; set; }
         public string ItemName { get; set; }
-        public string Description { get; set; }
-
-        public ItemDescriptionData(string id, string itemName, string description)
+        public string ItemDescription { get; set; }
+        public InventoryItemData(string itemName, string itemDescription)
         {
-            Id = id;
             ItemName = itemName;
-            Description = description;
+            ItemDescription = itemDescription;
         }
     }
 
-    public class PathData : Data
+    public class TrinketItemData : ItemData
     {
-        public string ID { get; set; }
-        public string Path { get; set; }
-
-        public PathData(string id, string path)
+        public string ItemName { get; set; }
+        public string ItemDescription { get; set; }
+        public TrinketItemData(string itemName, string itemDescription)
         {
-            ID = id;
-            Path = path;
+            ItemName = itemName;
+            ItemDescription = itemDescription;
         }
     }
 
@@ -163,24 +179,6 @@ namespace GameData
         }
     }
 
-    public class PlayerSkillData : Data
-    {
-        public string ID { get; set; }
-        public float ProjectileSpeed { get; set; }
-        public int ProjectileDamage { get; set; }
-        public int ProjectileCost { get; set; }
-        public float FlightTime { get; set; }
-        public PlayerSkillData(string id, float projectileSpeed, int projectileDamage,
-            int projectileCost, float flightTime)
-        {
-            ID = id;
-            ProjectileSpeed = projectileSpeed;
-            ProjectileDamage = projectileDamage;
-            ProjectileCost = projectileCost;
-            FlightTime = flightTime;
-        }
-    }
-
     public class PlayerUpgradeData_Skill : Data
     {
         public int DamageUpgrade { get; set; }
@@ -204,17 +202,40 @@ namespace GameData
 
     public class PlayerInventoryData : Data
     {
-        public Dictionary<ItemType, ItemDescriptionData> DescriptionDataDictionary { get; private set; }
-        public Dictionary<ItemType, PlayerWeaponData> WeaponDataDictionary { get; private set; }
-        public HashSet<ItemType> EquipItemSet { get; private set; }
+        public bool InitInventory { get; set; }
+        public WeaponData SaveWeapon { get; set; }
+        public Dictionary<ItemType, WeaponData> WeaponDataDictionary { get; private set; }
+        public Dictionary<ItemType, InventoryItemData> InventoryDataDictionary { get; private set; }
+        public Dictionary<ItemType, TrinketItemData> TrinketDataDictionary { get; private set; }
         public int SeedCount { get; set; }
         public int SoulCount { get; set; }
+
+        public WeaponData GetWeaponData(ItemType itemType)
+        {
+            if(WeaponDataDictionary.TryGetValue(itemType, out var weaponData))
+                return weaponData;
+            return null;
+        }
+
+        public InventoryItemData GetInventoryItemData(ItemType itemType)
+        {
+            if(InventoryDataDictionary.TryGetValue(itemType, out var inventoryItemData))
+                return inventoryItemData;
+            return null;
+        }
+
+        public TrinketItemData GetTrinketItemData(ItemType itemType)
+        {
+            if(TrinketDataDictionary.TryGetValue(itemType, out var trinketItemData))
+                return trinketItemData;
+            return null;
+        }
         
         public PlayerInventoryData()
         {
-            DescriptionDataDictionary = new Dictionary<ItemType, ItemDescriptionData>();
-            WeaponDataDictionary = new Dictionary<ItemType, PlayerWeaponData>();
-            EquipItemSet = new HashSet<ItemType>();
+            WeaponDataDictionary = new Dictionary<ItemType, WeaponData>();
+            InventoryDataDictionary = new Dictionary<ItemType, InventoryItemData>();
+            TrinketDataDictionary = new Dictionary<ItemType, TrinketItemData>();
         }
     }
 }

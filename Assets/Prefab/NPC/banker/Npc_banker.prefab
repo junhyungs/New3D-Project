@@ -3963,6 +3963,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91c27d3dbd99b5e4b8ff8390f0317d01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _key: 11
 --- !u!135 &6486593655805843983
 SphereCollider:
   m_ObjectHideFlags: 0

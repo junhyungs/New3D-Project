@@ -23,16 +23,13 @@ namespace InventoryUI
                 return;
             }
                 
-            var itemDescriptionData = weaponSlot.DescriptionData;
             var weaponData = weaponSlot.WeaponData;
 
-            bool isData = itemDescriptionData != null &&
-                weaponData != null;
-
+            bool isData = weaponData != null;
             if (isData)
             {
                 weaponSlot.LiveImage();
-                UpdateWeaponView(itemDescriptionData, weaponData);
+                UpdateWeaponView(weaponData);
 
                 _previousSlot = weaponSlot;
             }
@@ -40,11 +37,10 @@ namespace InventoryUI
                 UpdateWeaponView();
         }
 
-        private void UpdateWeaponView(ItemDescriptionData itemData = null,
-            PlayerWeaponData weaponData = null)
+        private void UpdateWeaponView(WeaponData data = null)
         {
-            _view.UpdateDescription(itemData);
-            _view.UpdateWeaponAbility(weaponData);
+            _view.UpdateDescription(data);
+            _view.UpdateWeaponAbility(data);
         }
     }
 }

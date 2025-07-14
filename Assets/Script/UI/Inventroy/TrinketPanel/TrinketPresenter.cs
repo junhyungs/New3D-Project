@@ -23,13 +23,13 @@ namespace InventoryUI
                 return;
             }
 
-            var itemDescriptionData = trinketSlot.DescriptionData;
+            var trinketItemData = trinketSlot.TrinketItemData;
 
-            bool isData = itemDescriptionData != null;
+            bool isData = trinketItemData != null;
             if (isData)
             {
                 trinketSlot.LiveImage();
-                UpdateTrinketView(itemDescriptionData);
+                UpdateTrinketView(trinketItemData);
 
                 _previousSlot = trinketSlot;
             }
@@ -37,9 +37,9 @@ namespace InventoryUI
                 UpdateTrinketView();
         }
 
-        private void UpdateTrinketView(ItemDescriptionData itemData = null)
+        private void UpdateTrinketView(TrinketItemData data = null)
         {
-            _view.UpdateDescription(itemData);
+            _view.UpdateDescription(data);
         }
     }
 }

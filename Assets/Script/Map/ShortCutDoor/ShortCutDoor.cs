@@ -44,7 +44,7 @@ public class ShortCutDoor : TimeLineComponent.TimeLine, IInteractionGameObject
     public void Interact() => PlayInTimeLine();
     private void PlayInTimeLine()
     {
-        if (!TrySetPlayerTransform(_outTransform, -transform.forward, out GameObject playerObject))
+        if (!TrySetPlayerTransform(_inTransform, -transform.forward, out GameObject playerObject))
             return;
 
         var key = EnableUI.PlayerUI.ToString();

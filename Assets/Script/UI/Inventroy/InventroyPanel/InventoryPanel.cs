@@ -1,8 +1,6 @@
-using System.Collections;
-using UnityEngine.InputSystem;
-using ModelViewPresenter;
 using GameData;
-using UnityEngine.EventSystems;
+using ModelViewPresenter;
+using UnityEngine.InputSystem;
 
 namespace InventoryUI
 {
@@ -24,15 +22,18 @@ namespace InventoryUI
             StartCoroutine(WaitForCurrentSelectedGameObject());
         }
 
-        public void UpdateDescription(ItemDescriptionData data)
+        public void UpdateDescription(InventoryItemData data)
         {
             InitializeText();
 
             if (data == null)
                 return;
 
+            var description = data.ItemDescription;
+            description = description.Replace("\\n", "\n");
+
             _descriptionNameText.text = data.ItemName;
-            _descriptionText.text = data.Description;
+            _descriptionText.text = description;
         }
     }
 }

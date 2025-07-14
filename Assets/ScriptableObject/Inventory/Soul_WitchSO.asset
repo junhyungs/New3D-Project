@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdf6c225fa89b9a4183be09b98495a22, type: 3}
+  m_Name: Soul_WitchSO
+  m_EditorClassIdentifier: 
+  _itemName: "\uD56D\uC544\uB9AC \uB9C8\uB140\uC758 \uAC70\uB300 \uC601\uD63C"
+  _itemDescription: "\uBAA8\uC131\uC560 \uD558\uB098\uB9CC\uC73C\uB85C \uC0B4\uC544\uC654\uC9C0\uB9CC\\n\uC8FD\uC74C\uC744
+    \uD53C\uD558\uB824\uB358 \uADF8 \uC9D1\uCC29\uC5D0\\n\uC9D1\uC5B4\uC0BC\uCF1C\uC9C4
+    \uAC15\uB825\uD55C \uB9C8\uB140. \uB9C8\uBC95,\\n\uBD80\uD65C, \uBB3C\uC57D\uACFC
+    \uD56D\uC544\uB9AC\uC5D0 \uB300\uD55C\\n\uC5F4\uC815\uC73C\uB85C \uC790\uC2E0\uC758
+    \uC0B6\uC744 \uAC00\uB4DD\\n\uCC44\uC6E0\uC5C8\uB2E4..."
+  _equip: 0

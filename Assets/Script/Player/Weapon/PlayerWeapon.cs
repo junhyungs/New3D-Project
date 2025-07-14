@@ -7,7 +7,7 @@ using UnityEngine;
 public abstract class PlayerWeapon : MonoBehaviour, IWeapon
 {
     protected WeaponObjectController _weaponController;
-    protected PlayerWeaponData _data;
+    protected WeaponData _data;
     protected PlayerAnimationEvent _animEvent;
     public abstract string AddressableKey { get; }
 
@@ -16,28 +16,18 @@ public abstract class PlayerWeapon : MonoBehaviour, IWeapon
         _animEvent = GetComponent<PlayerAnimationEvent>();
     }
 
-    protected void GetWeaponData(DataKey dataKey)
-    {
-        var key = dataKey.ToString();
-        _data = DataManager.Instance.GetData(key) as PlayerWeaponData;
-    }
-
-    public void InitializeWeapon(WeaponObjectController weapon)
+    public void InitializeWeapon(WeaponObjectController weapon, WeaponData weaponData)
     {
         _weaponController = weapon;
         _weaponController.SetWeaponActive(PlayerHand.Idle);
 
-        bool isNull = _animEvent == null ? true : false;
-        if (isNull)
-        {
-            Debug.Log("Null");
-        }
+        _data = weaponData;
         _animEvent.SetWeaponAction(UseWeapon);
     }
 
     public abstract void UseWeapon();
 
-    public PlayerWeaponData GetWeaponData()
+    public WeaponData GetWeaponData()
     {
         return _data;
     }

@@ -118,5 +118,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 365d68e05a9b9f74b9fbf778134c8010, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _key: 17
   _slotName: 0
-  _descriptionKey: 1

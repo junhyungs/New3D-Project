@@ -1,24 +1,28 @@
 using EnumCollection;
+using GameData;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace ItemComponent
 {
-    public class Seed : CurrencyItem
+    public class Seed : Item, ICurrencyItem
     {
         public override ItemType SlotName => ItemType.Seed;
 
-        public override int GetValue()
+        public int GetValue()
         {
-            return 1;
+            var seedDataSO = ItemDataSO as SeedItemDataSO;
+            if (seedDataSO == null)
+                return 1;
+
+            return seedDataSO.Count;
         }
 
         public override void Interact()
         {
-            _collider.enabled = false;
-            InventoryManager.Instance.SetGameItem(this);
-            gameObject.SetActive(false);
+            InventoryManager.Instance.SetItem(this);
+            DisableObejct();
         }
     }
 }

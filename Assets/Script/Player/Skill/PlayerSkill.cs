@@ -24,7 +24,7 @@ public abstract class PlayerSkill : ISkill
 
     protected PlayerAnimationEvent _animationEvent;
     protected PlayerSkillSystem _skillSystem;
-    protected PlayerSkillData _data;
+    protected SkillData _data;
     protected Player _player;
     protected Rigidbody _rigidBody;
     protected PlayerPlane _playerPlane;
@@ -43,7 +43,7 @@ public abstract class PlayerSkill : ISkill
     public bool RequiresReload { get; set; }
     public bool EndSkill { get; set; }
 
-    public abstract void InitializeSkill(SkillInfo info, PlayerSkillData data);
+    public abstract void InitializeSkill(SkillInfo info, SkillData data);
     public abstract void Execute();
     public abstract void Reloading();
     public abstract void Fire();
@@ -83,7 +83,7 @@ public abstract class PlayerSkill : ISkill
 
     protected bool TryUse()
     {
-        var useCost = _data.ProjectileCost;
+        var useCost = _data.Cost;
         if (_skillSystem.Cost >= useCost)
         {
             _skillSystem.Cost -= useCost;
@@ -112,6 +112,6 @@ public abstract class PlayerSkill : ISkill
         if(_data == null)
             return 0;
 
-        return _data.ProjectileCost;
+        return _data.Cost;
     }
 }

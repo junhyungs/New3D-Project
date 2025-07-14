@@ -123,6 +123,14 @@ public class SaveManager : Singleton<SaveManager>
         var key = DataKey.Inventory_Data.ToString();
         var data = DataManager.Instance.GetData(key) as PlayerInventoryData;
 
+        var player = PlayerManager.Instance.PlayerComponent;
+        var playerWeapon = player.GetComponent<PlayerWeapon>();
+        if(playerWeapon != null)
+        {
+            var currentWeaponData = playerWeapon.GetWeaponData();
+            data.SaveWeapon = currentWeaponData;
+        }
+
         var path = Path.Combine(directoryPath, "Inventory.json");
         await WriteAllText(path, data);
     }

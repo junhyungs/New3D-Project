@@ -1,4 +1,5 @@
 using PlayerComponent;
+using EnemyComponent;
 using System;
 using System.Collections.Generic;
 using EnumCollection;
@@ -32,6 +33,7 @@ namespace State
         }
     }
 
+    #region Player
     public class PlayerStateFactory : ICharacterStateFactory<Player, E_PlayerState>
     {
         public ICharacterState CreateState(Player classType, E_PlayerState enumType)
@@ -61,5 +63,15 @@ namespace State
             }
         }
     }
+    #endregion
+    #region Mage
+    public class MageStateFactory : ICharacterStateFactory<Mage, E_MageState>
+    {
+        public ICharacterState CreateState(Mage classType, E_MageState enumType)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    #endregion
 }
 

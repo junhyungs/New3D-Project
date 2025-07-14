@@ -14,16 +14,14 @@ namespace InventoryUI
         [Header("ItemUI"), SerializeField]
         private GameObject _itemUI;
 
-        public override ItemDescriptionData DescriptionData
-        {
-            get => _descriptionData;
-            set
-            {
-                if(!_itemUI.activeSelf)
-                    _itemUI.SetActive(true);
+        public InventoryItemData InventoryItemData { get; set; }
 
-                _descriptionData = value;
-            }
+        public void OnItemUI()
+        {
+            if (InventoryItemData == null)
+                return;
+
+            _itemUI.SetActive(true);
         }
 
         public override void InitializeSlot() { }

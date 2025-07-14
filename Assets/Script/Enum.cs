@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace EnumCollection
 {
+    public enum E_MageState
+    {
+        Idle,
+    }
+
     public enum E_PlayerState
     {
         Idle,
@@ -15,6 +20,52 @@ namespace EnumCollection
         Attack,
         ChargeAttack,
         Skill
+    }
+
+    public enum ScriptableDataKey
+    {
+        SeedItemDataSO,
+        SoulItemDataSO,
+
+        //Dialog
+        BusNPC_DialogSO,
+        TelePhoneNPC_DialogSO,
+        HallCrow_1_DialogSO,
+        HallCrow_2_DialogSO,
+        HallCrow_3_DialogSO,
+        HallCrow_4_DialogSO,
+        HallCrow_5_DialogSO,
+        Bager_DialogSO,
+        Security_DialogSO,
+        Banker_DialogSO,
+        Agath_DialogSO,
+
+        //Inventory
+        Crystal_HealthSO,
+        Crystal_MagicSO,
+        Soul_bettySO,
+        Soul_SwampkingSO,
+        Soul_WitchSO,
+
+        //Skill
+        BombSO,
+        BowSO,
+        FireballSO,
+        HookSO,
+
+        //Weapon
+        DaggerSO,
+        GreatSwordSO,
+        HammerSO,
+        SwordSO,
+        UmbrellaSO,
+
+        //Trinket
+        RingSO,
+        RustyKeySO,
+        SurveillanceSO,
+        TeddySO,
+        TrowelSO
     }
 
     //Path 데이터로 사용되는 경우 DataKey와 ObjectKey는 일치해야함.

@@ -21,7 +21,6 @@ namespace PlayerComponent
 
         private void Awake()
         {
-            //DataManager.Instance.AddToPlayerData(null); //테스트 코드
             InitializeOnAwakePlayer();
         }
 

@@ -80,8 +80,8 @@ public class Bomb : PlayerSkill, ISkill
         var bombComponent = bombObject.GetComponent<BombObject>();
         if(bombComponent != null)
         {
-            bombComponent.SetData(_data.FlightTime, _data.ProjectileSpeed,
-                _data.ProjectileDamage);
+            bombComponent.SetData(_data.FlightTime, _data.Speed,
+                _data.Damage);
 
             Action action = null;
             action = () =>
@@ -100,9 +100,9 @@ public class Bomb : PlayerSkill, ISkill
         }
     }
 
-    public override void InitializeSkill(SkillInfo info, PlayerSkillData data)
+    public override void InitializeSkill(SkillInfo info, SkillData data)
     {
-        _data = data;
         _skillInfo = info;
+        _data = data;
     }
 }
