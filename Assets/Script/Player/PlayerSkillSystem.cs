@@ -11,10 +11,10 @@ namespace PlayerComponent
     public class SkillInfo
     {
         public PlayerSkillType Type;
+        public ScriptableDataKey DataKey;
         public int AnimationCode;
         public Transform FireTransform;
         public GameObject SkillItem;
-        public PlayerSkillDataSO PlayerSkillDataSO;
     }
 
     public class PlayerSkillSystem : MonoBehaviour, IUnbindAction
@@ -88,7 +88,10 @@ namespace PlayerComponent
                         break;
                 }
 
-                playerSkill.InitializeSkill(info);
+                var dataSO = DataManager.Instance.GetScriptableData(info.DataKey) as PlayerSkillDataSO;
+                if(dataSO != null)
+                    playerSkill.InitializeSkill(info, dataSO.SkillData);
+
                 _skillDictionary.Add(type, playerSkill);
             }
         }

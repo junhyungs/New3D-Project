@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 478f377ed9ccad54da7ba9d8a6098ae3, type: 3}
   m_Name: DaggerSO
   m_EditorClassIdentifier: 
+  _key: 22
   _itemName: "\uBC29\uB791\uC790\uC758 \uB300\uAC80"
   _itemDescription: "\uBE60\uB978 \uACF5\uACA9\uC744 \uAC00\uD560 \uC218 \uC788\uB294
     \uB0A0\uCE74\uB85C\uC6B4 \uCE7C\\n\uD55C \uC30D.\\n\uC774 \uCE7C\uC740 \uC704\uC6D0\uD68C\uB97C

@@ -27,11 +27,6 @@ public class WeaponManager : Singleton_MonoBehaviour<WeaponManager>
         InitializeHashSet();
     }
 
-    //private void Start()
-    //{
-    //    DataManager.Instance.ParsePlayerWeaponData(); // 테스트 코드
-    //}
-
     private void InitializeDictionary()
     {
         foreach (var weaponTransform in _weaponTransforms)

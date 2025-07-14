@@ -40,11 +40,12 @@ namespace ItemComponent
 
     public abstract class Item : MonoBehaviour, IInteractionItem, IInventoryItem
     {
-        [Header("InventoryItemDataSO"), SerializeField]
-        private ItemDataSO _itemDataSO;
+        [Header("DataSOKey"), SerializeField]
+        private ScriptableDataKey _key;
         protected SphereCollider _collider;
 
-        public ItemDataSO ItemDataSO => _itemDataSO;
+        public ItemDataSO ItemDataSO => DataManager.Instance.GetScriptableData(_key) as ItemDataSO;
+        
         public abstract ItemType SlotName { get; }
 
         private void Awake()

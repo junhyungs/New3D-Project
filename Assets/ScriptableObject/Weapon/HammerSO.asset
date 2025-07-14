@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 478f377ed9ccad54da7ba9d8a6098ae3, type: 3}
   m_Name: HammerSO
   m_EditorClassIdentifier: 
+  _key: 24
   _itemName: "\uCC9C\uB465 \uB9DD\uCE58"
   _itemDescription: "\uBC88\uAC1C\uC758 \uAE30\uC6B4\uC774 \uB2F4\uAE34 \uBB34\uAC81\uACE0
     \uAC15\uB825\uD55C \uBB34\uAE30.\\n\uC804\uC124\uC5D0 \uC758\uD558\uBA74 \uC61B

@@ -47,13 +47,10 @@ public class Bow : PlayerSkill, ISkill
         IsComplete(success);
     }
 
-    public override void InitializeSkill(SkillInfo info)
+    public override void InitializeSkill(SkillInfo info, SkillData data)
     {
         _skillInfo = info;
-
-        var dataSO = info.PlayerSkillDataSO;
-        if (dataSO != null)
-            _data = dataSO.SkillData;
+        _data = data;
     }
 
     public override void Reloading()

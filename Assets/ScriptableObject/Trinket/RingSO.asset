@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f1161bec6fdf6741b53d0b8db208482, type: 3}
   m_Name: RingSO
   m_EditorClassIdentifier: 
+  _key: 27
   _itemName: "\uB0A1\uC740 \uACB0\uD63C \uBC18\uC9C0"
   _itemDescription: "\uB0A1\uC740 \uACB0\uD63C \uBC18\uC9C0"
   _equip: 0

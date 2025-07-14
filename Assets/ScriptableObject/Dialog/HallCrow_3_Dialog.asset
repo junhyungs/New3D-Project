@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f479931e859c434d9a32b7757b53f59, type: 3}
+  m_Name: HallCrow_3_Dialog
+  m_EditorClassIdentifier: 
+  _key: 6
+  _npcName: "\uC870\uC5B8\uC790 \uCC48\uB4E4\uB7EC"
+  _mainDialogText: "\uB124 \uBC29\uBB38\uC740 \uC9C0\uC815\uB41C \uC601\uD63C\uC744
+    \uAC00\uC838\uC624\uAE30 \uC804\uAE4C\uC9C4 \uACC4\uC18D \uC5F4\uB824\uC788\uC744
+    \uAC70\uC57C.{E}\uBB38\uC774 \uC5F4\uB824\uC788\uB294 \uB3D9\uC548\uC740 \uD544\uBA78\uC790\uB85C\uC11C
+    \uC0B4\uC544\uAC08 \uAC70\uACE0, \uB098\uC774\uB3C4 \uBA39\uC744\uAC70\uC57C{E}\uADF8\uB7EC\uB2C8
+    \uC11C\uB450\uB974\uB77C\uACE0."
+  _loopDialogText: 
+  _endDialogText: 

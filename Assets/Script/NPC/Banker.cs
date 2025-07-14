@@ -16,7 +16,6 @@ namespace NPC_Component
         private void Awake()
         {
             _animator = GetComponent<Animator>();
-            _npcName = Npc.Banker;
         }
 
         private void Update()
@@ -42,16 +41,18 @@ namespace NPC_Component
 
         public override void Interact()
         {
-            if (CanNotDialog())
+            if (!CanDialog(out var dialogDataSO))
                 return;
 
-            _dialogCoroutine = StartCoroutine(StartDialog());
+            var npcName = dialogDataSO.NpcName;
+            var dialogList = dialogDataSO.GetLoopDialogList();
+            _dialogCoroutine = StartCoroutine(StartDialog(npcName, dialogList));
         }
 
-        protected override IEnumerator StartDialog()
+        protected override IEnumerator StartDialog(string npcName, List<string> dialogList)
         {
             LockPlayer(true);
-            yield return DialogManager.Instance.StartDialog(_myDialog.Name, _myDialog.LoopList);
+            yield return DialogManager.Instance.StartDialog(npcName, dialogList);
             LockPlayer(false);
 
             _dialogCoroutine = null;

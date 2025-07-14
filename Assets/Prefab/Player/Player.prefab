@@ -3080,29 +3080,25 @@ MonoBehaviour:
   _animationEvent: {fileID: 1423114334790698971}
   _skillInfos:
   - Type: 1
+    DataKey: 19
     AnimationCode: 1
     FireTransform: {fileID: 5751960965367423460}
     SkillItem: {fileID: 4644295648158746241}
-    PlayerSkillDataSO: {fileID: 11400000, guid: f441ac5111c1a674ea9bf498dfa88c8b,
-      type: 2}
   - Type: 2
+    DataKey: 20
     AnimationCode: 2
     FireTransform: {fileID: 5913786334030577083}
     SkillItem: {fileID: 0}
-    PlayerSkillDataSO: {fileID: 11400000, guid: 5e5aba1faf61061468a8adc20ee44acb,
-      type: 2}
   - Type: 3
+    DataKey: 18
     AnimationCode: 3
     FireTransform: {fileID: 1263957418956963954}
     SkillItem: {fileID: 0}
-    PlayerSkillDataSO: {fileID: 11400000, guid: 6aee6b7b2ed8ef144a5632e614ee893e,
-      type: 2}
   - Type: 4
+    DataKey: 21
     AnimationCode: 4
     FireTransform: {fileID: 4009575937215833676}
     SkillItem: {fileID: 0}
-    PlayerSkillDataSO: {fileID: 11400000, guid: 363cb1bc55cc4ed439f62601d4703348,
-      type: 2}
 --- !u!1 &6545161600655412944
 GameObject:
   m_ObjectHideFlags: 0

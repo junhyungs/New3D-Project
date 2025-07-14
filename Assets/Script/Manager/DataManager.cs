@@ -11,6 +11,8 @@ using UnityEngine.AddressableAssets;
 public class DataManager : Singleton<DataManager>
 {
     private Dictionary<string, Data> _dataDictionary = new Dictionary<string, Data>();
+    private Dictionary<ScriptableDataKey, ScriptableData> _scriptableDataDictionary
+        = new Dictionary<ScriptableDataKey, ScriptableData>();
 
     private bool TryAddData(string key, Data data)
     {
@@ -18,6 +20,21 @@ public class DataManager : Singleton<DataManager>
         if (_dataDictionary.TryAdd(key, data))
         {
             Debug.Log($"AddData : {key}");
+            return true;
+        }
+        else
+        {
+            Debug.Log($"Fail : {key}");
+            return false;
+        }
+    }
+
+    private bool TryAddScriptableData(ScriptableDataKey key, ScriptableData data)
+    {
+        Debug.Log($"TryAddScriptableData : {key}");
+        if (_scriptableDataDictionary.TryAdd(key, data))
+        {
+            Debug.Log($"Add : {key}");
             return true;
         }
         else
@@ -36,13 +53,21 @@ public class DataManager : Singleton<DataManager>
         return null;
     }
 
-    #region LoadAllData
+    public ScriptableData GetScriptableData(ScriptableDataKey key)
+    {
+        if(_scriptableDataDictionary.TryGetValue(key,out ScriptableData data))
+            return data;
+
+        Debug.Log("Data Null");
+        return null;
+    }
+
     public async UniTask LoadAllData()
     {
         await LoadPlayerGroup();
         await LoadUpgradeGroup();
         await LoadMapData();
-        await LoadDialogData();
+        await LoadAllScriptableDataAsync();
     }
 
     private async UniTask LoadPlayerGroup()
@@ -60,7 +85,7 @@ public class DataManager : Singleton<DataManager>
             LoadUpgradeSkillDataAsync()
             );
     }
-    #endregion
+ 
     private async UniTask<JArray> LoadJsonArrayAsync(string address)
     {
         var handle = Addressables.LoadAssetAsync<TextAsset>(address);
@@ -71,51 +96,21 @@ public class DataManager : Singleton<DataManager>
         return json;
     }
 
-    private JArray LoadJsonArray(string path) //최종 빌드 시 삭제
+    private async UniTask LoadAllScriptableDataAsync()
     {
-        var textAsset = Resources.Load<TextAsset>(path);
-        return JArray.Parse(textAsset.text);
-    }
+        var label = AddressablesKey._scriptableDataLabels;
 
-    #region DialogData
-    private async UniTask LoadDialogData()
-    {
-        var address = AddressablesKey.JsonData_Dialog;
-        JArray jArray = await LoadJsonArrayAsync(address);
-        var dialogDictionary = new Dictionary<string, Dialog>();
-        try
+        var handle = Addressables.LoadAssetsAsync<ScriptableData>(label, null);
+        var result = await handle.ToUniTask();
+        foreach(var data in result)
         {
-            foreach (var item in jArray)
-            {
-                var id = ParseString(item["Id"]);
-                var name = ParseString(item["Name"]);
-                var storyList = ParseDialogList(item["Story"]);
-                var loopList = ParseDialogList(item["Loop"]);
-                var endList = ParseDialogList(item["End"]);
-
-                Dialog dialog = new Dialog(name, storyList, loopList, endList);
-                dialogDictionary.Add(id, dialog);
-            }
-
-            DialogData data = new DialogData(dialogDictionary);
-            var key = DataKey.DialogData.ToString();
-            TryAddData(key, data);
+            var key = data.Key;
+            TryAddScriptableData(key, data);
         }
-        catch(Exception ex)
-        {
-            Debug.Log(ex.Message);
-        }
+
+        Addressables.Release(handle);
     }
 
-    private List<string> ParseDialogList(JToken jToken)
-    {
-        var message = jToken.ToString();
-        var splitArray = message.Split("{E}");
-        var dialogList = splitArray.ToList();
-        return dialogList;
-    }
-    #endregion
-    #region Player
     private async UniTask ParsePlayerBaseDataAsync()
     {
         var index = SaveManager.SaveIndex;
@@ -209,9 +204,20 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
-    
-    #endregion
-    #region Resolution
+    private async UniTask LoadMapData()
+    {
+        var key = DataKey.Map_Data.ToString();
+        var mapData = await SaveManager.Instance.LoadMapSaveDataAsync();
+        if (mapData != null)
+            TryAddData(key, mapData);
+        else
+        {
+            var progressDic = new Dictionary<string, MapProgress>();
+            mapData = new MapData(progressDic);
+            TryAddData(key, mapData);
+        }
+    }
+
     public List<(int, int)> LoadResolutionData()
     {
         var dataList = new List<(int, int)>();
@@ -229,100 +235,6 @@ public class DataManager : Singleton<DataManager>
 
         return dataList;
     }
-    #endregion
-    #region Map
-    private async UniTask LoadMapData()
-    {
-        var key = DataKey.Map_Data.ToString();
-        var mapData = await SaveManager.Instance.LoadMapSaveDataAsync();
-        if (mapData != null)
-            TryAddData(key, mapData);
-        else
-        {
-            var progressDic = new Dictionary<string, MapProgress>();
-            mapData = new MapData(progressDic);
-            TryAddData(key, mapData);
-        }
-    }
-    #endregion
-    #region TestCode
-    public void TestLoadDialogData()
-    {
-        try
-        {
-            var dialogDictionary = new Dictionary<string, Dialog>();
-            JArray jArray = LoadJsonArray("JsonData/New_3D_Dialog");
-            foreach (var item in jArray)
-            {
-                var id = ParseString(item["Id"]);
-                var name = ParseString(item["Name"]);
-                var storyList = ParseDialogList(item["Story"]);
-                var loopList = ParseDialogList(item["Loop"]);
-                var endList = ParseDialogList(item["End"]);
-
-                Dialog dialog = new Dialog(name, storyList, loopList, endList);
-                dialogDictionary.Add(id, dialog);
-            }
-
-            DialogData data = new DialogData(dialogDictionary);
-            var key = DataKey.DialogData.ToString();
-            TryAddData(key, data);
-        }
-        catch { }
-    }
-
-    public void AddToPlayerData(PlayerSaveData playerSaveData)
-    {
-        if (playerSaveData == null)
-        {
-            try
-            {
-                var jsonDataName = AddressablesKey.JsonData_PlayerBase;
-                ParsePlayerBaseData(jsonDataName);
-            }
-            catch
-            {
-                Debug.Log("AddToPlayerData");
-            }
-
-            return;
-        }
-
-        var key = playerSaveData.ID;
-        TryAddData(key, playerSaveData);
-    }
-
-    private void ParsePlayerBaseData(string path) //새로운 게임인 경우 호출.
-    {
-        JArray jsonArray = LoadJsonArray(path);
-        var item = jsonArray[0];
-
-        string id = ParseString(item["ID"]);
-        int power = ParseInt(item["Power"]);
-        float speed = ParseFloat(item["Speed"]);
-        float rollSpeed = ParseFloat(item["RollSpeed"]);
-        float ladder = ParseFloat(item["LadderSpeed"]);
-        float changeValue = ParseFloat(item["SpeedChangeValue"]);
-        float speedOffSet = ParseFloat(item["SpeedOffSet"]);
-        float dashSpeed = ParseFloat(item["DashSpeed"]);
-        int health = ParseInt(item["Health"]);
-
-        PlayerConstantData constantData = new PlayerConstantData(
-            rollSpeed, ladder, changeValue, speedOffSet, dashSpeed);
-
-        PlayerSaveData data = new PlayerSaveData()
-        {
-            ID = id,
-            Power = power,
-            Speed = speed,
-            Health = health,
-            ConstantData = constantData
-        };
-
-        //SaveManager.Instance.SavePlayerData(data); 주석 마지막에 풀어줘야함.
-        TryAddData(id, data);
-    }
-    #endregion
 
     private string ParseString(JToken jToken)
     {
@@ -357,7 +269,6 @@ public class DataManager : Singleton<DataManager>
 
         return new Vector3(x, y, z);
     }
-
 }
 
 

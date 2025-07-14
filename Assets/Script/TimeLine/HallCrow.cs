@@ -45,40 +45,39 @@ namespace TimeLineComponent
 
         public void HallCrow_Dialog_1()
         {
-            var npcName = Npc.HallCrow_1.ToString();
-            StartCoroutine(StartHallCrowDialog(npcName));
+            var key = ScriptableDataKey.HallCrow_1_DialogSO;
+            StartCoroutine(StartHallCrowDialog(key));
         }
 
         public void HallCrow_Dialog_2()
         {
             CameraBlend(0f);
 
-            var npcName = Npc.HallCrow_2.ToString();
-            StartCoroutine(StartHallCrowDialog(npcName));
+            var key = ScriptableDataKey.HallCrow_2_DialogSO;
+            StartCoroutine(StartHallCrowDialog(key));
         }
 
         public void HallCrow_Dialog_3()
         {
-            var npcName = Npc.HallCrow_3.ToString();
-            StartCoroutine(StartHallCrowDialog(npcName));
+            var key = ScriptableDataKey.HallCrow_3_DialogSO;
+            StartCoroutine(StartHallCrowDialog(key));
             StartCoroutine(ChangeFieldOfView(_lastCamera, 20f, 5f));
         }
 
         public void HallCrow_Dialog_4()
         {
             CameraBlend(2f);
-
-            var npcName = Npc.HallCrow_4.ToString();
-            StartCoroutine(LastDialog(npcName));
+            var key = ScriptableDataKey.HallCrow_4_DialogSO;
+            StartCoroutine(LastDialog(key));
         }
 
         public void HallCrow_Dialog_5()
         {
-            var npcName = Npc.HallCorw_5.ToString();
-            StartCoroutine(StartHallCrowDialog(npcName));
+            var key = ScriptableDataKey.HallCrow_5_DialogSO;
+            StartCoroutine(StartHallCrowDialog(key));
         }
 
-        private IEnumerator LastDialog(string npcName)
+        private IEnumerator LastDialog(ScriptableDataKey key)
         {
             var playerManager = PlayerManager.Instance;
 
@@ -88,22 +87,21 @@ namespace TimeLineComponent
             playerManager.PlayerObject.SetActive(true);
             playerManager.LockPlayer(true);
 
-            yield return StartCoroutine(StartHallCrowDialog(npcName));
+            yield return StartCoroutine(StartHallCrowDialog(key));
             playerManager.LockPlayer(false);
         }
 
-        private IEnumerator StartHallCrowDialog(string npcName)
+        private IEnumerator StartHallCrowDialog(ScriptableDataKey key)
         {
             _playableDirector.Pause();
 
-            var dataKey = DataKey.DialogData.ToString();
-            var dialogData = DataManager.Instance.GetData(dataKey) as DialogData;
-            if(dialogData == null)
-                yield break;
-
-            var myDialog = dialogData.GetMyDialog(npcName);
-            var dialogManager = DialogManager.Instance;
-            yield return dialogManager.StartDialog(myDialog.Name, myDialog.StoryList);
+            var dialogDataSO = DataManager.Instance.GetScriptableData(key) as DialogDataSO;
+            if(dialogDataSO != null)
+            {
+                var npcName = dialogDataSO.NpcName;
+                var dialogList = dialogDataSO.GetMainDialogList();
+                yield return DialogManager.Instance.StartDialog(npcName, dialogList);
+            }
 
             _playableDirector.Play();
         }

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e074b955e9b9c6941b0168f08284f40f, type: 3}
   m_Name: HookSO
   m_EditorClassIdentifier: 
+  _key: 21
   _projectileSpeed: 8
   _damage: 1
   _cost: 0

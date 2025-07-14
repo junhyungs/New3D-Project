@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28a9daa72930c47499b20ce67fb27b50, type: 3}
   m_Name: SoulItemDataSO
   m_EditorClassIdentifier: 
+  _key: 1
   _itemName: "\uC601\uD63C"
   _itemDescription: 
   _equip: 0

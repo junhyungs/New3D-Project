@@ -43,7 +43,7 @@ public abstract class PlayerSkill : ISkill
     public bool RequiresReload { get; set; }
     public bool EndSkill { get; set; }
 
-    public abstract void InitializeSkill(SkillInfo info);
+    public abstract void InitializeSkill(SkillInfo info, SkillData data);
     public abstract void Execute();
     public abstract void Reloading();
     public abstract void Fire();

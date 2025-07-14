@@ -112,6 +112,198 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3912d60aee0a0494bac344af4758828c
+    m_Address: Assets/ScriptableObject/SeedItemDataSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f846e6082a8db844be9a6ef6281ddf8
+    m_Address: Assets/ScriptableObject/SoulItemDataSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 600059efb4a7ec842bfdd145da053ae2
+    m_Address: Assets/ScriptableObject/Dialog/BusNpc_Dialog.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 917acbeb4c117f346b091b8f171e9fa7
+    m_Address: Assets/ScriptableObject/Dialog/TelePhoneNPC_Dialaog.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5a40196028727f43a00bb080a83013a
+    m_Address: Assets/ScriptableObject/Dialog/HallCrow_1_Dialog.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7a42ecead7e8a9b49aef2d8475c19960
+    m_Address: Assets/ScriptableObject/Dialog/HallCrow_2_Dialog.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9fb57ced9fcecc340a545cc1fd6f4940
+    m_Address: Assets/ScriptableObject/Dialog/HallCrow_3_Dialog.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 78ce93f6774cbb84ab7dd1b70b608c81
+    m_Address: Assets/ScriptableObject/Dialog/HallCrow_4_Dialog.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cfa48b4fbccb52245a34905b158800d1
+    m_Address: Assets/ScriptableObject/Dialog/HallCrow_5_Dialog.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b4cc93a9180b9040b51b6e8485874c6
+    m_Address: Assets/ScriptableObject/Dialog/Bager_Dialog.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 23601302e19507d4580d69aafc9ae15e
+    m_Address: Assets/ScriptableObject/Dialog/Security_Dialog.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 290f6341e3efcda40b395582bc6dfc1b
+    m_Address: Assets/ScriptableObject/Dialog/Banker_Dialog.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 19efd249128fc14449cd5098457d838f
+    m_Address: Assets/ScriptableObject/Dialog/Agatha_Dialog.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cce64d622ada56f478976483967606f6
+    m_Address: Assets/ScriptableObject/Inventory/Soul_WitchSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a3b671b56316ff47b5e69f8343eabfa
+    m_Address: Assets/ScriptableObject/Inventory/Soul_bettySO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 081670878c417db45833d55f9c3bc5dc
+    m_Address: Assets/ScriptableObject/Inventory/Crystal_MagicSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 01da48ab0485f0949b755834d3cd51cf
+    m_Address: Assets/ScriptableObject/Inventory/Soul_SwampkingSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cb89f57b0eb235445b2ccf9bd0882c73
+    m_Address: Assets/ScriptableObject/Inventory/Crystal_HealthSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6aee6b7b2ed8ef144a5632e614ee893e
+    m_Address: Assets/ScriptableObject/Skill/BombSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 363cb1bc55cc4ed439f62601d4703348
+    m_Address: Assets/ScriptableObject/Skill/HookSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5e5aba1faf61061468a8adc20ee44acb
+    m_Address: Assets/ScriptableObject/Skill/FireballSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f441ac5111c1a674ea9bf498dfa88c8b
+    m_Address: Assets/ScriptableObject/Skill/BowSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6b7535657b817e243b3ec6a4264f0212
+    m_Address: Assets/ScriptableObject/Trinket/RustyKeySO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad41c7c14fb11c1409f5ffa7e252d3e3
+    m_Address: Assets/ScriptableObject/Trinket/TrowelSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5772fccbeba6c241b66df294c365434
+    m_Address: Assets/ScriptableObject/Trinket/SurveillanceSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7fc3f0fb92cc7642a0283d4cd1c2c25
+    m_Address: Assets/ScriptableObject/Trinket/RingSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d733cb06c4d9b3940a8cb67c138d53be
+    m_Address: Assets/ScriptableObject/Trinket/TeddySO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 51a5c835a57aef84b8a4f4b0e17d5411
+    m_Address: Assets/ScriptableObject/Weapon/UmbrellaSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81232f30809f2dc4eab6444bd699f65b
+    m_Address: Assets/ScriptableObject/Weapon/DaggerSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf12db30791c2b14f8aa83cda02fd2fa
+    m_Address: Assets/ScriptableObject/Weapon/SwordSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec527ded86e2e5249adf7c1d437ef46d
+    m_Address: Assets/ScriptableObject/Weapon/HammerSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b3d80cd2c6a61774699cdee1fa1fce91
+    m_Address: Assets/ScriptableObject/Weapon/GreatSwordSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 68fa7f047f245514e8fee859a6f4aba0, type: 2}
   m_SchemaSet:

@@ -10,12 +10,6 @@ public class WeaponPool : ObjectPool<WeaponPool>
 {
     private Dictionary<string, WeaponObjectPool> _weaponDictionary = new Dictionary<string, WeaponObjectPool>();
 
-    //protected override void Awake() //테스트 코드
-    //{
-    //    base.Awake();
-    //    InitializePrefabKey();
-    //}
-
     public void CreatePool(string addressablesKey)
     {
         if (_weaponDictionary.ContainsKey(addressablesKey))

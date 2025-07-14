@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 478f377ed9ccad54da7ba9d8a6098ae3, type: 3}
   m_Name: GreatSwordSO
   m_EditorClassIdentifier: 
+  _key: 23
   _itemName: "\uC0AC\uC2E0\uC758 \uB300\uAC80"
   _itemDescription: "\uC0AC\uC2E0\uC758 \uAC80\uC774\uB77C\uAE30\uC5D4 \uB108\uBB34
     \uD06C\uACE0, \uBB34\uAE30\uB3C4\\n\uD45C\uC900\uD615 \uAC80\uBCF4\uB2E4 \uB450

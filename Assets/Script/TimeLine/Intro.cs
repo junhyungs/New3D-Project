@@ -14,6 +14,9 @@ namespace TimeLineComponent
         [SerializeField] private GameObject _dummyPlayer;
         [SerializeField] private GameObject _introCamera;
 
+        [Header("DialogKey")]
+        [SerializeField] private ScriptableDataKey _key;
+
         public override void PlayTimeLine()
         {
             if (_playableDirector == null)
@@ -31,16 +34,14 @@ namespace TimeLineComponent
         {
             _playableDirector.Pause();
 
-            var dataKey = DataKey.DialogData.ToString();
-            var dialogData = DataManager.Instance.GetData(dataKey) as DialogData;
-            if (dialogData == null)
-                yield break;
+            var dialogDataSO = DataManager.Instance.GetScriptableData(_key) as DialogDataSO;
+            if (dialogDataSO != null)
+            {
+                var npcName = dialogDataSO.NpcName;
+                var dialogList = dialogDataSO.GetMainDialogList();
 
-            var npcName = Npc.BusNPC.ToString();
-            var myDialog = dialogData.GetMyDialog(npcName);
-
-            var dialogManager = DialogManager.Instance;
-            yield return dialogManager.StartDialog(myDialog.Name, myDialog.StoryList);
+                yield return DialogManager.Instance.StartDialog(npcName, dialogList);
+            }
 
             _playableDirector.Play();
         }

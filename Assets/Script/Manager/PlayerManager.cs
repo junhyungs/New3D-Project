@@ -52,9 +52,9 @@ public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
         virtualCameraObject.SetActive(false);
     }
 
-    public void LockPlayer(bool enable)
+    public void LockPlayer(bool isLocked)
     {
-        PlayerComponent.InputHandler.LockPlayer(!enable);
+        PlayerComponent.InputHandler.LockPlayer(!isLocked);
     }
 
     public void EnablePlayer(Vector3 position, Quaternion rotation)

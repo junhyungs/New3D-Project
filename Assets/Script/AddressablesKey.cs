@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class AddressablesKey
 {
+    public const string _scriptableDataLabels = "ScriptableData";
+
     public const string Map_Level_0 = "Map/Level_0";
     public const string Map_Level_1 = "Map/Level_1";
     public const string Map_Level_2 = "Map/Level_2";
@@ -28,13 +30,4 @@ public static class AddressablesKey
     public const string Prefab_PlayerUmbrella = "Prefab/PlayerUmbrella";
 
     public const string Label_WeaponAsset = "WeaponAsset";
-}
-
-public static class ResourcesKey
-{
-    public const string Prefab_PlayerSword = "WeaponPrefab/Sword";
-    public const string Prefab_PlayerHammer = "WeaponPrefab/Hammer";
-    public const string Prefab_PlayerDagger = "WeaponPrefab/Dagger";
-    public const string Prefab_PlayerGreatSword = "WeaponPrefab/GreatSword";
-    public const string Prefab_PlayerUmbrella = "WeaponPrefab/PlayerUmbrella";
 }

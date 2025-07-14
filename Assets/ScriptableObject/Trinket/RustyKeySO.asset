@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f1161bec6fdf6741b53d0b8db208482, type: 3}
   m_Name: RustyKeySO
   m_EditorClassIdentifier: 
+  _key: 28
   _itemName: "\uC601\uD63C \uC5F4\uC1E0"
   _itemDescription: "\uC601\uD63C \uC5F4\uC1E0"
   _equip: 0

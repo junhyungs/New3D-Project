@@ -1,3 +1,4 @@
+using EnumCollection;
 using GameData;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using UnityEngine;
 namespace GameData
 {
     [CreateAssetMenu(fileName = "PlayerSkillDataSO", menuName = "ScriptableObject/Data/PlayerSkillDataSO")]
-    public class PlayerSkillDataSO : ScriptableObject
+    public class PlayerSkillDataSO : ScriptableData
     {
         [Header("ProjectileSpeed"), SerializeField]
         private float _projectileSpeed;
@@ -19,6 +20,8 @@ namespace GameData
 
         public SkillData SkillData => new SkillData(_projectileSpeed, 
             _damage, _cost, _flightTime);
+
+        public override ScriptableDataKey Key => _key;
     }
 }
 

@@ -20,17 +20,6 @@ public class InventoryManager : Singleton_MonoBehaviour<InventoryManager>
     private Dictionary<ItemType, Action<IInventoryItem, PlayerItemSlot>> _refreshDictionary = new Dictionary<ItemType, Action<IInventoryItem, PlayerItemSlot>>();
     private Dictionary<ItemType, IInventoryItem> _refreshItemDictionary = new Dictionary<ItemType, IInventoryItem>();
 
-    //private void Awake()
-    //{
-    //    DataManager.Instance.TestLoadItemDescriptionData(); //테스트 코드
-    //}
-
-    private void Start()
-    {
-        //var key = DataKey.Inventory_Data.ToString();
-        //_playerInventoryData = DataManager.Instance.GetData(key) as PlayerInventoryData;
-    }
-
     public void InitializeInventory() //TODO 나중에 게임 매니저에서 일괄적으로 관리.
     {
         var key = DataKey.Inventory_Data.ToString();

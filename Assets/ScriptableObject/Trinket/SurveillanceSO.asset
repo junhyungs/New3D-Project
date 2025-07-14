@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f1161bec6fdf6741b53d0b8db208482, type: 3}
   m_Name: SurveillanceSO
   m_EditorClassIdentifier: 
+  _key: 29
   _itemName: "\uBFD4\uD53C\uB9AC"
   _itemDescription: "\uBFD4\uD53C\uB9AC"
   _equip: 0
