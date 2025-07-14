@@ -7,6 +7,9 @@ namespace EnumCollection
     public enum E_MageState
     {
         Idle,
+        Move,
+        //Teleport,
+        //Attack
     }
 
     public enum E_PlayerState
@@ -65,7 +68,10 @@ namespace EnumCollection
         RustyKeySO,
         SurveillanceSO,
         TeddySO,
-        TrowelSO
+        TrowelSO,
+
+        //Enemy
+        MageSO
     }
 
     //Path 데이터로 사용되는 경우 DataKey와 ObjectKey는 일치해야함.

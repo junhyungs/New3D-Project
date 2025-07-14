@@ -7,19 +7,19 @@ using System;
 
 namespace EnemyComponent
 {
-    public abstract class EnemyStateMachine<TClass, TFactory, TEnum> : MonoBehaviour, IGetState<TEnum>
+    public interface IEnemyStateController<TEnum> : IGetState<TEnum> where TEnum : Enum
+    {
+        void InitializeOnStart();
+    }
+
+    public abstract class EnemyStateMachine<TClass, TFactory, TEnum> : MonoBehaviour, IEnemyStateController<TEnum>
         where TClass : class
         where TEnum : Enum
         where TFactory : ICharacterStateFactory<TClass, TEnum>, new()
     {
         private CharacterStateMachine<TClass, TEnum, TFactory> _stateMachine;
 
-        protected virtual void Start()
-        {
-            InitializeOnStart();
-        }
-
-        protected virtual void InitializeOnStart()
+        public virtual void InitializeOnStart()
         {
             var referenceClass = GetComponent<TClass>();
 
@@ -35,7 +35,7 @@ namespace EnemyComponent
             _stateMachine.Update();
         }
 
-        protected void ChangeState(TEnum nextState)
+        public void ChangeState(TEnum nextState)
         {
             _stateMachine.ChangeState(nextState);
         }

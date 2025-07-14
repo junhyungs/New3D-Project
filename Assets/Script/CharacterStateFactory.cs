@@ -69,7 +69,15 @@ namespace State
     {
         public ICharacterState CreateState(Mage classType, E_MageState enumType)
         {
-            throw new NotImplementedException();
+            switch (enumType)
+            {
+                case E_MageState.Idle:
+                    return new MageIdle(classType);
+                case E_MageState.Move:
+                    return new MageMove(classType);
+                default
+                    : throw new ArgumentException();
+            }
         }
     }
     #endregion
