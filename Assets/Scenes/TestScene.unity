@@ -28598,7 +28598,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69169595d971fa74fbb7ace5adc757bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _testData: {fileID: 11400000, guid: 3c7173771b2492740ac2a4a11c15801b, type: 2}
+  _originalMaterial: {fileID: 2100000, guid: aff059ae52a19554399c781a6a901f0d, type: 2}
+  _skinnedMeshRenderers:
+  - {fileID: 6048735854429467381}
+  _testData: {fileID: 11400000, guid: e381621a6da5b564a9b6796ef0bda522, type: 2}
 --- !u!33 &8984621885865671307
 MeshFilter:
   m_ObjectHideFlags: 0

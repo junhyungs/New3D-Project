@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace GameData
 {
-    [CreateAssetMenu(fileName = "EnemyDataSO", menuName = "ScriptableObject/Data/EnemyDataSO")]
     public class EnemyDataSO : ScriptableData
     {
         [Header("Health")]

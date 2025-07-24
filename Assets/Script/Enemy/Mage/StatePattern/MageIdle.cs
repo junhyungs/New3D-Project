@@ -13,7 +13,11 @@ namespace EnemyComponent
 
         public void OnStateEnter()
         {
-            _mage.StartCoroutine(CheckTarget());
+            if (_property == null)
+                Debug.Log("Property Null");
+            else if (_property.Owner == null)
+                Debug.Log("Owner Null");
+                _property.Owner.StartCoroutine(CheckTarget());
         }
 
         private IEnumerator CheckTarget()
@@ -22,7 +26,7 @@ namespace EnemyComponent
             var range = GetRange();
             while (true)
             {
-                bool check = Physics.CheckSphere(_mageTransform.position, range, _targetLayer);
+                bool check = Physics.CheckSphere(_property.Owner.transform.position, range, _targetLayer);
                 if (check)
                 {
                     break;
@@ -31,7 +35,7 @@ namespace EnemyComponent
                 yield return _intervalTime;
             }
 
-            _stateMachine.ChangeState(E_MageState.Move);
+            _property.StateMachine.ChangeState(E_MageState.Teleport);
         }
     }
 }

@@ -6,11 +6,19 @@ using UnityEngine;
 
 namespace EnemyComponent
 {
-    public class Mage : Enemy<MageStateMachine, E_MageState>
+    public class Mage : Enemy<MageProperty>
     {
         [Header("TestData")] //테스트 코드
-        public EnemyDataSO _testData;
-        public bool IsSpawn { get; set; }
+        public MageSO _testData;
+        protected override MageProperty CreateProperty()
+        {
+            return new MageProperty(this);
+        }
+
+        protected override void Death()
+        {
+            Property.StateMachine.ChangeState(E_MageState.Death);
+        }
     }
 }
 

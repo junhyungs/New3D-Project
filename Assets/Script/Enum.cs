@@ -8,8 +8,9 @@ namespace EnumCollection
     {
         Idle,
         Move,
-        //Teleport,
-        //Attack
+        Teleport,
+        Attack,
+        Death
     }
 
     public enum E_PlayerState

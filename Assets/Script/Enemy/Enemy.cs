@@ -7,45 +7,61 @@ using System;
 
 namespace EnemyComponent
 {
-    public class Enemy<TStateMachine, TEnum> : MonoBehaviour 
-        where TStateMachine : IEnemyStateController<TEnum>
-        where TEnum : Enum
+  
+
+    public abstract class Enemy<TProperty> : MonoBehaviour, ITakeDamage
+        where TProperty : IPropertyBase
     {
-        public TStateMachine StateMachine { get; private set; }
+        [Header("Material")]
+        [SerializeField] private Material _originalMaterial;
+        [SerializeField] private SkinnedMeshRenderer[] _skinnedMeshRenderers;
+
         private WaitForSeconds _waitForIntensity = new WaitForSeconds(0.1f);
-        
+        public TProperty Property { get; private set; } 
+
         private void Awake()
         {
-            OnAwake();
+            OnAwakeEnemy();
         }
 
-        private void Start()
+        protected virtual void OnAwakeEnemy()
         {
-            OnStart();
+            Property = CreateProperty();
+            MaterialSetting();
         }
 
-        protected virtual void OnAwake()
+        private void OnEnable()
         {
-            StateMachine = GetComponent<TStateMachine>();
+            OnEnableEnemy();
         }
 
-        protected virtual void OnStart()
+        protected virtual void OnEnableEnemy()
         {
-            StateMachine.InitializeOnStart();
+            Property.NavMeshAgent.isStopped = false;
         }
 
-        public Material Copy(SkinnedMeshRenderer skinnedMeshRenderer)
-        {
-            var sharedMaterial = skinnedMeshRenderer.sharedMaterial;
-            var copyMaterial = Instantiate(sharedMaterial);
-            return copyMaterial;
-        }
+        protected abstract TProperty CreateProperty();
+        protected abstract void Death();
 
-        public Material Copy(MeshRenderer meshRenderer)
+        private void MaterialSetting()
         {
-            var sharedMaterial = meshRenderer.sharedMaterial;
-            var copyMaterial = Instantiate(sharedMaterial);
-            return copyMaterial;
+            if (_skinnedMeshRenderers == null)
+                return;
+
+            var copyMaterial = Instantiate(_originalMaterial);
+            for(int i = 0; i < _skinnedMeshRenderers.Length; i++)
+            {
+                var renderer = _skinnedMeshRenderers[i];
+                var sharedMaterials = renderer.sharedMaterials;
+                var array = new Material[sharedMaterials.Length];
+
+                for (int k = 0; k < sharedMaterials.Length; k++)
+                    array[k] = copyMaterial;
+
+                renderer.materials = array;
+            }
+
+            Property.CopyMaterial = copyMaterial;
         }
 
         public IEnumerator DissolveEffect(Material targetMaterial, float maxTime, 
@@ -73,6 +89,15 @@ namespace EnemyComponent
             targetMaterial.SetColor("_Color", upColor);
             yield return _waitForIntensity;
             targetMaterial.SetColor("_Color", color);
+        }
+
+        public virtual void TakeDamage(int damage)
+        {
+            Property.Health -= damage;
+            if (Property.Health <= 0)
+                Death();
+            else
+                StartCoroutine(IntensityChange(Property.CopyMaterial));
         }
     }
 }

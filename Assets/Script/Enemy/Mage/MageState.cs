@@ -10,33 +10,19 @@ namespace EnemyComponent
     {
         public MageState(Mage mage)
         {
-            _mage = mage;
-            _mageTransform = mage.transform;
-            _stateMachine = _mage.StateMachine;
-
-            SetData();
+            _property = mage.Property;
         }
 
-        protected Mage _mage;
-        protected MageStateMachine _stateMachine;
-        protected EnemyDataSO _data;
+        protected MageProperty _property;
         protected Transform _mageTransform;
-
-        private void SetData()
-        {
-            //var key = ScriptableDataKey.MageSO;
-            //var enemyDataSO = DataManager.Instance.GetScriptableData(key) as EnemyDataSO;
-            //if(enemyDataSO != null)
-            //    _data = enemyDataSO;
-
-            _data = _mage._testData; //테스트 코드
-        }
+        protected Transform _targetTransform;
+        protected const string PROPERTYNAME = "_NoiseValue";
 
         protected float GetRange()
         {
-            var range = _mage.IsSpawn ? _data.Spawn_DetectionRange :
-                _data.DetectionRange;
-            return range;
+            var data = _property.Data;
+            return _property.IsSpawn ? 
+                data.Spawn_DetectionRange : data.DetectionRange;
         }
 
         protected Transform FindTarget()
@@ -45,7 +31,7 @@ namespace EnemyComponent
             var range = GetRange(); 
             var results = new Collider[1];
 
-            var count = Physics.OverlapSphereNonAlloc(_mageTransform.position,
+            var count = Physics.OverlapSphereNonAlloc(_property.Owner.transform.position,
                 range, results, targetLayer);
             if(count > 0)
             {

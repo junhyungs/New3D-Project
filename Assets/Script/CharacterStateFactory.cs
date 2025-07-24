@@ -75,6 +75,12 @@ namespace State
                     return new MageIdle(classType);
                 case E_MageState.Move:
                     return new MageMove(classType);
+                case E_MageState.Teleport:
+                    return new MageTeleport(classType);
+                case E_MageState.Attack:
+                    return new MageAttack(classType);
+                case E_MageState.Death:
+                    return new MageDeath(classType);
                 default
                     : throw new ArgumentException();
             }
