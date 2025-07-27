@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyPool : ObjectPool<EnemyPool>, IObjectPool
+public class EnemyPool : ObjectPool<EnemyPool>
 {
     public void CreatePool(string address, int count = 1)
     {
-        if (_poolDictionary.ContainsKey(address))
-            return;
+        
 
     }
 

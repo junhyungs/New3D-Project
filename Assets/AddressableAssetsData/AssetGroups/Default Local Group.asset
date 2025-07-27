@@ -310,6 +310,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - ScriptableData
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6faaaab81070f24a8e0befea8740685
+    m_Address: Prefab/MageProjectile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 68fa7f047f245514e8fee859a6f4aba0, type: 2}
   m_SchemaSet:

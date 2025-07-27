@@ -8,9 +8,9 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class WeaponPool : ObjectPool<WeaponPool>
 {
-    private Dictionary<string, WeaponObjectPool> _weaponDictionary = new Dictionary<string, WeaponObjectPool>();
+    private Dictionary<string, PlayerWeaponObjectContainer> _weaponDictionary = new Dictionary<string, PlayerWeaponObjectContainer>();
 
-    public void CreatePool(string addressablesKey)
+    public override void CreatePool(string addressablesKey)
     {
         if (_weaponDictionary.ContainsKey(addressablesKey))
             return;
@@ -33,15 +33,15 @@ public class WeaponPool : ObjectPool<WeaponPool>
         var prefab = handle.Result;
         prefab.name = name;
 
-        var pool = new WeaponObjectPool(poolTransform, 5);
-        for(int i = 0; i < pool.ObjectArray.Length; i++)
+        var container = new PlayerWeaponObjectContainer(poolTransform, 5);
+        for(int i = 0; i < container.ObjectArray.Length; i++)
         {
             var poolIem = Instantiate(prefab, poolTransform);
             poolIem.SetActive(false);
-            pool.ObjectArray[i] = poolIem;
+            container.ObjectArray[i] = poolIem;
         }
 
-        _weaponDictionary.Add(addressablesKey, pool);
+        _weaponDictionary.Add(addressablesKey, container);
     }
 
     public GameObject[] GetWeaponItem(string addressablesKey)
@@ -74,14 +74,3 @@ public class WeaponPool : ObjectPool<WeaponPool>
     }
 }
 
-public class WeaponObjectPool
-{
-    public WeaponObjectPool(Transform poolTransform, int arrayLength)
-    {
-        ObjectArray = new GameObject[arrayLength];
-        PoolTransform = poolTransform;
-    }
-
-    public GameObject[] ObjectArray { get; private set; }
-    public Transform PoolTransform { get; private set; }
-}

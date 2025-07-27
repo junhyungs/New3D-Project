@@ -40,6 +40,12 @@ namespace EnemyComponent
             Property.NavMeshAgent.isStopped = false;
         }
 
+        private void Start()
+        {
+            OnStartEnemy();
+        }
+
+        protected virtual void OnStartEnemy() { }
         protected abstract TProperty CreateProperty();
         protected abstract void Death();
 

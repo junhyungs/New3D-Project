@@ -53,7 +53,7 @@ public abstract class PlayerSkill : ISkill
         {
             var childObject = _skillInfo.FireTransform.GetChild(0).gameObject;
             childObject.transform.parent = null;
-            ProjectilePool.Instance.EnqueueGameObject(_address, childObject);
+            PlayerProjectilePool.Instance.EnqueueGameObject(_address, childObject);
         }
 
         _animationEvent.UnSetReloadAction();
@@ -104,7 +104,7 @@ public abstract class PlayerSkill : ISkill
 
     protected void MakeProjectile(string address, int count = 1)
     {
-        ProjectilePool.Instance.CreatePool(address, count);
+        PlayerProjectilePool.Instance.CreatePool(address, count);
     }
 
     public int GetCost()

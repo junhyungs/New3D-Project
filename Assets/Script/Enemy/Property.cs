@@ -21,7 +21,7 @@ namespace EnemyComponent
         TStateMachine StateMachine { get; }
     }
 
-    public interface IDataProvider<T> where T : EnemyDataSO
+    public interface IDataProvider<T> where T : ScriptableObject
     {
         T Data { get; }
     }
@@ -45,7 +45,7 @@ namespace EnemyComponent
 
     public class MageProperty : EnemyProperty<Mage>, IDataProvider<MageSO>, IStateMachine<MageStateMachine>, IPropertyBase
     {
-        public MageProperty(Mage reference) : base(reference) { }
+        public MageProperty(Mage owner) : base(owner) { }
         
         public MageStateMachine StateMachine{ get; private set; }
         public NavMeshAgent NavMeshAgent { get; private set; }
@@ -55,12 +55,12 @@ namespace EnemyComponent
         public bool IsSpawn { get; set; }
         public int Health { get; set; }
 
-        protected override void InitializeProperty(Mage reference)
+        protected override void InitializeProperty(Mage owner)
         {
-            StateMachine = reference.GetComponent<MageStateMachine>();
-            NavMeshAgent = reference.GetComponent<NavMeshAgent>();
-            Animator = reference.GetComponent<Animator>();
-            Data = reference._testData; //TODO 완성되면 GetData로 변경.
+            StateMachine = owner.GetComponent<MageStateMachine>();
+            NavMeshAgent = owner.GetComponent<NavMeshAgent>();
+            Animator = owner.GetComponent<Animator>();
+            Data = owner._testData; //TODO 완성되면 GetData로 변경.
 
             NavMeshAgent.speed = Data.Speed;
             NavMeshAgent.stoppingDistance = Data.AgentStopDistance;

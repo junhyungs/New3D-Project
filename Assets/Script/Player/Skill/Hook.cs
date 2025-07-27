@@ -20,7 +20,7 @@ public class Hook : PlayerSkill, ISkill
 
     public override void Fire()
     {
-        var hook = ProjectilePool.Instance.DequeueGameObject(_address);
+        var hook = PlayerProjectilePool.Instance.DequeueGameObject(_address);
         hook.transform.SetParent(_skillInfo.FireTransform);
         hook.transform.localPosition = Vector3.zero;
         hook.transform.localRotation = Quaternion.identity;
@@ -44,7 +44,7 @@ public class Hook : PlayerSkill, ISkill
         EndSkill = true;
 
         hookObject.transform.parent = null;
-        ProjectilePool.Instance.EnqueueGameObject(_address, hookObject);
+        PlayerProjectilePool.Instance.EnqueueGameObject(_address, hookObject);
     }
 
     public void SetMovePosition(Vector3 targetPosition, HookObject hook)
@@ -83,7 +83,7 @@ public class Hook : PlayerSkill, ISkill
 
         AnimatorSetBool(false);
         EndSkill = true;
-        ProjectilePool.Instance.EnqueueGameObject(_address, hookObject);
+        PlayerProjectilePool.Instance.EnqueueGameObject(_address, hookObject);
     }
 
     private void DisableChain(Stack<GameObject> chainStack, LayerMask targetLayer)

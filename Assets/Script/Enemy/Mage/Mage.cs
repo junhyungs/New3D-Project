@@ -10,6 +10,7 @@ namespace EnemyComponent
     {
         [Header("TestData")] //테스트 코드
         public MageSO _testData;
+
         protected override MageProperty CreateProperty()
         {
             return new MageProperty(this);
