@@ -5,7 +5,7 @@ using EnumCollection;
 
 namespace PlayerComponent
 {
-    public class RollSlash : PlayerRollState<RollSlashStateBehaviour>, ICharacterState<RollSlash>, IEnableObject
+    public class RollSlash : PlayerRollState<RollSlashStateBehaviour>, ICharacterState<RollSlash>, IInitializeEnable
     {
         public RollSlash(Player player) : base(player)
         {
@@ -14,7 +14,7 @@ namespace PlayerComponent
 
         public bool AnimationStop { get; set; }
 
-        public void OnEnableObject()
+        public void Init()
         {
             GetBehaviour();
             _behaviour.RollSlashState = this;

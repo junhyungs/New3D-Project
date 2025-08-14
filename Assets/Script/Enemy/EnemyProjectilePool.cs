@@ -7,8 +7,9 @@ namespace EnemyComponent
     public interface IEnemyProjectilePool
     {
         EnemyProjectilePool Pool { get; }
+        void AllDisableProjectile();
     }
-    
+
     public class EnemyProjectilePool : MonoBehaviour
     {
         private EnemyProjectileContainer _container;

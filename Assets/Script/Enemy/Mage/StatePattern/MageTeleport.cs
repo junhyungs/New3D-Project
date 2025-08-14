@@ -13,15 +13,13 @@ namespace EnemyComponent
         private readonly int _teleportIn = Animator.StringToHash("Teleport");
         private readonly int _teleportOut = Animator.StringToHash("TeleportOut");
         
-
         public void OnStateEnter()
         {
-            _targetTransform = FindTarget();
+            _targetTransform = FindPlayer(_property.Data);
             if (_targetTransform == null)
                 _property.StateMachine.ChangeState(E_MageState.Idle);
 
-            var owner = _property.Owner;
-            owner.StartCoroutine(Teleportation(owner));
+            _owner.StartCoroutine(Teleportation(_owner));
         }
 
         private IEnumerator Teleportation(Mage owner)
@@ -70,11 +68,11 @@ namespace EnemyComponent
             _property.Animator.SetTrigger(hash);
 
         private IEnumerator DissolveEffect(Mage owner, float duration, float targetValue) =>
-            owner.DissolveEffect(_property.CopyMaterial, duration, targetValue, PROPERTYNAME);
+            owner.DissolveEffect(_property.CopyMaterial, duration, targetValue, MATERIAL_PROPERTY);
 
         private IEnumerator WaitForDissolve(float threshold)
         {
-            yield return new WaitUntil(() => _property.CopyMaterial.GetFloat(PROPERTYNAME) >= threshold);
+            yield return new WaitUntil(() => _property.CopyMaterial.GetFloat(MATERIAL_PROPERTY) >= threshold);
         }
     }
 }

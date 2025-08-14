@@ -12,19 +12,19 @@ namespace EnemyComponent
 
         public void OnStateEnter()
         {
-            _property.Owner.StopAllCoroutines();
+            _owner.StopAllCoroutines();
             _property.NavMeshAgent.isStopped = true;
 
             if (IsMaterialValueBelow(5))
-                _property.CopyMaterial.SetFloat(PROPERTYNAME, 0.5f);
+                _property.CopyMaterial.SetFloat(MATERIAL_PROPERTY, 0.5f);
 
             _property.Animator.SetTrigger(_death);
-            _property.Owner.StartCoroutine(DissolveEffect(_property.Owner, 3f, -0.5f));
+            _owner.StartCoroutine(DissolveEffect(_owner, 3f, -0.5f));
         }
 
         private IEnumerator DissolveEffect(Mage owner, float duration, float targetValue)
         {
-            owner.StartCoroutine(owner.DissolveEffect(_property.CopyMaterial, duration, targetValue, PROPERTYNAME));
+            owner.StartCoroutine(owner.DissolveEffect(_property.CopyMaterial, duration, targetValue, MATERIAL_PROPERTY));
             yield return WaitForDissolve();
         }
             
@@ -36,7 +36,7 @@ namespace EnemyComponent
 
         private bool IsMaterialValueBelow(int compareValue)
         {
-            var getfloat = _property.CopyMaterial.GetFloat(PROPERTYNAME) * 10;
+            var getfloat = _property.CopyMaterial.GetFloat(MATERIAL_PROPERTY) * 10;
             return getfloat <= compareValue;
         }
             

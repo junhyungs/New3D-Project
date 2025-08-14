@@ -12,7 +12,7 @@ namespace EnemyComponent
         
         public void OnStateEnter()
         {
-            _targetTransform = FindTarget();
+            _targetTransform = FindPlayer(_property.Data);
             if (_targetTransform == null)
                 _property.StateMachine.ChangeState(E_MageState.Idle);
         }
@@ -24,12 +24,12 @@ namespace EnemyComponent
 
         private void Movement()
         {
-            var targetDistance = Vector3.Distance(_property.Owner.transform.position, _targetTransform.position);
+            var targetDistance = Vector3.Distance(_owner.transform.position, _targetTransform.position);
             bool canAttack = targetDistance <= _property.NavMeshAgent.stoppingDistance;
 
             if (canAttack)
             {
-                _property.NavMeshAgent.SetDestination(_property.Owner.transform.position);
+                _property.NavMeshAgent.SetDestination(_owner.transform.position);
                 _property.StateMachine.ChangeState(E_MageState.Attack);
             }
             else

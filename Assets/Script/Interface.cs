@@ -16,11 +16,13 @@ public interface ICharacterState
     void OnTriggerExit(Collider other) { }
 }
 
-public interface IGetState<T> where T : Enum
+public interface IStateController<TEnum>
+    where TEnum : Enum
 {
+    void ChangeState(TEnum state);  
+    ICharacterState GetState(TEnum stateName);
+    TEnum GetCurrentStateType();
     ICharacterState GetCurrentState();
-    ICharacterState GetState(T stateName);
-    T GetCurrentStateType();
 }
 
 public interface ICharacterStateFactory<TClass, TEnum>
@@ -66,7 +68,7 @@ public interface IBurnable
     bool IsBurning();
 }
 
-public interface IEnableObject
+public interface IInitializeEnable
 {
-    void OnEnableObject();
+    void Init();
 }

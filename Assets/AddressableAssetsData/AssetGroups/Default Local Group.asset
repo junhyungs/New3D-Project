@@ -315,6 +315,17 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 53ecae069bab706418ee66c4697d12b6
+    m_Address: Assets/ScriptableObject/Enemy/GhoulDataSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: db5a7a746f4e6ac4ea39eca848fc545f
+    m_Address: Prefab/GhoulProjectile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 68fa7f047f245514e8fee859a6f4aba0, type: 2}
   m_SchemaSet:

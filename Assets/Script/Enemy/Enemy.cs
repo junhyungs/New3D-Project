@@ -7,14 +7,12 @@ using System;
 
 namespace EnemyComponent
 {
-  
-
     public abstract class Enemy<TProperty> : MonoBehaviour, ITakeDamage
         where TProperty : IPropertyBase
     {
         [Header("Material")]
         [SerializeField] private Material _originalMaterial;
-        [SerializeField] private SkinnedMeshRenderer[] _skinnedMeshRenderers;
+        [SerializeField] private Renderer[] _renderers;
 
         private WaitForSeconds _waitForIntensity = new WaitForSeconds(0.1f);
         public TProperty Property { get; private set; } 
@@ -38,6 +36,7 @@ namespace EnemyComponent
         protected virtual void OnEnableEnemy()
         {
             Property.NavMeshAgent.isStopped = false;
+            Property.CopyMaterial.SetFloat("_NoiseValue", 0.5f);
         }
 
         private void Start()
@@ -51,13 +50,13 @@ namespace EnemyComponent
 
         private void MaterialSetting()
         {
-            if (_skinnedMeshRenderers == null)
+            if (_renderers == null)
                 return;
 
             var copyMaterial = Instantiate(_originalMaterial);
-            for(int i = 0; i < _skinnedMeshRenderers.Length; i++)
+            for(int i = 0; i < _renderers.Length; i++)
             {
-                var renderer = _skinnedMeshRenderers[i];
+                var renderer = _renderers[i];
                 var sharedMaterials = renderer.sharedMaterials;
                 var array = new Material[sharedMaterials.Length];
 

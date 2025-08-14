@@ -2,14 +2,14 @@ using EnumCollection;
 
 namespace PlayerComponent
 {
-    public class Roll : PlayerRollState<RollStateBehaviour>, ICharacterState<Roll>, IEnableObject
+    public class Roll : PlayerRollState<RollStateBehaviour>, ICharacterState<Roll>, IInitializeEnable
     {
         public Roll(Player player) : base(player)
         {
             _behaviour.RollState = this;
         }
 
-        public void OnEnableObject()
+        public void Init()
         {
             GetBehaviour();
             _behaviour.RollState = this;

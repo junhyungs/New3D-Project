@@ -1,18 +1,20 @@
+using EnumCollection;
+using State;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using State;
-using EnumCollection;
-using System;
 
 namespace EnemyComponent
 {
-    public abstract class EnemyStateMachine<TClass, TFactory, TEnum> : MonoBehaviour, IGetState<TEnum>
+    
+    public abstract class EnemyStateMachine<TClass, TFactory, TEnum> : MonoBehaviour, IStateController<TEnum>
         where TClass : class
         where TEnum : Enum
         where TFactory : ICharacterStateFactory<TClass, TEnum>, new()
     {
-        private CharacterStateMachine<TClass, TEnum, TFactory> _stateMachine;
+        protected CharacterStateMachine<TClass, TEnum, TFactory> _stateMachine;
 
         private void OnEnable()
         {
@@ -46,12 +48,7 @@ namespace EnemyComponent
         protected virtual void Update()
         {
             _stateMachine.Update();
-        }
-
-        public void ChangeState(TEnum nextState)
-        {
-            _stateMachine.ChangeState(nextState);
-        }
+        }        
 
         public ICharacterState GetCurrentState()
         {
@@ -66,6 +63,11 @@ namespace EnemyComponent
         public TEnum GetCurrentStateType()
         {
             return _stateMachine.GetCurrentStateType();
+        }
+
+        public void ChangeState(TEnum state)
+        {
+            _stateMachine.ChangeState(state);
         }
     }
 }

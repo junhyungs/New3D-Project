@@ -13,8 +13,7 @@ namespace EnemyComponent
 
         public void OnStateEnter()
         {
-            _targetTransform = FindTarget();
-            _property.Owner.StartCoroutine(StartAttack());
+            _owner.StartCoroutine(StartAttack());
         }
 
         private IEnumerator StartAttack()

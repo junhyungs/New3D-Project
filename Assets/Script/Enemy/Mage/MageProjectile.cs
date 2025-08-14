@@ -19,7 +19,7 @@ namespace EnemyComponent
         protected override void OnUpdateProjectile()
         {
             Vector3 moveVector = _direction * _dataSO.Speed * Time.deltaTime;
-            transform.Translate(moveVector);
+            transform.Translate(moveVector, Space.World);
         }
     }
 }

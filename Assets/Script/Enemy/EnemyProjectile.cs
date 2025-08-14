@@ -5,13 +5,6 @@ using UnityEngine;
 
 namespace EnemyComponent
 {
-    [System.Serializable]
-    public class ShootTransformInfo
-    {
-        [Header("ShootTransform")]
-        public Transform ShootTransform;
-    }
-
     public interface IDisableProjectile
     {
         void Disable();

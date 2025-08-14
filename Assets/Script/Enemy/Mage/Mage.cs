@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace EnemyComponent
 {
-    public class Mage : Enemy<MageProperty>
+    public class Mage : ShooterEnemy<MageProperty, MageShooter>
     {
         [Header("TestData")] //테스트 코드
         public MageSO _testData;
@@ -18,7 +18,13 @@ namespace EnemyComponent
 
         protected override void Death()
         {
+            _shooter.AllDisableProjectile();
             Property.StateMachine.ChangeState(E_MageState.Death);
+        }
+
+        protected override int GetDamage()
+        {
+            return Property.Data.Damage;
         }
     }
 }

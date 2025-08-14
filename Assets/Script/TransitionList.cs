@@ -7,7 +7,7 @@ using System.Linq;
 
 public abstract class TransitionList<T> where T : Enum
 {
-    public TransitionList(IGetState<T> state)
+    public TransitionList(IStateController<T> state)
     {
         _transitionDictionary = new Dictionary<T, HashSet<T>>();
         _getState = state;
@@ -16,7 +16,7 @@ public abstract class TransitionList<T> where T : Enum
     }
 
     protected Dictionary<T, HashSet<T>> _transitionDictionary;
-    protected IGetState<T> _getState;
+    protected IStateController<T> _getState;
     protected abstract void Initialize();
     protected void AddDictionary(T key, params T[] states)
     {
@@ -40,7 +40,7 @@ namespace PlayerComponent
 {
     public class PlayerTransitionList : TransitionList<E_PlayerState>
     {
-        public PlayerTransitionList(IGetState<E_PlayerState> state) : base(state) { }
+        public PlayerTransitionList(IStateController<E_PlayerState> state) : base(state) { }
         
         protected override void Initialize()
         {

@@ -87,5 +87,30 @@ namespace State
         }
     }
     #endregion
+    #region Ghoul
+    public class GhoulStateFactory : ICharacterStateFactory<Ghoul, E_GhoulState>
+    {
+        public ICharacterState CreateState(Ghoul classType, E_GhoulState enumType)
+        {
+            switch (enumType)
+            {
+                case E_GhoulState.Idle:
+                    return new GhoulIdle(classType);    
+                case E_GhoulState.Partrol:
+                    return new GhoulPatrol(classType);
+                case E_GhoulState.Trace:
+                    return new GhoulTrace(classType);
+                case E_GhoulState.Attack:
+                    return new GhoulAttack(classType);
+                case E_GhoulState.Death:
+                    return new GhoulDeath(classType);
+                case E_GhoulState.CoolDown:
+                    return new GhoulCoolDown(classType);
+                default: 
+                    throw new ArgumentException();
+            }
+        }
+    }
+    #endregion
 }
 

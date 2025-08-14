@@ -8,34 +8,30 @@ namespace EnemyComponent
     public class MageIdle : MageState, ICharacterState<MageIdle>
     {
         public MageIdle(Mage mage) : base(mage) { }
-        private WaitForSeconds _intervalTime = new WaitForSeconds(0.5f);
-        private LayerMask _targetLayer;
+
+        private float _nextScanTime;
+        private const float PLAYER_SCAN_INTERVAL = 0.5f;
 
         public void OnStateEnter()
         {
-            if (_property == null)
-                Debug.Log("Property Null");
-            else if (_property.Owner == null)
-                Debug.Log("Owner Null");
-                _property.Owner.StartCoroutine(CheckTarget());
+            _nextScanTime = Time.time + PLAYER_SCAN_INTERVAL;
         }
 
-        private IEnumerator CheckTarget()
+        public void OnStateUpdate()
         {
-            _targetLayer = LayerMask.GetMask("Player");
-            var range = GetRange();
-            while (true)
+            if(Time.time >= _nextScanTime)
             {
-                bool check = Physics.CheckSphere(_property.Owner.transform.position, range, _targetLayer);
-                if (check)
-                {
-                    break;
-                }
-
-                yield return _intervalTime;
+                _nextScanTime = Time.time + PLAYER_SCAN_INTERVAL;
+                if (IsPlayerRange())
+                    _property.StateMachine.ChangeState(E_MageState.Teleport);
             }
+        }
 
-            _property.StateMachine.ChangeState(E_MageState.Teleport);
+        private bool IsPlayerRange()
+        {
+            var radius = GetRange(_property.Data);
+            var playerLayer = LayerMask.GetMask("Player");
+            return Physics.CheckSphere(_owner.transform.position, radius, playerLayer);
         }
     }
 }

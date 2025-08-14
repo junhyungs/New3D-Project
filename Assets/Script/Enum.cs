@@ -13,6 +13,16 @@ namespace EnumCollection
         Death
     }
 
+    public enum E_GhoulState
+    {
+        Idle,
+        Partrol,
+        Trace,
+        Attack,
+        Death,
+        CoolDown
+    }
+
     public enum E_PlayerState
     {
         Idle,
@@ -72,7 +82,8 @@ namespace EnumCollection
         TrowelSO,
 
         //Enemy
-        MageSO
+        MageSO,
+        GhoulSO
     }
 
     //Path 데이터로 사용되는 경우 DataKey와 ObjectKey는 일치해야함.
