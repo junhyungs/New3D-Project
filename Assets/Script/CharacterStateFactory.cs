@@ -112,5 +112,28 @@ namespace State
         }
     }
     #endregion
+    #region Bat
+    public class BatStateFactory : ICharacterStateFactory<Bat, E_BatState>
+    {
+        public ICharacterState CreateState(Bat classType, E_BatState enumType)
+        {
+            switch (enumType)
+            {
+                case E_BatState.Patrol:
+                    return new BatPatrol(classType);
+                case E_BatState.Trace:
+                    return new BatTrace(classType);
+                case E_BatState.Attack:
+                    return new BatAttack(classType);
+                case E_BatState.Death:
+                    return new BatDeath(classType);
+                case E_BatState.Shock:
+                    return new BatShock(classType);
+                default:
+                    throw new ArgumentException();
+            }
+        }
+    }
+    #endregion
 }
 

@@ -31,10 +31,11 @@ namespace EnemyComponent
                 data.Spawn_DetectionRange : data.DetectionRange;
         }
 
-        protected void AgentSetting(float stoppingDistance, float speed)
+        protected void AgentSetting(float stoppingDistance, float speed, float acceleration = 8f)
         {
             _property.NavMeshAgent.stoppingDistance = stoppingDistance;
             _property.NavMeshAgent.speed = speed;
+            _property.NavMeshAgent.acceleration = acceleration;
         }
 
         protected Transform FindPlayer(EnemyDataSO data)

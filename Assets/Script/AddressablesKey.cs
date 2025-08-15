@@ -31,8 +31,12 @@ public static class AddressablesKey
 
     public const string Prefab_Mage = "Prefab/Mage";
     public const string Prefab_MageProjectile = "Prefab/MageProjectile";
+
     public const string Prefab_Ghoul = "Prefab/Ghoul";
+    public const string Prefab_GhoulRapid = "Prefab/GhoulRapid";
     public const string Prefab_GhoulProjectile = "Prefab/GhoulProjectile";
+
+    public const string Prefab_Bat = "Prefab/Bat";
 
     public const string Label_WeaponAsset = "WeaponAsset";
 }

@@ -44,6 +44,33 @@ namespace EnemyComponent
         }
     }
 
+    public class BatProperty : EnemyProperty<Bat>,
+        IDataProvider<BatSO>, IStateMachine<BatStateMachine, E_BatState>, IPropertyBase
+    {
+        public BatProperty(Bat owner) : base(owner) { }
+
+        public BatSO Data { get; private set; }
+        public Transform TargetTransform { get; set; }
+        public BatStateMachine StateMachine { get; private set; }
+        public NavMeshAgent NavMeshAgent { get; private set; }
+        public Animator Animator { get; private set; }
+        public Material CopyMaterial { get; set; }
+        public int Health { get; set; }
+        public bool IsSpawn { get; set; }
+
+        protected override void InitializeProperty(Bat owner)
+        {
+            StateMachine = owner.GetComponent<BatStateMachine>();
+            NavMeshAgent = owner.GetComponent<NavMeshAgent>();
+            Animator = owner.GetComponent<Animator>();
+            Data = owner._batSO; //TODO 완성되면 GetData로 변경.
+
+            NavMeshAgent.speed = Data.Speed;
+            NavMeshAgent.stoppingDistance = Data.AgentStopDistance;
+            Health = Data.Health;
+        }
+    }
+
     public class GhoulProperty : EnemyProperty<Ghoul>,
         IDataProvider<GhoulSO>, IStateMachine<GhoulStateMachine, E_GhoulState>, IPropertyBase
     {

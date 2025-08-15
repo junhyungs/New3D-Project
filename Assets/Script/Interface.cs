@@ -7,6 +7,11 @@ using UnityEngine;
 public interface ICharacterState<T> : ICharacterState where T : ICharacterState<T> { }
 public interface ICharacterState
 {
+    /// <summary>
+    /// 메서드 호출 시점은 각 상태 객체가 생성된 이후 1회 호출.
+    /// Unity 생명주기 -> Start
+    /// </summary>
+    void AwakeState() { }
     void OnStateEnter() { }
     void OnStateFixedUpdate() { }
     void OnStateUpdate() { }

@@ -26,6 +26,12 @@ namespace EnemyComponent
             OnStartStateMachine();
         }
 
+        private void OnDestroy()
+        {
+            OnDestroyStateMachine();
+        }
+
+        protected virtual void OnDestroyStateMachine() { }
         protected virtual void OnEnableStateMachine()
         {
             if(_stateMachine != null)
@@ -40,7 +46,17 @@ namespace EnemyComponent
 
             _stateMachine = new CharacterStateMachine<TClass, TEnum, TFactory>();
             _stateMachine.CreateState(myClass);
+            AwakeState();
+
             _stateMachine.StartState(GetInitializeState());
+        }
+
+        private void AwakeState()
+        {
+            var stateDictionary = _stateMachine.StateDictionary;
+            foreach (var state in stateDictionary.Values)
+                if (state != null)
+                    state.AwakeState();
         }
 
         protected abstract TEnum GetInitializeState();

@@ -60,7 +60,10 @@ namespace EnemyComponent
         }
 
         protected virtual void OnAwakeProjectile() { }
-        protected virtual void OnEnableProjectile() { }
+        protected virtual void OnEnableProjectile()
+        {
+            Invoke(nameof(ReturnProjectile), 6f);
+        }
         protected virtual void OnTriggerEnterProjectile(Collider other)
         {
             if (!other.TryGetComponent(out ITakeDamage itakeDamage))

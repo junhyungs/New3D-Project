@@ -8,7 +8,7 @@ namespace EnemyComponent
     public abstract class EnemyProjectileShooter : MonoBehaviour
     {
         [Header("ShootTransform"), SerializeField]
-        private Transform _shootTransform;
+        protected Transform _shootTransform;
         protected EnemyProjectilePool _pool;
         public int Damage { get; set; }
         

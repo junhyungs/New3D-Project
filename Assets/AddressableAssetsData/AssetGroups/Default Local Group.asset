@@ -321,8 +321,34 @@ MonoBehaviour:
     m_SerializedLabels:
     - ScriptableData
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: db5a7a746f4e6ac4ea39eca848fc545f
+  - m_GUID: cb34efd059d73ac419dbe8892349655d
+    m_Address: Prefab/Mage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27fb34323e7985f41a8a077455366f33
+    m_Address: Prefab/Ghoul
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cfff171f4b4489a4dba75a0b4cb7038d
+    m_Address: Prefab/GhoulRapid
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 35333ce34ee52494f9056d74288e395f
     m_Address: Prefab/GhoulProjectile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b9c68c87048a2024294d125ee13b2ff4
+    m_Address: Assets/ScriptableObject/Enemy/BatDataSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c293eb4bbd92ae34aa0dbb758493e7a2
+    m_Address: Prefab/Bat
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

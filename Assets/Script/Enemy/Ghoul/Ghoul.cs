@@ -22,17 +22,6 @@ namespace EnemyComponent
             Property.StateMachine.ChangeState(E_GhoulState.Death);
         }
 
-        protected override void OnStartEnemy()
-        {
-            StartCoroutine(Test());
-        }
-
-        private IEnumerator Test()
-        {
-            yield return new WaitForSeconds(5f);
-            TakeDamage(_testData.Health);
-        }
-
         protected override int GetDamage()
         {
             return Property.Data.Damage;
