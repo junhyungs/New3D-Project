@@ -127,9 +127,32 @@ namespace State
                     return new BatAttack(classType);
                 case E_BatState.Death:
                     return new BatDeath(classType);
-                case E_BatState.Shock:
-                    return new BatShock(classType);
                 default:
+                    throw new ArgumentException();
+            }
+        }
+    }
+    #endregion
+    #region Slime
+    public class SlimeFactory : ICharacterStateFactory<Slime, E_SlimeState>
+    {
+        public ICharacterState CreateState(Slime classType, E_SlimeState enumType)
+        {
+            switch (enumType)
+            {
+                case E_SlimeState.Patrol:
+                    return new SlimePatrol(classType);
+                case E_SlimeState.Trace:
+                    return new SlimeTrace(classType);
+                case E_SlimeState.Attack:
+                    return new SlimeAttack(classType);
+                case E_SlimeState.Death:
+                    return new SlimeDeath(classType);
+                case E_SlimeState.Idle:
+                    return new SlimeIdle(classType);
+                case E_SlimeState.CoolDown:
+                    return new SlimeCoolDown(classType);
+                default: 
                     throw new ArgumentException();
             }
         }

@@ -4,12 +4,21 @@ using UnityEngine;
 
 namespace EnumCollection
 {
+    public enum E_SlimeState
+    {
+        Idle,
+        Patrol,
+        Trace,
+        Attack,
+        Death,
+        CoolDown
+    }
+
     public enum E_BatState
     {
         Patrol,
         Trace,
         Attack,
-        Shock,
         Death
     }
 
@@ -93,7 +102,8 @@ namespace EnumCollection
         //Enemy
         MageSO,
         GhoulSO,
-        BatSO
+        BatSO,
+        SlimeSO
     }
 
     //Path 데이터로 사용되는 경우 DataKey와 ObjectKey는 일치해야함.

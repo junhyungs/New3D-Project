@@ -77,3 +77,10 @@ public interface IInitializeEnable
 {
     void Init();
 }
+
+public interface IStateBehaviourController
+{
+    void OnEnter(Animator animator, AnimatorStateInfo stateInfo) { }
+    void OnUpdate(Animator animator, AnimatorStateInfo stateInfo) { }
+    void OnExit(Animator animator, AnimatorStateInfo stateInfo) { }
+}

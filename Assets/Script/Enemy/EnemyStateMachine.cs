@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace EnemyComponent
 {
@@ -18,11 +19,16 @@ namespace EnemyComponent
 
         private void OnEnable()
         {
+            if (_stateMachine == null)
+                return;
+
+            InitState();
             OnEnableStateMachine();
         }
 
         private void Start()
         {
+            CreateState();
             OnStartStateMachine();
         }
 
@@ -31,14 +37,11 @@ namespace EnemyComponent
             OnDestroyStateMachine();
         }
 
+        protected virtual void OnEnableStateMachine() { }
+        public virtual void OnStartStateMachine() { }
         protected virtual void OnDestroyStateMachine() { }
-        protected virtual void OnEnableStateMachine()
-        {
-            if(_stateMachine != null)
-                _stateMachine.StartState(GetInitializeState());
-        }
 
-        public virtual void OnStartStateMachine()
+        private void CreateState()
         {
             var myClass = GetComponent<TClass>();
             if (myClass == null)
@@ -47,9 +50,11 @@ namespace EnemyComponent
             _stateMachine = new CharacterStateMachine<TClass, TEnum, TFactory>();
             _stateMachine.CreateState(myClass);
             AwakeState();
-
-            _stateMachine.StartState(GetInitializeState());
+            InitState();
         }
+
+        private void InitState() =>
+            _stateMachine.StartState(GetInitializeState());
 
         private void AwakeState()
         {

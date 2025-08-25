@@ -6,17 +6,17 @@ using UnityEngine;
 
 namespace EnemyComponent
 {
-    public class GhoulStateMachine : EnemyStateMachine<Ghoul, GhoulStateFactory, E_GhoulState>
+    public class SlimeStateMachine : EnemyStateMachine<Slime, SlimeFactory, E_SlimeState>
     {
-        protected override E_GhoulState GetInitializeState()
+        protected override E_SlimeState GetInitializeState()
         {
-            return E_GhoulState.Partrol;
+            return E_SlimeState.Patrol;
         }
 
         protected override void OnEnableStateMachine()
         {
-            var stateDictionary = _stateMachine.StateDictionary;
-            foreach (var state in stateDictionary.Values)
+            var stateDic = _stateMachine.StateDictionary;
+            foreach (var state in stateDic.Values)
                 if (state is IInitializeEnable init)
                     init.Init();
         }

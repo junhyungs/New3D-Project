@@ -16,8 +16,6 @@ namespace EnemyComponent
 
         protected override void OnEnableStateMachine()
         {
-            if (_stateMachine == null)
-                return;
             ForeachState<IInitializeEnable>((init) => init.Init());
         }
 

@@ -44,6 +44,35 @@ namespace EnemyComponent
         }
     }
 
+    public class SlimeProperty : EnemyProperty<Slime>,
+        IDataProvider<SlimeSO>, IStateMachine<SlimeStateMachine, E_SlimeState>, IPropertyBase
+    {
+        public SlimeProperty(Slime owner) : base(owner) { }
+
+        public SlimeSO Data { get; private set; }
+        public SlimeStateMachine StateMachine { get; private set; }
+        public NavMeshAgent NavMeshAgent{ get; private set; }
+        public Animator Animator { get; private set; }
+        public Material CopyMaterial { get; set; }
+        public Transform TargetTransform { get; set; }
+        public int Health { get; set; }
+        public bool IsSpawn { get; set; }
+
+        protected override void InitializeProperty(Slime owner)
+        {
+            StateMachine = owner.GetComponent<SlimeStateMachine>();
+            NavMeshAgent = owner.GetComponent<NavMeshAgent>();
+            Animator = owner.GetComponent<Animator>();
+            Data = owner._slimeSO; //TODO 완성되면 GetData로 변경.
+
+            NavMeshAgent.speed = 0;
+            NavMeshAgent.acceleration = Data.Acceleration;
+            NavMeshAgent.stoppingDistance = Data.AgentStopDistance;
+
+            Health = Data.Health;
+        }
+    }
+
     public class BatProperty : EnemyProperty<Bat>,
         IDataProvider<BatSO>, IStateMachine<BatStateMachine, E_BatState>, IPropertyBase
     {
