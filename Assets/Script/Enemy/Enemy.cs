@@ -104,6 +104,12 @@ namespace EnemyComponent
             else
                 StartCoroutine(IntensityChange(Property.CopyMaterial));
         }
+
+        public IEnumerator TestDeath()
+        {
+            yield return new WaitForSeconds(5f);
+            Death();
+        }
     }
 }
 

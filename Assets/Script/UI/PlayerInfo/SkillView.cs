@@ -39,7 +39,7 @@ namespace PlayerInfoUI
             Initialize();
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             ClearHandler();
         }

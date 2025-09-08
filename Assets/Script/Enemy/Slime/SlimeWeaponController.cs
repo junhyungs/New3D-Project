@@ -40,6 +40,7 @@ public class SlimeWeaponController : MonoBehaviour
                 _weapons[i] = weaponComponent;
 
             y += 45f;
+            weaponObject.SetActive(false);
         }
     }
 
@@ -47,6 +48,7 @@ public class SlimeWeaponController : MonoBehaviour
     {
         foreach (var weapon in _weapons)
         {
+            weapon.gameObject.SetActive(true);
             if(_owner.Property != null)
             {
                 var data = _owner.Property.Data;
@@ -55,5 +57,11 @@ public class SlimeWeaponController : MonoBehaviour
             
             weapon.StartMoveCoroutine();
         }
+    }
+
+    public void DisableWeapon()
+    {
+        foreach (var weapon in _weapons)
+            weapon.DisableWeapon();
     }
 }

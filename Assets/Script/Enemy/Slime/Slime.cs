@@ -16,8 +16,16 @@ namespace EnemyComponent
             return new SlimeProperty(this);
         }
 
+        protected override void OnStartEnemy()
+        {
+            StartCoroutine(TestDeath());
+        }
+
         protected override void Death()
         {
+            var weaponController = GetComponent<SlimeWeaponController>();
+            if (weaponController != null)
+                weaponController.DisableWeapon();
             Property.StateMachine.ChangeState(E_SlimeState.Death);
         }
 

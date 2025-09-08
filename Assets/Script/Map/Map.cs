@@ -22,13 +22,24 @@ namespace MapComponent
 
         private void Awake()
         {
+            OnAwakeMap();
             InitDoor();
+        }
+
+        private void Start()
+        {
+            OnStartMap();
         }
 
         protected virtual void OnEnable()
         {
+            OnEnableMap();
             PlayDoorTimeLine();
         }
+
+        protected virtual void OnAwakeMap() { }
+        protected virtual void OnEnableMap() { }
+        protected virtual void OnStartMap() { }
 
         protected virtual void PlayDoorTimeLine()
         {
