@@ -43,7 +43,7 @@ namespace EnemyComponent
             var playerLayer = LayerMask.GetMask("Player");
             var range = GetRange(data);
             var results = new Collider[1];
-
+            
             var count = Physics.OverlapSphereNonAlloc(_owner.transform.position,
                 range, results, playerLayer);
             if (count > 0)

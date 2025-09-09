@@ -158,5 +158,14 @@ namespace State
         }
     }
     #endregion
+    #region
+    public class ForestMotherFactory : ICharacterStateFactory<ForestMother, E_ForestMotherState>
+    {
+        public ICharacterState CreateState(ForestMother classType, E_ForestMotherState enumType)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    #endregion
 }
 

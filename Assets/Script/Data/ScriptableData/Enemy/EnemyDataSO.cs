@@ -5,12 +5,20 @@ using UnityEngine;
 
 namespace GameData
 {
-    public class EnemyDataSO : ScriptableData
+    public abstract class MonsterDataSO : ScriptableData
     {
         [Header("Health")]
         [SerializeField] private int _health;
         [Header("Damage")]
         [SerializeField] private int _damage;
+
+        public int Health => _health;
+        public int Damage => _damage;
+    }
+
+
+    public class EnemyDataSO : MonsterDataSO
+    {
         [Header("Speed")]
         [SerializeField] private float _speed;
         [Header("AgentStopDistance")]
@@ -21,12 +29,17 @@ namespace GameData
         [SerializeField] private float _spawn_detectionRange;
 
         public override ScriptableDataKey Key => _key;
-        public int Health => _health;
-        public int Damage => _damage;
         public float Speed => _speed;
         public float AgentStopDistance => _agentStopDistance;
         public float DetectionRange => _detectionRange;
         public float Spawn_DetectionRange => _spawn_detectionRange;
+    }
+
+
+
+    public class BossDataSO : MonsterDataSO
+    {
+        public override ScriptableDataKey Key => _key;
     }
 }
 

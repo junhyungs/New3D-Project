@@ -358,6 +358,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - ScriptableData
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 07e4198a876399f409b36f69c2294bbc
+    m_Address: Assets/ScriptableObject/Enemy/ForestMotherSO.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ScriptableData
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 68fa7f047f245514e8fee859a6f4aba0, type: 2}
   m_SchemaSet:

@@ -17,6 +17,11 @@ namespace EnemyComponent
         bool IsSpawn { get; set; }
     }
 
+    public interface IProperty<T> : IPropertyBase
+    {
+        T Controller { get; }
+    }
+
     public interface IStateMachine<TStateMachine, TEnum>
         where TStateMachine : IStateController<TEnum>
         where TEnum : Enum
@@ -24,7 +29,7 @@ namespace EnemyComponent
         TStateMachine StateMachine { get; }
     }
 
-    public interface IDataProvider<T> where T : EnemyDataSO
+    public interface IDataProvider<T> where T : MonsterDataSO
     {
         T Data { get; }
     }
@@ -38,7 +43,7 @@ namespace EnemyComponent
         }
 
         protected abstract void InitializeProperty(T owner);
-        protected TDataSO GetData<TDataSO>(ScriptableDataKey key) where TDataSO : EnemyDataSO
+        protected TDataSO GetData<TDataSO>(ScriptableDataKey key) where TDataSO : MonsterDataSO
         {
             return DataManager.Instance.GetScriptableData(key) as TDataSO;
         }
@@ -70,6 +75,34 @@ namespace EnemyComponent
             NavMeshAgent.stoppingDistance = Data.AgentStopDistance;
 
             Health = Data.Health;
+        }
+    }
+
+    public class ForestMotherProperty : EnemyProperty<ForestMother>,
+        IDataProvider<ForestMotherSO>, IStateMachine<ForestMotherStateMachine, E_ForestMotherState>, IPropertyBase
+    {
+        public ForestMotherProperty(ForestMother owner) : base(owner) { }
+
+        public ForestMotherSO Data { get; private set; }
+        public ForestMotherStateMachine StateMachine { get; private set; }
+        public Animator Animator { get; private set; }
+        public NavMeshAgent NavMeshAgent { get; private set; }
+        public Material CopyMaterial { get; set; }
+        public int VineHealth { get; set; }
+        public float LiftTime { get; set; }       
+        public int Health { get; set; }
+        public bool IsSpawn { get; set; }
+
+        protected override void InitializeProperty(ForestMother owner)
+        {
+            StateMachine = owner.GetComponent<ForestMotherStateMachine>();
+            Animator = owner.GetComponent<Animator>();
+            Data = owner._data;
+
+            Health = Data.Health;
+            VineHealth = Data.VineHealth;
+
+            LiftTime = Data.LiftTime;
         }
     }
 
