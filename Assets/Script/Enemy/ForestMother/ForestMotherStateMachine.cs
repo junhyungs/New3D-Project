@@ -10,7 +10,7 @@ namespace EnemyComponent
     {
         protected override E_ForestMotherState GetInitializeState()
         {
-            return E_ForestMotherState.Slam;
+            return E_ForestMotherState.ChangePattern;
         }
     }
 }

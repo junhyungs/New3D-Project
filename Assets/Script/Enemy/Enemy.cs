@@ -105,10 +105,10 @@ namespace EnemyComponent
                 StartCoroutine(IntensityChange(Property.CopyMaterial));
         }
 
-        public IEnumerator TestDeath()
+        public IEnumerator Test_WaitForSeconds(float time, Action action)
         {
-            yield return new WaitForSeconds(5f);
-            Death();
+            yield return new WaitForSeconds(time);
+            action.Invoke();
         }
     }
 }

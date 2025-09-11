@@ -16,11 +16,6 @@ namespace EnemyComponent
             return new SlimeProperty(this);
         }
 
-        protected override void OnStartEnemy()
-        {
-            StartCoroutine(TestDeath());
-        }
-
         protected override void Death()
         {
             var weaponController = GetComponent<SlimeWeaponController>();

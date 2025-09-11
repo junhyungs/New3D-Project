@@ -163,7 +163,17 @@ namespace State
     {
         public ICharacterState CreateState(ForestMother classType, E_ForestMotherState enumType)
         {
-            throw new NotImplementedException();
+            switch (enumType)
+            {
+                case E_ForestMotherState.ChangePattern:
+                    return new ForestMother_ChangePattern(classType);
+                case E_ForestMotherState.ExecutePattern:
+                    return new ForestMother_ExecutePattern(classType);
+                case E_ForestMotherState.Death:
+                    return new ForestMotherDeath(classType);
+                default:
+                    throw new ArgumentException();
+            }
         }
     }
     #endregion

@@ -6,10 +6,8 @@ namespace EnumCollection
 {
     public enum E_ForestMotherState
     {
-        Slam,
-        Slam_Slow,
-        Hyper,
-        Lift,
+        ChangePattern,
+        ExecutePattern,
         Death
     }
 

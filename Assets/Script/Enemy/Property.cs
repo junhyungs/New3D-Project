@@ -17,11 +17,6 @@ namespace EnemyComponent
         bool IsSpawn { get; set; }
     }
 
-    public interface IProperty<T> : IPropertyBase
-    {
-        T Controller { get; }
-    }
-
     public interface IStateMachine<TStateMachine, TEnum>
         where TStateMachine : IStateController<TEnum>
         where TEnum : Enum
@@ -84,7 +79,9 @@ namespace EnemyComponent
         public ForestMotherProperty(ForestMother owner) : base(owner) { }
 
         public ForestMotherSO Data { get; private set; }
+        public IPattern Pattern { get; set; }
         public ForestMotherStateMachine StateMachine { get; private set; }
+        public LowerBodyRotation LowerBodyRotationController { get; set; }
         public Animator Animator { get; private set; }
         public NavMeshAgent NavMeshAgent { get; private set; }
         public Material CopyMaterial { get; set; }
@@ -98,6 +95,7 @@ namespace EnemyComponent
             StateMachine = owner.GetComponent<ForestMotherStateMachine>();
             Animator = owner.GetComponent<Animator>();
             Data = owner._data;
+            NavMeshAgent = owner.GetComponent<NavMeshAgent>();
 
             Health = Data.Health;
             VineHealth = Data.VineHealth;
