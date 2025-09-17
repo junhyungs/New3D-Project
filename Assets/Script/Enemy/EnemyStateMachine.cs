@@ -1,31 +1,67 @@
+using EnumCollection;
+using State;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using State;
-using EnumCollection;
-using System;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace EnemyComponent
 {
-    public abstract class EnemyStateMachine<TClass, TFactory, TEnum> : MonoBehaviour, IGetState<TEnum>
+    
+    public abstract class EnemyStateMachine<TClass, TFactory, TEnum> : MonoBehaviour, IStateController<TEnum>
         where TClass : class
         where TEnum : Enum
         where TFactory : ICharacterStateFactory<TClass, TEnum>, new()
     {
-        private CharacterStateMachine<TClass, TEnum, TFactory> _stateMachine;
+        protected CharacterStateMachine<TClass, TEnum, TFactory> _stateMachine;
 
-        protected virtual void Start()
+        private void OnEnable()
         {
-            InitializeOnStart();
+            if (_stateMachine == null)
+                return;
+
+            InitState();
+            OnEnableStateMachine();
         }
 
-        protected virtual void InitializeOnStart()
+        private void Start()
         {
-            var referenceClass = GetComponent<TClass>();
+            CreateState();
+            OnStartStateMachine();
+        }
+
+        private void OnDestroy()
+        {
+            OnDestroyStateMachine();
+        }
+
+        protected virtual void OnEnableStateMachine() { }
+        public virtual void OnStartStateMachine() { }
+        protected virtual void OnDestroyStateMachine() { }
+
+        private void CreateState()
+        {
+            var myClass = GetComponent<TClass>();
+            if (myClass == null)
+                return;
 
             _stateMachine = new CharacterStateMachine<TClass, TEnum, TFactory>();
-            _stateMachine.CreateState(referenceClass);
+            _stateMachine.CreateState(myClass);
+            AwakeState();
+            InitState();
+        }
+
+        private void InitState() =>
             _stateMachine.StartState(GetInitializeState());
+
+        private void AwakeState()
+        {
+            var stateDictionary = _stateMachine.StateDictionary;
+            foreach (var state in stateDictionary.Values)
+                if (state != null)
+                    state.AwakeState();
         }
 
         protected abstract TEnum GetInitializeState();
@@ -35,9 +71,9 @@ namespace EnemyComponent
             _stateMachine.Update();
         }
 
-        protected void ChangeState(TEnum nextState)
+        private void OnTriggerEnter(Collider other)
         {
-            _stateMachine.ChangeState(nextState);
+            _stateMachine.OnTriggerEnter(other);
         }
 
         public ICharacterState GetCurrentState()
@@ -53,6 +89,11 @@ namespace EnemyComponent
         public TEnum GetCurrentStateType()
         {
             return _stateMachine.GetCurrentStateType();
+        }
+
+        public void ChangeState(TEnum state)
+        {
+            _stateMachine.ChangeState(state);
         }
     }
 }

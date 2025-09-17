@@ -8,6 +8,11 @@ namespace MapComponent
 {
     public class Level_1 : MapBase<Level_1_progress>
     {
+        [Header("HitTrigger")]
+        [SerializeField] private HitTrigger[] _triggers;
+        private HashSet<HitTrigger> _hitTriggerSet = new HashSet<HitTrigger>();
+        [SerializeField] private SpikeDoor _bossDoor;
+
         //[Header("TimeLine")]
         public override void Initialize(Dictionary<string, MapProgress> progressDictionary)
         {
@@ -20,9 +25,33 @@ namespace MapComponent
             _myProgress = progress as Level_1_progress;
         }
 
-        private void Start()
+        protected override void OnStartMap()
         {
             //TODO 타임라인 초기화
+            InitHitTrigger();
+        }
+
+        private void InitHitTrigger()
+        {
+            if (_triggers == null)
+                return;
+
+            foreach (var trigger in _triggers)
+            {
+                if (trigger != null)
+                    trigger.HitAction += UnRegisterHitTriggerSet;
+            }
+        }
+
+        private void UnRegisterHitTriggerSet(HitTrigger hitTrigger)
+        {
+            if (!_hitTriggerSet.Contains(hitTrigger))
+                return;
+
+            hitTrigger.HitAction -= UnRegisterHitTriggerSet;
+            _hitTriggerSet.Remove(hitTrigger);
+            if (_hitTriggerSet.Count <= 0)
+                _bossDoor.HitTrigger();
         }
 
         protected override void PlayDoorTimeLine()

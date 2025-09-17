@@ -103,6 +103,8 @@ namespace PlayerComponent
 
         public void TakeDamage(int damage)
         {
+            if (gameObject.layer == LayerMask.NameToLayer("ChargeDash"))
+                return;
             PlayerHealth.TakeDamage(damage);
         }
     }

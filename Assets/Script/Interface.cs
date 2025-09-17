@@ -1,3 +1,4 @@
+using EnemyComponent;
 using GameData;
 using System;
 using System.Collections;
@@ -7,6 +8,11 @@ using UnityEngine;
 public interface ICharacterState<T> : ICharacterState where T : ICharacterState<T> { }
 public interface ICharacterState
 {
+    /// <summary>
+    /// 메서드 호출 시점은 각 상태 객체가 생성된 이후 1회 호출.
+    /// Unity 생명주기 -> Start
+    /// </summary>
+    void AwakeState() { }
     void OnStateEnter() { }
     void OnStateFixedUpdate() { }
     void OnStateUpdate() { }
@@ -16,11 +22,13 @@ public interface ICharacterState
     void OnTriggerExit(Collider other) { }
 }
 
-public interface IGetState<T> where T : Enum
+public interface IStateController<TEnum>
+    where TEnum : Enum
 {
+    void ChangeState(TEnum state);  
+    ICharacterState GetState(TEnum stateName);
+    TEnum GetCurrentStateType();
     ICharacterState GetCurrentState();
-    ICharacterState GetState(T stateName);
-    T GetCurrentStateType();
 }
 
 public interface ICharacterStateFactory<TClass, TEnum>
@@ -66,7 +74,26 @@ public interface IBurnable
     bool IsBurning();
 }
 
-public interface IEnableObject
+public interface IInitializeEnable
 {
-    void OnEnableObject();
+    void Init();
+}
+
+public interface IStateBehaviourController
+{
+    void OnEnter(Animator animator, AnimatorStateInfo stateInfo) { }
+    void OnUpdate(Animator animator, AnimatorStateInfo stateInfo) { }
+    void OnExit(Animator animator, AnimatorStateInfo stateInfo) { }
+}
+
+public interface IPattern
+{
+    void Init(ForestMother owner) { }
+    void Enable() { }
+    void Start() { }
+    void Update() { }
+    void Exit() { }
+    IEnumerator WaitForAnimation() { yield return null; }
+    void OnTriggerEnter(Collider other) { }
+    bool IsRunning { get; }
 }

@@ -26,6 +26,7 @@ namespace PlayerComponent
         {
             Ignite(other);
             Hit(other);
+            Interaction(other);
         }
 
         protected override void Hit(Collider other)
@@ -35,6 +36,12 @@ namespace PlayerComponent
                 iTakeDamage.TakeDamage(_damage);
                 ReturnObjectPool();
             }
+        }
+
+        private void Interaction(Collider other)
+        {
+            if(other.TryGetComponent(out IInteractionGameObject iInteractionGameObject))
+                iInteractionGameObject.Interact();
         }
 
         private void Ignite(Collider other)

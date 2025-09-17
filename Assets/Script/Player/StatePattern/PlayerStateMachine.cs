@@ -6,7 +6,7 @@ using State;
 
 namespace PlayerComponent
 {
-    public class PlayerStateMachine : MonoBehaviour, IGetState<E_PlayerState>
+    public class PlayerStateMachine : MonoBehaviour, IStateController<E_PlayerState>
     {
         private CharacterStateMachine<Player, E_PlayerState, PlayerStateFactory> _stateMachine;
 
@@ -18,8 +18,8 @@ namespace PlayerComponent
             var stateDic = _stateMachine.StateDictionary;
             foreach(var state in stateDic.Values)
             {
-                if (state is IEnableObject enableObject)
-                    enableObject.OnEnableObject();
+                if (state is IInitializeEnable init)
+                    init.Init();
             }
         }
 

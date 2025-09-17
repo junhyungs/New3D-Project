@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EnumCollection;
 using System;
+using BehaviorDesigner.Runtime.Tasks.Unity.UnityLayerMask;
 
 namespace PlayerComponent
 {
@@ -24,7 +25,29 @@ namespace PlayerComponent
         private const string _first_Slash = "First_Slash";
         private const string _second_Slash = "Second_Slash";
 
-        public bool Pressed { get; set; }
+        private bool _isPressed;
+        public bool Pressed
+        {
+            get => _isPressed;
+            set
+            {
+                _isPressed = value;
+                if (!_isPressed)
+                {
+                    var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+                    bool isMax = stateInfo.IsName(_charge_max_L)
+                        || stateInfo.IsName(_charge_max_R);
+
+                    if (isMax)
+                    {
+                        LookAtCursor();
+                        _monobehaviour.StartCoroutine(DashMovement());
+                    }
+
+                    _animator.SetBool(_chargeAttack, Pressed);
+                }
+            }
+        }
         private bool _attackDirection = true;
 
         public void OnStateEnter()
@@ -41,24 +64,6 @@ namespace PlayerComponent
             _animator.SetInteger(_chargeEquals, equals);
         }
 
-        public void OnStateUpdate()
-        {
-            if (!Pressed)
-            {
-                var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-                bool isMax = stateInfo.IsName(_charge_max_L)
-                    || stateInfo.IsName(_charge_max_R);
-
-                if (isMax)
-                {
-                    LookAtCursor();
-                    _monobehaviour.StartCoroutine(DashMovement());
-                }
-
-                _animator.SetBool(_chargeAttack , Pressed);
-            }
-        }
-
         public void OnStateExit()
         {
             SwitchWeapon(PlayerHand.Idle);
@@ -66,13 +71,14 @@ namespace PlayerComponent
 
         private IEnumerator DashMovement()
         {
+            SetLayer("ChargeDash");
             yield return new WaitUntil(() =>
             {
                 var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
                 return stateInfo.IsName(_first_Slash) || stateInfo.IsName(_second_Slash);
             });
 
-            var speed = _constantData.DashSpeed / 2f;
+            var speed = _constantData.DashSpeed * 2f;
             var maxDistance = 5f;
             var startPosition = _rigidbody.position;
 
@@ -93,10 +99,14 @@ namespace PlayerComponent
 
             var endPosition = _rigidbody.position;
             FindTarget(startPosition, endPosition);
+            SetLayer("Player");
 
             _attackDirection = !_attackDirection;
             _stateHandler.ChangeIdleORMoveState();
         }
+
+        private void SetLayer(string name) => 
+            _player.gameObject.layer = LayerMask.NameToLayer(name);
 
         private void FindTarget(Vector3 startPos, Vector3 endPos)
         {

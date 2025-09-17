@@ -20,7 +20,7 @@ public class PlayerAnimationEvent : MonoBehaviour
         _startWeaponAction = action;
     }
 
-    public void UseWeapon()
+    public void OnWeaponEvent()
     {
         _startWeaponAction?.Invoke();
     }

@@ -7,7 +7,7 @@ using UnityEngine;
 namespace PlayerComponent
 {
     public class Attack : PlayerAttackState, ICharacterState<Attack>,
-        IAttackStateEventReceiver, IEnableObject
+        IAttackStateEventReceiver, IInitializeEnable
     {
         public Attack(Player player) : base(player)
         {
@@ -202,7 +202,7 @@ namespace PlayerComponent
             _isNextClick = false;
         }
 
-        public void OnEnableObject()
+        public void Init()
         {
             InitializeBehaviour();
         }

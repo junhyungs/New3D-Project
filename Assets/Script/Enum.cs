@@ -4,9 +4,83 @@ using UnityEngine;
 
 namespace EnumCollection
 {
+    public enum MotherParameterKey
+    {
+        Slam_Trigger,
+        Hyper_Trigger,
+        Lift_Trigger,
+        LiftFall_Trigger,
+        Shoot_Trigger,
+        StartSlam_Trigger,
+        Death_Trigger,
+
+        IdleSpin_Bool_true,
+        IdleSpin_Bool_false,
+
+        StartHyper_Bool_true,
+        StartHyper_Bool_false,
+
+        StartSlamSlow_Bool_true,
+        StartSlamSlow_Bool_false,
+
+        Lift_DamageRight_Bool_true,
+        Lift_DamageRight_Bool_false,
+
+        Lift_DamageLeft_Bool_true,
+        Lift_DamageLeft_Bool_false
+    }
+
+    public enum MotherPattern
+    {
+        Slam,
+        Lift,
+        Hyper,
+        Slam_Slow
+    }
+
+    public enum E_ForestMotherState
+    {
+        FindPlayer,
+        ChangePattern,
+        ExecutePattern,
+        Death
+    }
+
+    public enum E_SlimeState
+    {
+        Idle,
+        Patrol,
+        Trace,
+        Attack,
+        Death,
+        CoolDown
+    }
+
+    public enum E_BatState
+    {
+        Patrol,
+        Trace,
+        Attack,
+        Death
+    }
+
     public enum E_MageState
     {
         Idle,
+        Move,
+        Teleport,
+        Attack,
+        Death
+    }
+
+    public enum E_GhoulState
+    {
+        Idle,
+        Partrol,
+        Trace,
+        Attack,
+        Death,
+        CoolDown
     }
 
     public enum E_PlayerState
@@ -65,7 +139,14 @@ namespace EnumCollection
         RustyKeySO,
         SurveillanceSO,
         TeddySO,
-        TrowelSO
+        TrowelSO,
+
+        //Enemy
+        MageSO,
+        GhoulSO,
+        BatSO,
+        SlimeSO,
+        ForestMotherSO
     }
 
     //Path 데이터로 사용되는 경우 DataKey와 ObjectKey는 일치해야함.

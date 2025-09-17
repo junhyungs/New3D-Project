@@ -39,7 +39,7 @@ public abstract class PlayerWeapon : MonoBehaviour, IWeapon
 
     protected void FindTarget()
     {
-        var targetLayer = LayerMask.GetMask("Enemy");
+        var targetLayer = LayerMask.GetMask("Enemy", "HitObject");
         var boxPosition = transform.position + transform.forward + Vector3.up * 0.6f;
         var boxSize = _data.Range;
 

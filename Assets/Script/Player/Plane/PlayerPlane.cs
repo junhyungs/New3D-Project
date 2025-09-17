@@ -12,11 +12,12 @@ namespace PlayerComponent
 
         void Start()
         {
-            _plane = new Plane(Vector3.up, gameObject.transform.position);
+            _plane = new Plane(Vector3.up, transform.position);
         }
 
         void Update()
         {
+            _plane.SetNormalAndPosition(Vector3.up, transform.position);
             SetMouseRayPoint();
         }
 

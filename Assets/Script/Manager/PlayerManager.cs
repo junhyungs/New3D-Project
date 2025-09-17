@@ -18,11 +18,19 @@ public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
     public GameObject PlayerObject => PlayerComponent.gameObject;
     public GameObject VirtualCameraObject => VirtualCameraComponent.gameObject;
 
-    private void Start()
+
+    private async void Awake()
     {
+        await DataManager.Instance.LoadAllData();
         CreatePlayer();
         CreateVirtualCamera();
     }
+
+    //private void Start()
+    //{
+    //    CreatePlayer();
+    //    CreateVirtualCamera();
+    //}
 
     private void CreatePlayer() //TODO 나중에 게임 매니저에서 일괄적으로 관리.
     {
@@ -30,7 +38,8 @@ public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
         PlayerComponent = playerObject.GetComponent<Player>();
 
         InventoryManager.Instance.InitializeInventory();
-        playerObject.SetActive(false);
+        //TestCode
+        //playerObject.SetActive(false);
     }
 
     private void CreateVirtualCamera()
@@ -49,7 +58,7 @@ public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
         VirtualCameraTransposer.m_YDamping = 0f;
         VirtualCameraTransposer.m_ZDamping = 0f;
 
-        virtualCameraObject.SetActive(false);
+        //virtualCameraObject.SetActive(false);
     }
 
     public void LockPlayer(bool isLocked)
