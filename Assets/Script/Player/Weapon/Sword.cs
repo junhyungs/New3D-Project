@@ -9,6 +9,7 @@ public class Sword : PlayerWeapon
     public override string AddressableKey => AddressablesKey.Prefab_PlayerSword;
     public override void UseWeapon()
     {
+        Debug.Log("UseWeapon");
         FindTarget();
     }
 }

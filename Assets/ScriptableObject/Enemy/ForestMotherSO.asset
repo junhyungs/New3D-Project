@@ -15,5 +15,7 @@ MonoBehaviour:
   _key: 36
   _health: 20
   _damage: 1
+  _detectionRange: 30
+  _spawn_detectionRange: 0
   _liftTime: 10
-  _vineHealth: 5
+  _vineHealth: 6

@@ -1,3 +1,4 @@
+using EnemyComponent;
 using GameData;
 using System;
 using System.Collections;
@@ -83,4 +84,16 @@ public interface IStateBehaviourController
     void OnEnter(Animator animator, AnimatorStateInfo stateInfo) { }
     void OnUpdate(Animator animator, AnimatorStateInfo stateInfo) { }
     void OnExit(Animator animator, AnimatorStateInfo stateInfo) { }
+}
+
+public interface IPattern
+{
+    void Init(ForestMother owner) { }
+    void Enable() { }
+    void Start() { }
+    void Update() { }
+    void Exit() { }
+    IEnumerator WaitForAnimation() { yield return null; }
+    void OnTriggerEnter(Collider other) { }
+    bool IsRunning { get; }
 }

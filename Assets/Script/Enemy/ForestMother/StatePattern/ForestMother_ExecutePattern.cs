@@ -11,17 +11,25 @@ namespace EnemyComponent
         
         public void OnStateEnter()
         {
-            _property.Pattern.Start();
+            _property.CurrentPattern.Start();
         }
 
         public void OnStateUpdate()
         {
-            _property.Pattern.Update();
+            if (!_property.CurrentPattern.IsRunning)
+                _property.StateMachine.ChangeState(E_ForestMotherState.ChangePattern);
+            else
+                _property.CurrentPattern.Update();
         }
 
         public void OnStateExit()
         {
-            _property.Pattern.Exit();
+            _property.CurrentPattern.Exit();
+        }
+
+        public void OnTriggerEnter(Collider other)
+        {
+            _property.CurrentPattern.OnTriggerEnter(other);
         }
     }
 }

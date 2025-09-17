@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: SlimeSO
   m_EditorClassIdentifier: 
   _key: 35
-  _health: 3
+  _health: 100
   _damage: 1
-  _speed: 7
-  _agentStopDistance: 3
   _detectionRange: 10
   _spawn_detectionRange: 30
+  _speed: 7
+  _agentStopDistance: 3
   _acceleration: 8
   _patrolStoppingDistance: 0.1
   _patrolSpeed: 7

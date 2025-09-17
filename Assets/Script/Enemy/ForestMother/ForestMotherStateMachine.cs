@@ -10,7 +10,14 @@ namespace EnemyComponent
     {
         protected override E_ForestMotherState GetInitializeState()
         {
-            return E_ForestMotherState.ChangePattern;
+            return E_ForestMotherState.FindPlayer;
+        }
+
+        protected override void OnEnableStateMachine()
+        {
+            var state = GetState(E_ForestMotherState.ChangePattern);
+            if(state is ForestMother_ChangePattern changeState)
+                changeState.Init();
         }
     }
 }

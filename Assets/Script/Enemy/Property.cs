@@ -79,12 +79,12 @@ namespace EnemyComponent
         public ForestMotherProperty(ForestMother owner) : base(owner) { }
 
         public ForestMotherSO Data { get; private set; }
-        public IPattern Pattern { get; set; }
         public ForestMotherStateMachine StateMachine { get; private set; }
-        public LowerBodyRotation LowerBodyRotationController { get; set; }
+        public ForestMotherAnimationController AnimController { get; private set; }
         public Animator Animator { get; private set; }
         public NavMeshAgent NavMeshAgent { get; private set; }
         public Material CopyMaterial { get; set; }
+        public IPattern CurrentPattern { get; set; }
         public int VineHealth { get; set; }
         public float LiftTime { get; set; }       
         public int Health { get; set; }
@@ -95,7 +95,11 @@ namespace EnemyComponent
             StateMachine = owner.GetComponent<ForestMotherStateMachine>();
             Animator = owner.GetComponent<Animator>();
             Data = owner._data;
+
             NavMeshAgent = owner.GetComponent<NavMeshAgent>();
+            NavMeshAgent.updateRotation = false;
+
+            AnimController = owner.GetComponent<ForestMotherAnimationController>();
 
             Health = Data.Health;
             VineHealth = Data.VineHealth;

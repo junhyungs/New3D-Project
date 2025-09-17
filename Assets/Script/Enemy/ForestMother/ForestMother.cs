@@ -11,18 +11,30 @@ namespace EnemyComponent
 {
     public class ForestMother : ShooterEnemy<ForestMotherProperty, ForestMotherShooter>
     {
-        [Header("LowerBodyRotation")]
-        [SerializeField] private LowerBodyRotation _lowerBodyRotation;
-
         [Header("TestDataSO")]
         public ForestMotherSO _data;
+        [Header("VineComponent")]
+        [SerializeField] private Vine[] _vines;
+        public Vine[] Vines => _vines;
+
+        protected override void MaterialSetting()
+        {
+            var bodyMaterial = InstantiateMaterial();
+            bodyMaterial.name = "BodyMaterial";
+            Property.CopyMaterial = bodyMaterial;
+
+            foreach(var vine in _vines)
+            {
+                var vineMaterial = Instantiate(_originalMaterial);
+                vineMaterial.name = "VineMaterial";
+                var materials = new Material[] { bodyMaterial, vineMaterial };
+                vine.InitVine(materials, Property.Data);
+            }
+        }
 
         protected override ForestMotherProperty CreateProperty()
         {
-            var property = new ForestMotherProperty(this);
-            property.LowerBodyRotationController = _lowerBodyRotation;
-            property.LowerBodyRotationController.Owner = this;
-            return property;
+            return new ForestMotherProperty(this); 
         }
 
         protected override void Death()

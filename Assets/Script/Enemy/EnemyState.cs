@@ -25,7 +25,7 @@ namespace EnemyComponent
         protected TProperty _property;
         protected const string MATERIAL_PROPERTY = "_NoiseValue";
 
-        protected float GetRange(EnemyDataSO data)
+        protected float GetRange(MonsterDataSO data)
         {
             return _property.IsSpawn ? 
                 data.Spawn_DetectionRange : data.DetectionRange;
@@ -38,7 +38,7 @@ namespace EnemyComponent
             _property.NavMeshAgent.acceleration = acceleration;
         }
 
-        protected Transform FindPlayer(EnemyDataSO data)
+        protected Transform FindPlayer(MonsterDataSO data)
         {
             var playerLayer = LayerMask.GetMask("Player");
             var range = GetRange(data);
@@ -69,8 +69,13 @@ namespace EnemyComponent
 
         private IEnumerator DissolveEffect(float duration, float targetValue)
         {
-            _owner.StartCoroutine(_owner.DissolveEffect(_property.CopyMaterial, duration,
-                targetValue, MATERIAL_PROPERTY));
+            _owner.StartCoroutine(
+                _owner.DissolveEffect(
+                    _property.CopyMaterial,
+                    duration,
+                    targetValue,
+                    MATERIAL_PROPERTY)
+                );
             yield return new WaitUntil(() => IsMaterialValueBelow(-5));
             //TODO EnemyPool·Î ¹ÝÈ¯.
         }

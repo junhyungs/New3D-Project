@@ -11,8 +11,8 @@ namespace EnemyComponent
         where TProperty : IPropertyBase
     {
         [Header("Material")]
-        [SerializeField] private Material _originalMaterial;
-        [SerializeField] private Renderer[] _renderers;
+        [SerializeField] protected Material _originalMaterial;
+        [SerializeField] protected Renderer[] _renderers;
 
         private WaitForSeconds _waitForIntensity = new WaitForSeconds(0.1f);
         public TProperty Property { get; private set; } 
@@ -48,13 +48,15 @@ namespace EnemyComponent
         protected abstract TProperty CreateProperty();
         protected abstract void Death();
 
-        private void MaterialSetting()
+        protected virtual void MaterialSetting()
         {
-            if (_renderers == null)
-                return;
+            Property.CopyMaterial = InstantiateMaterial();
+        }
 
+        protected Material InstantiateMaterial()
+        {
             var copyMaterial = Instantiate(_originalMaterial);
-            for(int i = 0; i < _renderers.Length; i++)
+            for (int i = 0; i < _renderers.Length; i++)
             {
                 var renderer = _renderers[i];
                 var sharedMaterials = renderer.sharedMaterials;
@@ -66,15 +68,15 @@ namespace EnemyComponent
                 renderer.materials = array;
             }
 
-            Property.CopyMaterial = copyMaterial;
+            return copyMaterial;
         }
 
-        public IEnumerator DissolveEffect(Material targetMaterial, float maxTime, 
+        public IEnumerator DissolveEffect(Material targetMaterial, float maxTime,
             float targetValue, string propertyName)
         {
             var elapsedTime = 0f;
             var startValue = targetMaterial.GetFloat(propertyName);
-            while(elapsedTime < maxTime)
+            while (elapsedTime < maxTime)
             {
                 elapsedTime += Time.deltaTime;
                 var colorValue = Mathf.Lerp(startValue, targetValue, elapsedTime / maxTime);
@@ -92,12 +94,15 @@ namespace EnemyComponent
             var upColor = color * Mathf.Pow(baseValue, power);
 
             targetMaterial.SetColor("_Color", upColor);
-            yield return _waitForIntensity;
+            yield return new WaitForSeconds(0.1f);
             targetMaterial.SetColor("_Color", color);
+
+            Debug.Log("IntensityExit");
         }
 
         public virtual void TakeDamage(int damage)
         {
+            Debug.Log("TakeDamage");
             Property.Health -= damage;
             if (Property.Health <= 0)
                 Death();

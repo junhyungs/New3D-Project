@@ -114,9 +114,11 @@ public class DataManager : Singleton<DataManager>
     private async UniTask ParsePlayerBaseDataAsync()
     {
         var index = SaveManager.SaveIndex;
-        PlayerSaveData saveData = await SaveManager.Instance.LoadPlayerSaveDataAsync(index);
+        //PlayerSaveData saveData = await SaveManager.Instance.LoadPlayerSaveDataAsync(index); 
+        //TestCode
+        PlayerSaveData saveData = null;
 
-        if(saveData != null)
+        if (saveData != null)
         {
             var key = saveData.ID;
             TryAddData(key, saveData);

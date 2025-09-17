@@ -4,8 +4,43 @@ using UnityEngine;
 
 namespace EnumCollection
 {
+    public enum MotherParameterKey
+    {
+        Slam_Trigger,
+        Hyper_Trigger,
+        Lift_Trigger,
+        LiftFall_Trigger,
+        Shoot_Trigger,
+        StartSlam_Trigger,
+        Death_Trigger,
+
+        IdleSpin_Bool_true,
+        IdleSpin_Bool_false,
+
+        StartHyper_Bool_true,
+        StartHyper_Bool_false,
+
+        StartSlamSlow_Bool_true,
+        StartSlamSlow_Bool_false,
+
+        Lift_DamageRight_Bool_true,
+        Lift_DamageRight_Bool_false,
+
+        Lift_DamageLeft_Bool_true,
+        Lift_DamageLeft_Bool_false
+    }
+
+    public enum MotherPattern
+    {
+        Slam,
+        Lift,
+        Hyper,
+        Slam_Slow
+    }
+
     public enum E_ForestMotherState
     {
+        FindPlayer,
         ChangePattern,
         ExecutePattern,
         Death

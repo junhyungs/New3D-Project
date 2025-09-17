@@ -69,7 +69,12 @@ namespace EnemyComponent
         protected virtual void Update()
         {
             _stateMachine.Update();
-        }        
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            _stateMachine.OnTriggerEnter(other);
+        }
 
         public ICharacterState GetCurrentState()
         {
