@@ -13,7 +13,8 @@ namespace MapComponent
         private HashSet<HitTrigger> _hitTriggerSet = new HashSet<HitTrigger>();
         [SerializeField] private SpikeDoor _bossDoor;
 
-        //[Header("TimeLine")]
+        public Level_1_progress Progress => _myProgress;
+
         public override void Initialize(Dictionary<string, MapProgress> progressDictionary)
         {
             if(!progressDictionary.TryGetValue(nameof(Level_1), out var progress))
@@ -27,7 +28,6 @@ namespace MapComponent
 
         protected override void OnStartMap()
         {
-            //TODO 타임라인 초기화
             InitHitTrigger();
         }
 

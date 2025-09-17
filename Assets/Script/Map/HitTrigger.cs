@@ -11,7 +11,7 @@ namespace MapComponent
     }
 
 
-    public class HitTrigger : MapTrigger, IInteractionGameObject
+    public class HitTrigger : MapTrigger<SphereCollider>, IInteractionGameObject
     {
         [Header("GameObject")]
         [SerializeField] private GameObject[] _targetObjects;

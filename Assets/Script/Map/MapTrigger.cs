@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace MapComponent
 {
-    public class MapTrigger : MonoBehaviour
+    public class MapTrigger<TCollider> : MonoBehaviour
     {
-        protected SphereCollider _collider;
+        protected TCollider _collider;
 
         private void Awake()
         {
-            _collider = GetComponent<SphereCollider>();
+            _collider = GetComponent<TCollider>();
         }
 
         private void OnTriggerEnter(Collider other)

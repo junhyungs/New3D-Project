@@ -48,7 +48,7 @@ namespace MapComponent
         }
     }
 
-    public class UITrigger : MapTrigger
+    public class UITrigger : MapTrigger<SphereCollider>
     {
         [Header("Setting")]
         [Header("Root")]

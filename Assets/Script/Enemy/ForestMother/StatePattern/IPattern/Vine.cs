@@ -19,17 +19,12 @@ namespace EnemyComponent
         [Header("SkinnedMeshRenderer")]
         [SerializeField] private SkinnedMeshRenderer _vineRenderer;
 
-        private SphereCollider _collider;
+        private CapsuleCollider _collider;
         private Dictionary<VineMaterial, Material> _materialDictionary;
         private Action<VineType, Material, int> _vineAction;
 
         private int _vineHealth;
         private VineMaterial _currentMaterial;
-
-        private void Awake()
-        {
-            _collider = GetComponent<SphereCollider>();
-        }
 
         public void TakeDamage(int damage)
         {
@@ -57,6 +52,8 @@ namespace EnemyComponent
         {
             bool isTrigger = materialType == VineMaterial.Body ?
                 false : true;
+            if (_collider == null)
+                _collider = GetComponent<CapsuleCollider>();
             _collider.isTrigger = isTrigger;
 
             SetVineHealth(data);
