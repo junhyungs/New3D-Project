@@ -16,7 +16,13 @@ namespace GameData
         private Vector3 _range;
         [Header("WeaponType"), SerializeField]
         private ItemType _itemType;
-        public WeaponData WeaponData => new WeaponData(_damage, _range, ItemName, ItemDescription, _itemType);
+        public WeaponData WeaponData => new WeaponData(
+            _damage,
+            new SerializeVector3(_range),
+            ItemName,
+            ItemDescription,
+            _itemType
+            );
         public string AddressKey => _addressKey;
     }
 }

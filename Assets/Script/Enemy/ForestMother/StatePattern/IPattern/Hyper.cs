@@ -9,7 +9,7 @@ namespace EnemyComponent
     {
         private Coroutine _accelCoroutine;
         private Transform _targetTransform;
-        private Vector3 _startPosition;
+
         private Vector3 _movePosition;
 
         private const int MaxWallHitCount = 3;
@@ -25,7 +25,6 @@ namespace EnemyComponent
         {
             base.Init(owner);
             GetBehaviour(owner.Property);
-            _startPosition = owner.transform.position;
         }
 
         public override void Start()
@@ -41,6 +40,7 @@ namespace EnemyComponent
                 }
             }
 
+            SetIsTrigger(true);
             _owner.StartCoroutine(WaitForAnimation());
         }
 
@@ -49,7 +49,7 @@ namespace EnemyComponent
             if (!_return)
                 return;
 
-            var distance = Vector3.Distance(_startPosition, _owner.transform.position);
+            var distance = Vector3.Distance(_property.StartPosition, _owner.transform.position);
             if(distance <= 0.1f)
             {
                 PlayAnimation(MotherParameterKey.StartHyper_Bool_false);
@@ -59,6 +59,7 @@ namespace EnemyComponent
 
         public override void Exit()
         {
+            SetIsTrigger(false);
             _currentWallHitCount = 0;
         }
 
@@ -86,7 +87,7 @@ namespace EnemyComponent
             }
             else
             {
-                _movePosition = _startPosition;
+                _movePosition = _property.StartPosition;
                 _return = true;
                 SetAgent(ReturnSpeed, MaxAcceleration, _movePosition);
             }

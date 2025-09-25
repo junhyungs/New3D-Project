@@ -115,7 +115,8 @@ namespace PlayerComponent
             var distance = Vector3.Distance(startPos, endPos);
 
             var boxPosition = (startPos + endPos) / 2 + Vector3.up * 0.7f;
-            var boxSize = new Vector3(weaponData.Range.x, _capsuleCollider.height, distance);
+            var range = weaponData.SerializeRange.ToVector3();
+            var boxSize = new Vector3(range.x, _capsuleCollider.height, distance);
             var targetLayer = LayerMask.GetMask("Enemy");
 
             Collider[] colliders = Physics.OverlapBox(boxPosition, 

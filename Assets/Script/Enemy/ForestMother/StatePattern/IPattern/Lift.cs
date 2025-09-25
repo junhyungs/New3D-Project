@@ -18,6 +18,7 @@ namespace EnemyComponent
             IsRunning = true;
             ChangeVineMaterial(VineMaterial.Vine, true);
 
+            SetIsTrigger(true);
             _owner.StartCoroutine(WaitForAnimation());
         }
 
@@ -27,6 +28,7 @@ namespace EnemyComponent
             _currentTime = 0f;
 
             ChangeVineMaterial(VineMaterial.Body, false);
+            SetIsTrigger(false);
         }
 
         public override IEnumerator WaitForAnimation()

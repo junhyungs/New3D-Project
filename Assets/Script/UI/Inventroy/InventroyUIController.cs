@@ -30,12 +30,26 @@ namespace InventroyUI
 
         private void OpenInventroy(InputAction.CallbackContext context)
         {
-            var enable = _inventory.activeSelf ? false : true;
-            var timeScale = enable ? 0f : 1f;
+            var enabled = _inventory.activeSelf ? false : true;
+            
+            PlayerInputSetting(!enabled);
+            SetTimeScale(enabled);
 
-            UIManager.Instance.MovePlayerInfoUI(enable);
+            UIManager.Instance.MovePlayerInfoUI(enabled);
+            _inventory.SetActive(enabled);
+        }
+
+        private void PlayerInputSetting(bool enabled)
+        {
+            var playerComponent = PlayerManager.Instance.PlayerComponent;
+            if(playerComponent != null)
+                playerComponent.InputHandler.EnabledPlayerInput(enabled);
+        }
+
+        private void SetTimeScale(bool enabled)
+        {
+            var timeScale = enabled ? 0f : 1f;
             Time.timeScale = timeScale;
-            _inventory.SetActive(enable);
         }
     }
 }

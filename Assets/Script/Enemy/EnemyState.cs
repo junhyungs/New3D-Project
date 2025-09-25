@@ -55,7 +55,9 @@ namespace EnemyComponent
                 return null;
         }
 
-        protected void Death(int stringToHash)
+        protected virtual void Death() { }
+
+        protected virtual void Death(int stringToHash)
         {
             _owner.StopAllCoroutines();
             _property.NavMeshAgent.isStopped = true;
@@ -67,7 +69,7 @@ namespace EnemyComponent
             _owner.StartCoroutine(DissolveEffect(3f, -0.5f));
         }
 
-        private IEnumerator DissolveEffect(float duration, float targetValue)
+        protected IEnumerator DissolveEffect(float duration, float targetValue)
         {
             _owner.StartCoroutine(
                 _owner.DissolveEffect(
@@ -77,10 +79,13 @@ namespace EnemyComponent
                     MATERIAL_PROPERTY)
                 );
             yield return new WaitUntil(() => IsMaterialValueBelow(-5));
+            DisableObject();
             //TODO EnemyPool·Î ¹ÝÈ¯.
         }
 
-        private bool IsMaterialValueBelow(int compareValue)
+        protected virtual void DisableObject() { }
+
+        protected bool IsMaterialValueBelow(int compareValue)
         {
             var getFloat = _property.CopyMaterial.GetFloat(MATERIAL_PROPERTY) * 10;
             return getFloat <= compareValue;

@@ -6,24 +6,52 @@ using EnumCollection;
 
 namespace MapComponent
 {
-    public class Map : MonoBehaviour
+    public interface IMap
     {
-        public LinkedDoor LinkedDoor { get; set; }
-        public virtual void Initialize(Dictionary<string, MapProgress> progressDictionary) { }
+        bool PlayTimeLine { get; set; }
+        LinkedDoor LinkedDoor { get; set; }
+        void Init(Dictionary<string, MapProgress> progressDic);
     }
 
-    public class MapBase<T> : Map where T : MapProgress
+    public abstract class MapBase<TProgress> : MonoBehaviour , IMap
+        where TProgress : MapProgress, new()
     {
         [Header("ShortcutDoor"), SerializeField]
         protected ShortCutDoorInfo[] _shortcutDoors;
         protected Dictionary<LinkedDoor, ShortCutDoor> _doorDictionary;
+        protected TProgress _myProgress;
 
-        protected T _myProgress;
+        public bool PlayTimeLine { get; set; }
+        public LinkedDoor LinkedDoor { get; set; }
+        public TProgress MapProgress  => _myProgress;
+
+        public void Init(Dictionary<string, MapProgress> progressDic)
+        {
+            if (!progressDic.TryGetValue(typeof(TProgress).Name, out var progress))
+            {
+                progress = new TProgress();
+                progress.OpenDoor = new List<LinkedDoor>();
+                progressDic.Add(typeof(TProgress).Name, progress);
+            }
+
+            _myProgress = progress as TProgress;
+            ActiveDoor(_myProgress.OpenDoor);
+        }
+
+        protected void ActiveDoor(List<LinkedDoor> list)
+        {
+            foreach(var item in list)
+            {
+                var door = GetDoor(item);
+                if (door != null)
+                    door.gameObject.SetActive(true);
+            }
+        }
 
         private void Awake()
         {
-            OnAwakeMap();
             InitDoor();
+            OnAwakeMap();
         }
 
         private void Start()
@@ -31,28 +59,27 @@ namespace MapComponent
             OnStartMap();
         }
 
-        protected virtual void OnEnable()
+        private void OnEnable()
         {
             OnEnableMap();
-            PlayDoorTimeLine();
+            DoorTimeLine();
         }
 
         protected virtual void OnAwakeMap() { }
         protected virtual void OnEnableMap() { }
         protected virtual void OnStartMap() { }
 
-        protected virtual void PlayDoorTimeLine()
+        protected virtual void DoorTimeLine()
         {
-            bool init = _myProgress.Initialize;
-            if (!init || LinkedDoor == LinkedDoor.Default)
+            if (!PlayTimeLine || LinkedDoor == LinkedDoor.Default)
                 return;
 
-            OutTimeLine();
+            OutTimeLine(LinkedDoor);
         }
 
-        protected void OutTimeLine()
+        protected void OutTimeLine(LinkedDoor linkedDoor)
         {
-            var shortcutDoor = GetDoor(LinkedDoor);
+            var shortcutDoor = GetDoor(linkedDoor);
             shortcutDoor.PlayOutTimeLine();
         }
 
@@ -69,11 +96,10 @@ namespace MapComponent
                 }
         }
 
-        protected ShortCutDoor GetDoor(LinkedDoor door)
+        public ShortCutDoor GetDoor(LinkedDoor door)
         {
             return _doorDictionary[door];
         }
-
     }
 
     [System.Serializable]

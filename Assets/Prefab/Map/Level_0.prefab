@@ -59107,6 +59107,11 @@ PrefabInstance:
       propertyPath: _linkedMap
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 196647365657381786, guid: 7c8caa283369f8b4399bb8fa7106838a,
+        type: 3}
+      propertyPath: _destination
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2515286684235596957, guid: 7c8caa283369f8b4399bb8fa7106838a,
         type: 3}
       propertyPath: m_Name

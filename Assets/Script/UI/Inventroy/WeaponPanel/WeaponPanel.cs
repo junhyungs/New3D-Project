@@ -45,9 +45,11 @@ namespace InventoryUI
                 return;
 
             _damage.text = data.Damage.ToString();
-            _range.text = data.Range.x.ToString();
             _hit.text = (data.Damage + 1).ToString();
             _speed.text = 0.4.ToString();
+
+            var range = data.SerializeRange.ToVector3();
+            _range.text = range.ToString();
         }
 
         public void UpdateDescription(WeaponData data)

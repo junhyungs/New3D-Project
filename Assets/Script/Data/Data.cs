@@ -15,35 +15,63 @@ namespace GameData
     public class MapData : Data
     {
         public Dictionary<string, MapProgress> ProgressDictionary { get; set; }
+        public bool SaveData { get; set; }
         public string MapAddressablesKey { get; set; }
-        //Newtonsoft.Json에서 Vector3, Quaternion직렬화 지원. 이외에는 x,y,z,w 등으로 직접 기록해야함.
-        public Vector3 PlayerPosition { get; set; }
-        public Quaternion PlayerRotation { get; set; }  
+        public SerializeVector3 SerializeVector3 { get; set; }
+        public SerializeQuaternion SerializeQuaternion { get; set; }
         public MapData(Dictionary<string, MapProgress> progressDictionary)
         {
             ProgressDictionary = progressDictionary;
         }
+
+        public MapData() { }
+    }
+
+    [Serializable]
+    public struct SerializeVector3
+    {
+        public float x, y, z;
+        public SerializeVector3(Vector3 vector)
+        {
+            x = vector.x; y = vector.y; z = vector.z;
+        }
+        public Vector3 ToVector3() => new Vector3(x, y, z);
+    }
+
+    [Serializable]
+    public struct SerializeQuaternion
+    {
+        public float x, y, z, w;
+        public SerializeQuaternion(Quaternion quaternion)
+        {
+            x = quaternion.x; y = quaternion.y; z = quaternion.z; w = quaternion.w;
+        }
+        public Quaternion ToQuaternion() => new Quaternion(x, y, z, w);
     }
 
     public class MapProgress
     {
-        public bool Initialize { get; set; }
+        public List<LinkedDoor> OpenDoor { get; set; }
         public Dictionary<ItemType, bool> CollectedItemsDictionary{ get; set; }
+        public MapProgress() { }
     }
 
     public class Level_0_progress : MapProgress
     {
         public bool HallCrowScene { get; set; }
+        public bool Initialize { get; set; }
+        public Level_0_progress() { }
     }
 
     public class Level_1_progress : MapProgress
     {
         public bool ClearBoss { get; set; }
+        public Level_1_progress() { }
     }
 
     public class Level_2_progress : MapProgress
     {
-
+        public Level_2_progress() { }
     }
 
     public class DialogData : Data
@@ -105,15 +133,18 @@ namespace GameData
         public string WeaponName { get; set; }
         public string ItemDescription { get; set; }
         public int Damage { get; set; }
-        public Vector3 Range { get; set; }
-        public WeaponData(int damage, Vector3 range, string weaponName, string itemDescription, ItemType itemType)
+        public SerializeVector3 SerializeRange { get; set; }
+
+        public WeaponData(int damage, SerializeVector3 serializeVector3, string weaponName, string itemDescription, ItemType itemType)
         {
             Damage=damage;
-            Range=range;
+            SerializeRange = serializeVector3;
             WeaponName=weaponName;
             ItemDescription=itemDescription;
             WeaponType = itemType;
         }
+
+        public WeaponData() { }
     }
 
     public class InventoryItemData : ItemData
@@ -125,6 +156,7 @@ namespace GameData
             ItemName = itemName;
             ItemDescription = itemDescription;
         }
+        public InventoryItemData() { }
     }
 
     public class TrinketItemData : ItemData
@@ -136,6 +168,7 @@ namespace GameData
             ItemName = itemName;
             ItemDescription = itemDescription;
         }
+        public TrinketItemData() { }
     }
 
     public class ScreenResolutionData : Data
@@ -157,7 +190,9 @@ namespace GameData
         public int Power {  get; set; }
         public float Speed { get; set; }
         public int Health { get; set; }
+        public SavePlayerCameraSetting SavePlayerCameraSetting { get; set; }
         public PlayerConstantData ConstantData { get; set; }
+        public PlayerSaveData() { }
     }
 
     public class PlayerConstantData : Data
@@ -177,6 +212,7 @@ namespace GameData
             SpeedOffSet = speedOffSet;
             DashSpeed = dashSpeed;
         }
+        public PlayerConstantData() { }
     }
 
     public class PlayerUpgradeData_Skill : Data
@@ -186,6 +222,7 @@ namespace GameData
         {
             DamageUpgrade = damageUpgrade;
         }
+        public PlayerUpgradeData_Skill() { }
     }
 
     public class PlayerUpgradeData_Ability : Data
@@ -198,6 +235,7 @@ namespace GameData
             PowerUpgrade = powerUpgrade;
             SpeedUpgrade = speedUpgrade;
         }
+        public PlayerUpgradeData_Ability() { }
     }
 
     public class PlayerInventoryData : Data

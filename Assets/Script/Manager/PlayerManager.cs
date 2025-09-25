@@ -4,6 +4,7 @@ using UnityEngine;
 using PlayerComponent;
 using Cinemachine;
 using EnumCollection;
+using GameData;
 
 public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
 {
@@ -17,20 +18,33 @@ public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
     public CinemachineTransposer VirtualCameraTransposer { get; private set; }
     public GameObject PlayerObject => PlayerComponent.gameObject;
     public GameObject VirtualCameraObject => VirtualCameraComponent.gameObject;
-
-
-    private async void Awake()
+    public PlayerCameraSetting CurrentCameraSetting
     {
-        await DataManager.Instance.LoadAllData();
-        CreatePlayer();
-        CreateVirtualCamera();
+        get
+        {
+            var cameraSetting = new PlayerCameraSetting()
+            {
+                Position = VirtualCameraObject.transform.position,
+                FollowOffset = VirtualCameraTransposer.m_FollowOffset,
+                FieldOfView = VirtualCameraComponent.m_Lens.FieldOfView
+            };
+            return cameraSetting;
+        }
     }
 
-    //private void Start()
+
+    //private async void Awake()
     //{
+    //    await DataManager.Instance.LoadAllData();
     //    CreatePlayer();
     //    CreateVirtualCamera();
     //}
+
+    private void Start()
+    {
+        CreatePlayer();
+        CreateVirtualCamera();
+    }
 
     private void CreatePlayer() //TODO 나중에 게임 매니저에서 일괄적으로 관리.
     {
@@ -38,8 +52,7 @@ public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
         PlayerComponent = playerObject.GetComponent<Player>();
 
         InventoryManager.Instance.InitializeInventory();
-        //TestCode
-        //playerObject.SetActive(false);
+        playerObject.SetActive(false);
     }
 
     private void CreateVirtualCamera()
@@ -58,12 +71,37 @@ public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
         VirtualCameraTransposer.m_YDamping = 0f;
         VirtualCameraTransposer.m_ZDamping = 0f;
 
-        //virtualCameraObject.SetActive(false);
+        virtualCameraObject.SetActive(false);
     }
 
     public void LockPlayer(bool isLocked)
     {
         PlayerComponent.InputHandler.LockPlayer(!isLocked);
+    }
+
+    public void LoadPlayer(MapData mapData)
+    {
+        if (!mapData.SaveData)
+            return;
+
+        var savePosition = mapData.SerializeVector3.ToVector3();
+        var saveRotation = mapData.SerializeQuaternion.ToQuaternion();
+        EnablePlayer(savePosition, saveRotation);
+
+        var key = DataKey.Player.ToString();
+        var savePlayerData = DataManager.Instance.GetData(key) as PlayerSaveData;
+        if(savePlayerData != null)
+        {
+            var saveSetting = savePlayerData.SavePlayerCameraSetting;
+            var cameraSetting = new PlayerCameraSetting()
+            {
+                Position = saveSetting.GetPosition(),
+                FollowOffset = saveSetting.GetFollowOffset(),
+                FieldOfView = saveSetting.FieldOfView
+            };
+
+            EnablePlayerCamera(cameraSetting, true);
+        }
     }
 
     public void EnablePlayer(Vector3 position, Quaternion rotation)
@@ -92,4 +130,27 @@ public struct PlayerCameraSetting
     public Vector3 Position;
     public Vector3 FollowOffset;
     public float FieldOfView;    
+}
+
+public struct SavePlayerCameraSetting
+{
+    public float positionX, positionY, positionZ;
+    public float followOffsetX, followOffsetY, followOffsetZ;
+    public float FieldOfView;
+   
+    public SavePlayerCameraSetting(Vector3 position, Vector3 Offset, float fieldOfView)
+    {
+        positionX = position.x;
+        positionY = position.y;
+        positionZ = position.z;
+
+        followOffsetX = Offset.x;
+        followOffsetY = Offset.y;
+        followOffsetZ = Offset.z;
+
+        FieldOfView = fieldOfView;
+    }
+
+    public Vector3 GetPosition() => new Vector3(positionX, positionY, positionZ);
+    public Vector3 GetFollowOffset() => new Vector3(followOffsetX, followOffsetY, followOffsetZ);
 }

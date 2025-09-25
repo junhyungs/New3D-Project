@@ -8,7 +8,7 @@ namespace EnemyComponent
     {
         public override void Reload()
         {
-            var projectile = _pool.GetProjectile();
+            var projectile = _pool.GetEnableProjectile();
             projectile.transform.SetParent(_shootTransform);
             projectile.transform.localPosition = Vector3.zero;
         }

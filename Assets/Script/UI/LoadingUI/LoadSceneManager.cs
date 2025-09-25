@@ -24,11 +24,20 @@ public class LoadSceneManager : Singleton_MonoBehaviour<LoadSceneManager>
 
     private void Awake()
     {
-        DontDestroyOnLoad(this);
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        DontDestroyOnLoad(gameObject);
     }
 
-    public void ChangeScene(string sceneName)
+    public void ChangeScene(string sceneName = "StartScene")
     {
+        if (Time.timeScale == 0f)
+            Time.timeScale = 1f;
+
         StartLoadingUICoroutine(true);
         UIManager.Instance.AllDisableUI();
 

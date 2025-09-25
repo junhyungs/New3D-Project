@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdf6c225fa89b9a4183be09b98495a22, type: 3}
   m_Name: Soul_SwampkingSO
   m_EditorClassIdentifier: 
+  _key: 16
   _itemName: "\uAC1C\uAD6C\uB9AC \uC655\uC758 \uAC70\uB300 \uC601\uD63C"
   _itemDescription: "\uC6A9\uAC10\uD558\uACE0 \uB450\uB824\uC6C0 \uC5C6\uB358 \uC9C0\uB3C4\uC790.\\n\uC774
     \uC12C\uB4E4\uC774 \uC8FD\uC74C\uC758 \uC190\uC5D0 \uB2FF\uAE30 \uC804\\n\uC218\uC138\uAE30

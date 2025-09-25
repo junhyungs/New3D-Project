@@ -45,6 +45,7 @@ public class EnemyProjectilePoolFactory : Singleton_MonoBehaviour<EnemyProjectil
                 enemyProjectileComponent.SetEnemyProjectilePool(pool);
             }
                 
+            projectile.transform.localPosition = Vector3.zero;
             projectile.SetActive(false);
             container.Enqueue(projectile);
         }

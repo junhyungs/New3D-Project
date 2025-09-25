@@ -26,6 +26,8 @@ namespace EnemyComponent
 
         [Header("LowerBodyController")]
         [SerializeField] private LowerBodyController _lowerBodyController;
+        [Header("UpperBodyController")]
+        [SerializeField] private UpperBodyController _upperBodyController;
         private Dictionary<string, Delegate> _animationDictionary;
         private ForestMotherVineController _vineController;
         private Animator _animator;
@@ -34,6 +36,11 @@ namespace EnemyComponent
         {
             GetComponent();
             BindAnimation();
+        }
+
+        private void OnEnable()
+        {
+            SetUpperWeight(1f);
         }
 
         private void GetComponent()
@@ -138,6 +145,14 @@ namespace EnemyComponent
         {
             _lowerBodyController.InfinitiRotation(rotDir, value, rotSpeed);
         }
+
+        public void SetUpperWeight(float upperWeight)
+        {
+            var rotationConstraint = _upperBodyController.RotationConstraint;
+            if(rotationConstraint != null)
+                rotationConstraint.weight = upperWeight;
+        }
+            
     }
 }
 

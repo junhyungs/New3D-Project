@@ -16,8 +16,8 @@ public class ShortCutDoor : TimeLineComponent.TimeLine, IInteractionGameObject
     };
 
     [Header("Link")] 
-    [SerializeField] private LinkedDoor _destination;
-    [SerializeField] private LinkedMap _linkedMap;
+    [SerializeField] private LinkedDoor _linkDoor;
+    [SerializeField] private LinkedMap _destination;
 
     [Header("Transform")]
     [SerializeField] private Transform _inTransform;
@@ -52,9 +52,9 @@ public class ShortCutDoor : TimeLineComponent.TimeLine, IInteractionGameObject
 
         LockPlayer(true);
 
-        var addressableKey = "Map/" + _linkedMap.ToString();
+        var addressableKey = "Map/" + _destination.ToString();
         PlayTimeLine(playerObject, _in,
-            () => MapManager.Instance.ChangeMapAsync(addressableKey, _destination));
+            () => MapManager.Instance.ChangeMapAsync(addressableKey, _linkDoor));
     }
 
     public void PlayOutTimeLine()
@@ -139,15 +139,5 @@ public class ShortCutDoor : TimeLineComponent.TimeLine, IInteractionGameObject
     public override void PlayTimeLine()
     {
         _playableDirector.Play();
-    }
-
-    public void Signal_DisablePlayerCamera()
-    {
-        PlayerManager.Instance?.EnablePlayerCamera(new PlayerCameraSetting(), false);
-    }
-
-    public void Signal_EnablePlayerCamera()
-    {
-        PlayerManager.Instance?.EnablePlayerCamera(new PlayerCameraSetting(), true);
     }
 }

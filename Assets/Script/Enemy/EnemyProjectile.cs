@@ -16,9 +16,11 @@ namespace EnemyComponent
         [SerializeField] protected EnemyProjectileDataSO _dataSO;
 
         private EnemyProjectilePool _pool;
+
         protected Vector3 _direction;
         protected bool _isMove;
         protected int _damage;
+        protected float _returnTime = 6f;
 
         public void Disable() =>
             gameObject.SetActive(false);
@@ -62,7 +64,7 @@ namespace EnemyComponent
         protected virtual void OnAwakeProjectile() { }
         protected virtual void OnEnableProjectile()
         {
-            Invoke(nameof(ReturnProjectile), 6f);
+            Invoke(nameof(ReturnProjectile), _returnTime);
         }
         protected virtual void OnTriggerEnterProjectile(Collider other)
         {
@@ -72,8 +74,9 @@ namespace EnemyComponent
             itakeDamage.TakeDamage(_damage);
             ReturnProjectile();
         }
-        protected abstract void OnUpdateProjectile();
-        public abstract void SetupProjectile(int damage, Vector3 direction);
+        protected virtual void OnUpdateProjectile() { }
+        public virtual void SetupProjectile(int damage, Vector3 direction) { }
+        public virtual void SetupProjectile(Vector3 direction) { }
     }
 }
 

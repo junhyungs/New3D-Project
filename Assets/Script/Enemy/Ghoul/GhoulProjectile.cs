@@ -8,8 +8,6 @@ namespace EnemyComponent
     {
         public override void SetupProjectile(int damage, Vector3 direction)
         {
-            transform.parent = null;
-
             _direction = direction;
             _isMove = true;
             _damage = damage;

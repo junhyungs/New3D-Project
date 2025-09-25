@@ -17,14 +17,16 @@ public class MapManager : Singleton_MonoBehaviour<MapManager>
     {
         var key = DataKey.Map_Data.ToString();
         var mapData = DataManager.Instance.GetData(key) as MapData;
+        if (mapData == null)
+        {
+            LoadSceneManager.Instance.LoadSceneAndReportError("StartScene", "MapData Error");
+            return;
+        }
 
         var startMapAddressables = mapData.MapAddressablesKey != null ?
             mapData.MapAddressablesKey : AddressablesKey.Map_Level_0;
-        await LoadMapAsync(startMapAddressables);
-
-        if(mapData.PlayerPosition != Vector3.zero &&
-            mapData.PlayerRotation != Quaternion.identity)
-            PlayerManager.Instance.EnablePlayer(mapData.PlayerPosition, mapData.PlayerRotation);    
+        await LoadMapAsync(startMapAddressables, LinkedDoor.Default, false);
+        PlayerManager.Instance.LoadPlayer(mapData);
     }
 
     private void OnDestroy()
@@ -55,7 +57,8 @@ public class MapManager : Singleton_MonoBehaviour<MapManager>
         }
     }
 
-    public async UniTask LoadMapAsync(string addressableKey, LinkedDoor linkedDoor = LinkedDoor.Default)
+    public async UniTask LoadMapAsync(string addressableKey,
+        LinkedDoor linkedDoor = LinkedDoor.Default, bool playDoorTimeLine = true)
     {
         LoadSceneManager.Instance.StartLoadingUICoroutine(true);
 
@@ -63,23 +66,24 @@ public class MapManager : Singleton_MonoBehaviour<MapManager>
             _currentMap.SetActive(false);
         
         if(!_mapDictionary.ContainsKey(addressableKey))
-        {
+        {        
             var handle = Addressables.InstantiateAsync(addressableKey);
             var mapIntance = await handle.ToUniTask();
 
             _mapDictionary.Add(addressableKey, mapIntance);
         }
-
+        
         var nextMap = _mapDictionary[addressableKey];
 
         var dataKey = DataKey.Map_Data.ToString();
         var mapData = DataManager.Instance.GetData(dataKey) as MapData;
         mapData.MapAddressablesKey = addressableKey;
 
-        if(nextMap.TryGetComponent(out Map mapCompnent))
+        if(nextMap.TryGetComponent(out IMap imap))
         {
-            mapCompnent.Initialize(mapData.ProgressDictionary);
-            mapCompnent.LinkedDoor = linkedDoor;
+            imap.Init(mapData.ProgressDictionary);
+            imap.LinkedDoor = linkedDoor;
+            imap.PlayTimeLine = playDoorTimeLine;
         }
         else
         {

@@ -4,6 +4,16 @@ using UnityEngine;
 
 namespace EnumCollection
 {
+    public enum PlayableAssetName
+    {
+        EnableBoss,
+        DisableBoss,
+        In,
+        Out,
+        Intro,
+        HallCrow
+    }
+
     public enum MotherParameterKey
     {
         Slam_Trigger,
@@ -249,11 +259,6 @@ namespace EnumCollection
         Security,
         Banker,
         Agatha
-    }
-
-    public enum TimeLine
-    {
-        Intro,
     }
 
     public enum LinkedMap

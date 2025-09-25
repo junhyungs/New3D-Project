@@ -30,6 +30,9 @@ namespace EnemyComponent
             var animKey = key.ToString();
             _property.AnimController.PlayAnimation(animKey);
         }
+        protected void SetIsTrigger(bool isTrigger) =>
+            _property.CapsuleCollider.isTrigger = isTrigger;
+
     }
 }
 

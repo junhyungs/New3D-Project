@@ -18,10 +18,10 @@ namespace EnemyComponent
         {
             _patternArray = new MotherPattern[]
             {
-                MotherPattern.Slam,
-                MotherPattern.Slam,
-                MotherPattern.Slam_Slow,
-                MotherPattern.Hyper,
+                //MotherPattern.Slam,
+                //MotherPattern.Slam,
+                //MotherPattern.Slam_Slow,
+                //MotherPattern.Hyper,
                 MotherPattern.Lift
             };
 
@@ -60,6 +60,7 @@ namespace EnemyComponent
 
         public void Enable()
         {
+            _index = 0;
             foreach (var item in _patternDictionary.Values)
                 item.Enable();
         }

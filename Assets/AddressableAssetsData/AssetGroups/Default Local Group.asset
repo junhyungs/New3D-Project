@@ -364,6 +364,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - ScriptableData
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9458f2dbb9d77246aa0c3127ee284c1
+    m_Address: Prefab/ForestMotherProjectile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 68fa7f047f245514e8fee859a6f4aba0, type: 2}
   m_SchemaSet:

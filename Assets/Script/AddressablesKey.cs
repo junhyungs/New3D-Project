@@ -38,5 +38,7 @@ public static class AddressablesKey
 
     public const string Prefab_Bat = "Prefab/Bat";
 
+    public const string Prefab_ForestMotherProjectile = "Prefab/ForestMotherProjectile";
+
     public const string Label_WeaponAsset = "WeaponAsset";
 }

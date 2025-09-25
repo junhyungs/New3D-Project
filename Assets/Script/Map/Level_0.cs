@@ -4,6 +4,7 @@ using UnityEngine;
 using GameData;
 using UnityEngine.Playables;
 using TimeLineComponent;
+using EnumCollection;
 
 namespace MapComponent
 {
@@ -12,17 +13,6 @@ namespace MapComponent
         [Header("TimeLine")]
         [SerializeField] private TimeLine _intro;
         [SerializeField] private TimeLine _hallCrow;
-
-        public override void Initialize(Dictionary<string, MapProgress> progressDictionary)
-        {
-            if(!progressDictionary.TryGetValue(nameof(Level_0), out var progress))
-            {
-                progress = new Level_0_progress();
-                progressDictionary.Add(nameof(Level_0), progress);
-            }
-
-            _myProgress = progress as Level_0_progress;
-        }
 
         private void Start()
         {

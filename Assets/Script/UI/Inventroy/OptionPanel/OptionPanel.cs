@@ -1,3 +1,5 @@
+using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,9 +13,14 @@ namespace InventoryUI
     {
         [Header("ResolutionDropdown"), SerializeField]
         private TMP_Dropdown _dropdown;
+
         private ScreenResolution _screenResolution;
         private GraphicRaycaster _graphicRaycaster;
 
+        [Header("Loading/ErrorPanel")]
+        [SerializeField] private SaveLoadingPanel _loadingPanel;
+        [SerializeField] private ErrorPanel _errorPanel;
+        
         private void Awake()
         {
             _graphicRaycaster = GetComponentInParent<GraphicRaycaster>();
@@ -78,14 +85,46 @@ namespace InventoryUI
             }
         }
 
+        private void SaveAllData(Action afterAction = null)
+        {
+            _loadingPanel.gameObject.SetActive(true);
+            _loadingPanel.StartRotate();
+
+            RunAsync().Forget();
+            async UniTask RunAsync()
+            {
+                try
+                {
+                    await SaveManager.Instance.SaveAllData();
+                    await UniTask.Delay(2000, true);
+                }
+                catch (Exception ex)
+                {
+                    _errorPanel.gameObject.SetActive(true);
+                    _errorPanel.SetErrorMessage(ex.Message);
+
+                    return;
+                }
+                finally
+                {
+                    _loadingPanel.StopRotate();
+                }
+
+                afterAction?.Invoke();
+            }
+        }
+
+
         public void Save_MainScene()
         {
-            //게임 저장하고 메인 씬을 다시 로드하는 로직.
+            Action afterAction = () =>
+            LoadSceneManager.Instance.ChangeScene();
+            SaveAllData(afterAction);
         }
 
         public void Save_Exit()
         {
-            //게임 저장하는 로직.
+            SaveAllData();
 #if UNITY_EDITOR
             EditorApplication.isPlaying = false;
 #else

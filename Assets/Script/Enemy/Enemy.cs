@@ -7,6 +7,11 @@ using System;
 
 namespace EnemyComponent
 {
+    public class Enemy
+    {
+
+    }
+
     public abstract class Enemy<TProperty> : MonoBehaviour, ITakeDamage
         where TProperty : IPropertyBase
     {
@@ -30,13 +35,17 @@ namespace EnemyComponent
 
         private void OnEnable()
         {
+            BaseSetting();
             OnEnableEnemy();
         }
 
-        protected virtual void OnEnableEnemy()
+        protected virtual void OnEnableEnemy() { }
+        
+        private void BaseSetting()
         {
             Property.NavMeshAgent.isStopped = false;
             Property.CopyMaterial.SetFloat("_NoiseValue", 0.5f);
+            Property.ResetProperty(); 
         }
 
         private void Start()
@@ -94,10 +103,8 @@ namespace EnemyComponent
             var upColor = color * Mathf.Pow(baseValue, power);
 
             targetMaterial.SetColor("_Color", upColor);
-            yield return new WaitForSeconds(0.1f);
+            yield return _waitForIntensity;
             targetMaterial.SetColor("_Color", color);
-
-            Debug.Log("IntensityExit");
         }
 
         public virtual void TakeDamage(int damage)

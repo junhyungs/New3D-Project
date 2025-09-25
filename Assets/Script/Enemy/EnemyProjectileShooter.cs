@@ -24,7 +24,7 @@ namespace EnemyComponent
 
         public virtual void Reload()
         {
-            var projectile = _pool.GetProjectile();
+            var projectile = _pool.GetEnableProjectile();
             projectile.transform.SetParent(_shootTransform);
             projectile.transform.localPosition = Vector3.zero;
             projectile.transform.localRotation = Quaternion.identity;
@@ -38,8 +38,11 @@ namespace EnemyComponent
             var projectile = _shootTransform.GetChild(0);
             var projectileComponent = projectile.GetComponent<EnemyProjectile>();
             if (projectileComponent != null)
+            {
+                projectile.transform.parent = null;
                 projectileComponent.SetupProjectile(Damage,
                     _shootTransform.forward);
+            }
             else
                 AllDisableProjectile();
         }

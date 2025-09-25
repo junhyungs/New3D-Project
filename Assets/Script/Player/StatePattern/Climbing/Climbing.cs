@@ -33,6 +33,7 @@ namespace PlayerComponent
 
         public void OnStateExit()
         {
+            _playerTransform.SetParent(null);
             _rigidBody.useGravity = true;
         }
 

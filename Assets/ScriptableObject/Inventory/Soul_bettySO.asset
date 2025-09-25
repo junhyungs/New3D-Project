@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdf6c225fa89b9a4183be09b98495a22, type: 3}
   m_Name: Soul_bettySO
   m_EditorClassIdentifier: 
+  _key: 15
   _itemName: "\uBCA0\uD2F0\uC758 \uAC70\uB300 \uC601\uD63C"
   _itemDescription: "\uD639\uC790\uC5D0\uAC90 \uC2E0\uC73C\uB85C, \uD639\uC790\uC5D0\uAC90\\n\uAE38\uB4E4\uC77C
     \uC218 \uC5C6\uB294 \uC57C\uC218\uB85C\uC11C\\n\uB450\uB824\uC6C0\uC758 \uB300\uC0C1\uC774

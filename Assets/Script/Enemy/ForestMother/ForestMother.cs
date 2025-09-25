@@ -15,6 +15,8 @@ namespace EnemyComponent
         public ForestMotherSO _data;
         [Header("VineComponent")]
         [SerializeField] private Vine[] _vines;
+        [Header("TimeLine")]
+        [SerializeField] private TimeLineComponent.TimeLine _timeLine;
         public Vine[] Vines => _vines;
 
         protected override void MaterialSetting()
@@ -39,6 +41,8 @@ namespace EnemyComponent
 
         protected override void Death()
         {
+            if (_timeLine != null)
+                _timeLine.PlayTimeLine();
             Property.StateMachine.ChangeState(E_ForestMotherState.Death);
         }
 

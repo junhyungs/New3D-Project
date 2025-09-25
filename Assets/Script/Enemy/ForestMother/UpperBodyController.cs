@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class UpperBodyController : MonoBehaviour
 {
+    [Header("RotationConstraint")]
+    [SerializeField] private RotationConstraint _rotationConstraint;
     private Transform _playerTransform;
+
+    public RotationConstraint RotationConstraint => _rotationConstraint;
 
     private void Start()
     {

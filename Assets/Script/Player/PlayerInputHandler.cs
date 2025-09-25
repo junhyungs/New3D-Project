@@ -69,6 +69,11 @@ public class PlayerInputHandler : IUnbindAction
         _unbindActions.Clear();
     }
 
+    public void EnabledPlayerInput(bool enabled)
+    {
+        _input.enabled = enabled;
+    }
+
     public void LockPlayer(bool enable)
     {
         _input.enabled = enable;

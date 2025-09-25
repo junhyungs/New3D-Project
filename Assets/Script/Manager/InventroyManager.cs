@@ -26,7 +26,7 @@ public class InventoryManager : Singleton_MonoBehaviour<InventoryManager>
         var saveData = DataManager.Instance.GetData(key) as PlayerInventoryData;
         if (saveData.InitInventory)
         {
-            var saveWeapon = _saveData.SaveWeapon;
+            var saveWeapon = saveData.SaveWeapon;
             var saveWeaponType = saveWeapon.WeaponType;
             WeaponManager.Instance.SetWeapon(saveWeaponType, saveWeapon);
         }
@@ -89,8 +89,13 @@ public class InventoryManager : Singleton_MonoBehaviour<InventoryManager>
                     (data) => weaponSlot.WeaponData = data);
                 break;
             case InventorySlot inventorySlot:
-                TryApply(inventorySlot, _saveData.GetInventoryItemData(slotName),
-                    (data) => inventorySlot.InventoryItemData = data);
+                TryApply(inventorySlot,
+                    _saveData.GetInventoryItemData(slotName),
+                    (data) => 
+                    {
+                        inventorySlot.InventoryItemData = data;
+                        inventorySlot.OnItemUI();
+                    });
                 break;
             case TrinketSlot trinketSlot:
                 TryApply(trinketSlot, _saveData.GetTrinketItemData(slotName), 

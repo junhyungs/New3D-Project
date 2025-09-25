@@ -41,7 +41,7 @@ public abstract class PlayerWeapon : MonoBehaviour, IWeapon
     {
         var targetLayer = LayerMask.GetMask("Enemy", "HitObject");
         var boxPosition = transform.position + transform.forward + Vector3.up * 0.6f;
-        var boxSize = _data.Range;
+        var boxSize = _data.SerializeRange.ToVector3();
 
         Collider[] colliders = Physics.OverlapBox(boxPosition, boxSize / 2f, transform.rotation, targetLayer);
         var damage = _data.Damage;

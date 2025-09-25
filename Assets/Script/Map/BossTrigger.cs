@@ -12,7 +12,9 @@ namespace MapComponent
         [Header("BossObject")]
         [SerializeField] private GameObject _boss;
         [Header("BossTimeLine")]
-        [SerializeField] private TimeLine _enableBoss;
+        [SerializeField] private TimeLine _motherTimeLine;
+        [Header("Door")]
+        [SerializeField] private GameObject _door;
 
         private void OnEnable()
         {
@@ -26,13 +28,15 @@ namespace MapComponent
                 return;
 
             _collider.enabled = false;
-            var progress = _mapComponent.Progress;
+            var progress = _mapComponent.MapProgress;
             if (!progress.ClearBoss)
             {
-                _enableBoss.PlayTimeLine();
+                _motherTimeLine.PlayTimeLine();
             }
             else
                 _boss.SetActive(true);
+
+            _door.SetActive(false);
         }
     }
 }

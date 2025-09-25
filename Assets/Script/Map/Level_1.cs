@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EnumCollection;
+using System;
 
 namespace MapComponent
 {
@@ -12,19 +13,6 @@ namespace MapComponent
         [SerializeField] private HitTrigger[] _triggers;
         private HashSet<HitTrigger> _hitTriggerSet = new HashSet<HitTrigger>();
         [SerializeField] private SpikeDoor _bossDoor;
-
-        public Level_1_progress Progress => _myProgress;
-
-        public override void Initialize(Dictionary<string, MapProgress> progressDictionary)
-        {
-            if(!progressDictionary.TryGetValue(nameof(Level_1), out var progress))
-            {
-                progress = new Level_1_progress();
-                progressDictionary.Add(nameof(Level_1), progress);
-            }
-
-            _myProgress = progress as Level_1_progress;
-        }
 
         protected override void OnStartMap()
         {
@@ -39,7 +27,10 @@ namespace MapComponent
             foreach (var trigger in _triggers)
             {
                 if (trigger != null)
+                {
                     trigger.HitAction += UnRegisterHitTriggerSet;
+                    _hitTriggerSet.Add(trigger);
+                }
             }
         }
 
@@ -51,15 +42,15 @@ namespace MapComponent
             hitTrigger.HitAction -= UnRegisterHitTriggerSet;
             _hitTriggerSet.Remove(hitTrigger);
             if (_hitTriggerSet.Count <= 0)
-                _bossDoor.HitTrigger();
+                BossDoor(true);
         }
 
-        protected override void PlayDoorTimeLine()
+        public void BossDoor(bool value)
         {
-            if (LinkedDoor == LinkedDoor.Default)
-                return;
-
-            OutTimeLine();
+            Action action = value ? _bossDoor.HitTrigger :
+                _bossDoor.CloseDoor;
+            
+            action.Invoke();
         }
     }
 }

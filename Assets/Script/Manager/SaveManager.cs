@@ -78,9 +78,17 @@ public class SaveManager : Singleton<SaveManager>
     {
         var key = DataKey.Player.ToString();
         var playerSaveData = DataManager.Instance.GetData(key) as PlayerSaveData;
-        var date = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
 
+        var cameraSetting = PlayerManager.Instance.CurrentCameraSetting;
+        playerSaveData.SavePlayerCameraSetting = new SavePlayerCameraSetting(
+            cameraSetting.Position,
+            cameraSetting.FollowOffset,
+            cameraSetting.FieldOfView
+            );
+        
+        var date = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
         playerSaveData.Date = date;
+
         var path = Path.Combine(directoryPath, "PlayerData.json");
         await WriteAllText(path, playerSaveData);
     }
@@ -92,8 +100,11 @@ public class SaveManager : Singleton<SaveManager>
 
         var key = DataKey.Map_Data.ToString();
         var mapData = DataManager.Instance.GetData(key) as MapData;
-        mapData.PlayerPosition = playerTransform.position;
-        mapData.PlayerRotation = playerTransform.rotation;
+
+        mapData.SerializeVector3 = new SerializeVector3(playerTransform.position);
+        mapData.SerializeQuaternion = new SerializeQuaternion(playerTransform.rotation);
+
+        mapData.SaveData = true;
 
         var setting = GetMapSetting();
         var path = Path.Combine(directoryPath, "MapData.json");

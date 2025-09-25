@@ -51,7 +51,7 @@ namespace EnemyComponent
         public void ChangeMaterial(VineMaterial materialType, ForestMotherSO data)
         {
             bool isTrigger = materialType == VineMaterial.Body ?
-                false : true;
+                true : false;
             if (_collider == null)
                 _collider = GetComponent<CapsuleCollider>();
             _collider.isTrigger = isTrigger;

@@ -16,10 +16,10 @@ public class DataManager : Singleton<DataManager>
 
     private bool TryAddData(string key, Data data)
     {
-        Debug.Log($"TryAddData : {key}");
+        //Debug.Log($"TryAddData : {key}");
         if (_dataDictionary.TryAdd(key, data))
         {
-            Debug.Log($"AddData : {key}");
+            //Debug.Log($"AddData : {key}");
             return true;
         }
         else
@@ -31,10 +31,10 @@ public class DataManager : Singleton<DataManager>
 
     private bool TryAddScriptableData(ScriptableDataKey key, ScriptableData data)
     {
-        Debug.Log($"TryAddScriptableData : {key}");
+        //Debug.Log($"TryAddScriptableData : {key}");
         if (_scriptableDataDictionary.TryAdd(key, data))
         {
-            Debug.Log($"Add : {key}");
+            //Debug.Log($"Add : {key}");
             return true;
         }
         else
@@ -114,9 +114,9 @@ public class DataManager : Singleton<DataManager>
     private async UniTask ParsePlayerBaseDataAsync()
     {
         var index = SaveManager.SaveIndex;
-        //PlayerSaveData saveData = await SaveManager.Instance.LoadPlayerSaveDataAsync(index); 
+        PlayerSaveData saveData = await SaveManager.Instance.LoadPlayerSaveDataAsync(index); 
         //TestCode
-        PlayerSaveData saveData = null;
+        //PlayerSaveData saveData = null;
 
         if (saveData != null)
         {
@@ -140,8 +140,8 @@ public class DataManager : Singleton<DataManager>
 
                 if (TryAddData(newSaveData.ID, newSaveData))
                 {
-                    var directoryPath = SaveManager.DirectoryPath;
-                    await SaveManager.Instance.SavePlayer(directoryPath);
+                    //var directoryPath = SaveManager.DirectoryPath;
+                    //await SaveManager.Instance.SavePlayer(directoryPath);
                 }
                 else
                     throw new Exception("Player TryAddData Fail");

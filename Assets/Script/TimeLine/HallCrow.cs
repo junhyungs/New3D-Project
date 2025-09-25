@@ -1,6 +1,7 @@
 using Cinemachine;
 using EnumCollection;
 using GameData;
+using MapComponent;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -52,6 +53,11 @@ namespace TimeLineComponent
         public void HallCrow_Dialog_2()
         {
             CameraBlend(0f);
+
+            var parentObject = transform.root.gameObject;
+            var mapComponent = parentObject.GetComponent<Level_0>();
+            if (mapComponent != null)
+                mapComponent.MapProgress.OpenDoor.Add(LinkedDoor.Level_0_Level_1);
 
             var key = ScriptableDataKey.HallCrow_2_DialogSO;
             StartCoroutine(StartHallCrowDialog(key));

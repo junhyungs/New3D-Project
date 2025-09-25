@@ -15,6 +15,7 @@ namespace EnemyComponent
         Animator Animator { get; }
         Material CopyMaterial { get; set; }
         bool IsSpawn { get; set; }
+        void ResetProperty();
     }
 
     public interface IStateMachine<TStateMachine, TEnum>
@@ -64,7 +65,11 @@ namespace EnemyComponent
             NavMeshAgent = owner.GetComponent<NavMeshAgent>();
             Animator = owner.GetComponent<Animator>();
             Data = owner._slimeSO; //TODO 완성되면 GetData로 변경.
+            ResetProperty();
+        }
 
+        public void ResetProperty()
+        {
             NavMeshAgent.speed = 0;
             NavMeshAgent.acceleration = Data.Acceleration;
             NavMeshAgent.stoppingDistance = Data.AgentStopDistance;
@@ -81,10 +86,12 @@ namespace EnemyComponent
         public ForestMotherSO Data { get; private set; }
         public ForestMotherStateMachine StateMachine { get; private set; }
         public ForestMotherAnimationController AnimController { get; private set; }
+        public CapsuleCollider CapsuleCollider { get; private set; }
         public Animator Animator { get; private set; }
         public NavMeshAgent NavMeshAgent { get; private set; }
         public Material CopyMaterial { get; set; }
         public IPattern CurrentPattern { get; set; }
+        public Vector3 StartPosition { get; private set; }
         public int VineHealth { get; set; }
         public float LiftTime { get; set; }       
         public int Health { get; set; }
@@ -94,6 +101,7 @@ namespace EnemyComponent
         {
             StateMachine = owner.GetComponent<ForestMotherStateMachine>();
             Animator = owner.GetComponent<Animator>();
+            CapsuleCollider = owner.GetComponent<CapsuleCollider>();
             Data = owner._data;
 
             NavMeshAgent = owner.GetComponent<NavMeshAgent>();
@@ -101,10 +109,15 @@ namespace EnemyComponent
 
             AnimController = owner.GetComponent<ForestMotherAnimationController>();
 
+            StartPosition = owner.transform.position;
             Health = Data.Health;
             VineHealth = Data.VineHealth;
-
             LiftTime = Data.LiftTime;
+        }
+
+        public void ResetProperty()
+        {
+            Health = Data.Health;
         }
     }
 
@@ -128,7 +141,11 @@ namespace EnemyComponent
             NavMeshAgent = owner.GetComponent<NavMeshAgent>();
             Animator = owner.GetComponent<Animator>();
             Data = owner._batSO; //TODO 완성되면 GetData로 변경.
+            ResetProperty();
+        }
 
+        public void ResetProperty()
+        {
             NavMeshAgent.speed = Data.Speed;
             NavMeshAgent.stoppingDistance = Data.AgentStopDistance;
             Health = Data.Health;
@@ -154,7 +171,11 @@ namespace EnemyComponent
             NavMeshAgent = owner.GetComponent<NavMeshAgent>();
             Animator = owner.GetComponent<Animator>();
             Data = owner._testData; //TODO 완성되면 GetData로 변경.
+            ResetProperty();    
+        }
 
+        public void ResetProperty()
+        {
             NavMeshAgent.speed = Data.Speed;
             NavMeshAgent.stoppingDistance = Data.AgentStopDistance;
 
@@ -181,7 +202,11 @@ namespace EnemyComponent
             NavMeshAgent = owner.GetComponent<NavMeshAgent>();
             Animator = owner.GetComponent<Animator>();
             Data = owner._testData; //TODO 완성되면 GetData로 변경.
+            ResetProperty();
+        }
 
+        public void ResetProperty()
+        {
             NavMeshAgent.speed = Data.Speed;
             NavMeshAgent.stoppingDistance = Data.AgentStopDistance;
 

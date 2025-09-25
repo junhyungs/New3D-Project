@@ -4,12 +4,6 @@ using UnityEngine;
 
 namespace EnemyComponent
 {
-    public interface IEnemyProjectilePool
-    {
-        EnemyProjectilePool Pool { get; }
-        void AllDisableProjectile();
-    }
-
     public class EnemyProjectilePool : MonoBehaviour
     {
         private EnemyProjectileContainer _container;
@@ -27,18 +21,30 @@ namespace EnemyComponent
             _container.Enqueue(projectile);
         }
 
-        public GameObject GetProjectile()
+        public GameObject GetEnableProjectile()
+        {
+            var projectile = GetProjectile();
+            projectile.SetActive(true);
+            projectile.transform.parent = null;
+            return projectile;
+        }
+
+        public GameObject GetDisableProjectile()
+        {
+            var projectile = GetProjectile();
+            projectile.transform.parent = null;
+            return projectile;
+        }
+
+        private GameObject GetProjectile()
         {
             var projectile = _container.Dequeue();
-            if(projectile == null)
+            if (projectile == null)
             {
                 var saveItem = _container.SaveItem;
                 projectile = Instantiate(saveItem, _container.ContainerTransform);
                 _container.Enqueue(projectile);
             }
-
-            projectile.SetActive(true);
-            projectile.transform.parent = null;
             return projectile;
         }
     }
