@@ -8,8 +8,6 @@ using GameData;
 
 public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
 {
-    [Header("PlayerPrefab")]
-    [SerializeField] private GameObject _playerPrefab;
     [Header("VirtualCamera")]
     [SerializeField] private GameObject _cameraPrefab;
 
@@ -32,27 +30,11 @@ public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
         }
     }
 
-
-    //private async void Awake()
-    //{
-    //    await DataManager.Instance.LoadAllData();
-    //    CreatePlayer();
-    //    CreateVirtualCamera();
-    //}
-
-    private void Start()
+    public void SetPlayer(GameObject playerObject)
     {
-        CreatePlayer();
-        CreateVirtualCamera();
-    }
-
-    private void CreatePlayer() //TODO 나중에 게임 매니저에서 일괄적으로 관리.
-    {
-        var playerObject = Instantiate(_playerPrefab);
         PlayerComponent = playerObject.GetComponent<Player>();
-
-        InventoryManager.Instance.InitializeInventory();
         playerObject.SetActive(false);
+        CreateVirtualCamera();
     }
 
     private void CreateVirtualCamera()
