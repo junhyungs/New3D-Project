@@ -5,20 +5,26 @@ using UnityEngine;
 public interface IGameEvent
 {
     void StartEvent();
+    void FailEvent();
     void UpdateEvent() { }
-    void Complete(bool success);
+    void Complete();
     bool IsCompleted { get;}
-    bool IsSuccess { get; }
 }
 
 public class GameEventManager : Singleton_MonoBehaviour<GameEventManager>
 {
     private IGameEvent _currentEvent;
+
     public void StartEvent(IGameEvent gameEvent)
     {
         _currentEvent = gameEvent;
+        _currentEvent.StartEvent();
+    }
+
+    public void FailEvent()
+    {
         if(_currentEvent != null)
-            _currentEvent.StartEvent();
+            _currentEvent.FailEvent();
     }
 
     private void Update()
