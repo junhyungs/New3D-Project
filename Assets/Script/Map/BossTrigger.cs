@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TimeLineComponent;
+using EnumCollection;
 
 namespace MapComponent
 {
@@ -9,34 +10,30 @@ namespace MapComponent
     {       
         [Header("Level_1")]
         [SerializeField] private Level_1 _mapComponent;
-        [Header("BossObject")]
-        [SerializeField] private GameObject _boss;
         [Header("BossTimeLine")]
         [SerializeField] private TimeLine _motherTimeLine;
-        [Header("Door")]
-        [SerializeField] private GameObject _door;
 
-        private void OnEnable()
+        private void Start()
         {
-            _collider.enabled = true;
+            if (_mapComponent == null)
+                return;
+
+            var progress = _mapComponent.MapProgress;
+            if (!progress.ClearBoss)
+                _collider.enabled = true;
         }
 
         protected override void Trigger(Collider other)
         {
-            if (_mapComponent == null ||
-                _boss == null)
+            if (other.gameObject.layer != LayerMask.NameToLayer("Player")
+                || _motherTimeLine == null)
                 return;
 
             _collider.enabled = false;
-            var progress = _mapComponent.MapProgress;
-            if (!progress.ClearBoss)
-            {
-                _motherTimeLine.PlayTimeLine();
-            }
-            else
-                _boss.SetActive(true);
-
-            _door.SetActive(false);
+            
+            var nextLevelDoor = _mapComponent.GetDoor(LinkedDoor.Level_1_Level_2);
+            nextLevelDoor.gameObject.SetActive(false);
+            _motherTimeLine.PlayTimeLine();
         }
     }
 }

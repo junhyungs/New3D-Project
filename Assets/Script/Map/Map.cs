@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EnumCollection;
+using System;
 
 namespace MapComponent
 {
@@ -11,6 +12,7 @@ namespace MapComponent
         bool PlayTimeLine { get; set; }
         LinkedDoor LinkedDoor { get; set; }
         void Init(Dictionary<string, MapProgress> progressDic);
+        void ActiveDoor();
     }
 
     public abstract class MapBase<TProgress> : MonoBehaviour , IMap
@@ -27,31 +29,29 @@ namespace MapComponent
 
         public void Init(Dictionary<string, MapProgress> progressDic)
         {
-            if (!progressDic.TryGetValue(typeof(TProgress).Name, out var progress))
+            string typeName = typeof(TProgress).Name;
+            if (!progressDic.TryGetValue(typeName, out var progress))
             {
                 progress = new TProgress();
                 progress.OpenDoor = new List<LinkedDoor>();
-                progressDic.Add(typeof(TProgress).Name, progress);
+                progress.MapEventDictionary = new Dictionary<GameEvent, bool>();
+                progressDic.Add(typeName, progress);
+
+                AdditionalInit(progress as TProgress);
             }
 
             _myProgress = progress as TProgress;
-            ActiveDoor(_myProgress.OpenDoor);
+            InitDoor();
         }
 
-        protected void ActiveDoor(List<LinkedDoor> list)
+        public void ActiveDoor()
         {
-            foreach(var item in list)
+            foreach(var item in _myProgress.OpenDoor)
             {
                 var door = GetDoor(item);
                 if (door != null)
                     door.gameObject.SetActive(true);
             }
-        }
-
-        private void Awake()
-        {
-            InitDoor();
-            OnAwakeMap();
         }
 
         private void Start()
@@ -61,14 +61,11 @@ namespace MapComponent
 
         private void OnEnable()
         {
-            OnEnableMap();
             DoorTimeLine();
         }
 
-        protected virtual void OnAwakeMap() { }
-        protected virtual void OnEnableMap() { }
+        protected virtual void AdditionalInit(TProgress progress) { }
         protected virtual void OnStartMap() { }
-
         protected virtual void DoorTimeLine()
         {
             if (!PlayTimeLine || LinkedDoor == LinkedDoor.Default)

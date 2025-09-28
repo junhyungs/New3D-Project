@@ -33,7 +33,6 @@ public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
     public void SetPlayer(GameObject playerObject)
     {
         PlayerComponent = playerObject.GetComponent<Player>();
-        playerObject.SetActive(false);
         CreateVirtualCamera();
     }
 
@@ -70,8 +69,7 @@ public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
         var saveRotation = mapData.SerializeQuaternion.ToQuaternion();
         EnablePlayer(savePosition, saveRotation);
 
-        var key = DataKey.Player.ToString();
-        var savePlayerData = DataManager.Instance.GetData(key) as PlayerSaveData;
+        var savePlayerData = DataManager.Instance.GetData<PlayerSaveData>(DataKey.Player);
         if(savePlayerData != null)
         {
             var saveSetting = savePlayerData.SavePlayerCameraSetting;

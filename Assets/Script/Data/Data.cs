@@ -12,21 +12,6 @@ namespace GameData
     [System.Serializable]
     public class Data { }
 
-    public class MapData : Data
-    {
-        public Dictionary<string, MapProgress> ProgressDictionary { get; set; }
-        public bool SaveData { get; set; }
-        public string MapAddressablesKey { get; set; }
-        public SerializeVector3 SerializeVector3 { get; set; }
-        public SerializeQuaternion SerializeQuaternion { get; set; }
-        public MapData(Dictionary<string, MapProgress> progressDictionary)
-        {
-            ProgressDictionary = progressDictionary;
-        }
-
-        public MapData() { }
-    }
-
     [Serializable]
     public struct SerializeVector3
     {
@@ -49,16 +34,40 @@ namespace GameData
         public Quaternion ToQuaternion() => new Quaternion(x, y, z, w);
     }
 
+    public class MapData : Data
+    {
+        public Dictionary<string, MapProgress> ProgressDictionary { get; set; }
+        public bool SaveData { get; set; }
+        public string MapAddressablesKey { get; set; }
+        public SerializeVector3 SerializeVector3 { get; set; }
+        public SerializeQuaternion SerializeQuaternion { get; set; }
+        public MapData(Dictionary<string, MapProgress> progressDictionary)
+        {
+            ProgressDictionary = progressDictionary;
+        }
+
+        public MapData() { }
+    }
+
+    public class LevelData
+    {
+        public HashSet<string> ClearedObjects { get; set; }
+        public List<LinkedDoor> OpenDoor { get; set; }
+        public Dictionary<GameEvent, bool> MapEventDictionary { get; set; }
+        public Dictionary<ItemType, bool> CollectedItemsDictionary { get; set; }
+        public LevelData() { }
+    }
+
     public class MapProgress
     {
         public List<LinkedDoor> OpenDoor { get; set; }
+        public Dictionary<GameEvent, bool> MapEventDictionary { get; set; }
         public Dictionary<ItemType, bool> CollectedItemsDictionary{ get; set; }
         public MapProgress() { }
     }
 
     public class Level_0_progress : MapProgress
     {
-        public bool HallCrowScene { get; set; }
         public bool Initialize { get; set; }
         public Level_0_progress() { }
     }
@@ -66,6 +75,7 @@ namespace GameData
     public class Level_1_progress : MapProgress
     {
         public bool ClearBoss { get; set; }
+        public HashSet<string> ClearedObjects { get; set; }
         public Level_1_progress() { }
     }
 

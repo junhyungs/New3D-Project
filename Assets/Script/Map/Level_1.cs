@@ -9,14 +9,30 @@ namespace MapComponent
 {
     public class Level_1 : MapBase<Level_1_progress>
     {
+        [Header("IntroBossObject")]
+        [SerializeField] private GameObject _introBossObject;
+
         [Header("HitTrigger")]
         [SerializeField] private HitTrigger[] _triggers;
-        private HashSet<HitTrigger> _hitTriggerSet = new HashSet<HitTrigger>();
         [SerializeField] private SpikeDoor _bossDoor;
+
+        private HashSet<HitTrigger> _hitTriggerSet = new HashSet<HitTrigger>();
 
         protected override void OnStartMap()
         {
+            InitIntroBossObject();
             InitHitTrigger();
+        }
+
+        protected override void AdditionalInit(Level_1_progress progress)
+        {
+            progress.ClearedObjects = new HashSet<string>();
+        }
+
+        private void InitIntroBossObject()
+        {
+            var isClear = _myProgress.ClearBoss;
+            _introBossObject.SetActive(!isClear);
         }
 
         private void InitHitTrigger()
@@ -47,10 +63,10 @@ namespace MapComponent
 
         public void BossDoor(bool value)
         {
-            Action action = value ? _bossDoor.HitTrigger :
-                _bossDoor.CloseDoor;
+            //Action action = value ? _bossDoor.HitTrigger :
+            //    _bossDoor.CloseDoor;
             
-            action.Invoke();
+            //action.Invoke();
         }
     }
 }

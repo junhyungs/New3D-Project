@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
+  _uniqueObjectID: {fileID: 0}
 --- !u!1 &98863184431652132
 GameObject:
   m_ObjectHideFlags: 0
@@ -1112,8 +1113,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88e024963d6324a4ca84a9efbad4a530, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _linkDoor: 0
-  _destination: 3
+  _linkDoor: 2
+  _destination: 2
   _inTransform: {fileID: 1288779291197711547}
   _outTransform: {fileID: 4914564897949383129}
   _in: {fileID: 11400000, guid: 16255eb230ce9df44af5a10e086b5fcc, type: 2}
@@ -4077,6 +4078,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
+  _uniqueObjectID: {fileID: 0}
 --- !u!1 &1537034849685576808
 GameObject:
   m_ObjectHideFlags: 0
@@ -5518,9 +5520,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mapComponent: {fileID: 5687676146911723701}
-  _boss: {fileID: 7793237335525024403}
   _motherTimeLine: {fileID: 4592246888850076960}
-  _door: {fileID: 365484810604301860}
 --- !u!1 &2162184825251730052
 GameObject:
   m_ObjectHideFlags: 0
@@ -9723,6 +9723,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
+  _uniqueObjectID: {fileID: 0}
 --- !u!1 &3809502267138502695
 GameObject:
   m_ObjectHideFlags: 0
@@ -9854,6 +9855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
+  _uniqueObjectID: {fileID: 0}
 --- !u!1 &3849356440076374280
 GameObject:
   m_ObjectHideFlags: 0
@@ -19518,6 +19520,7 @@ GameObject:
   - component: {fileID: 4741423938365480914}
   - component: {fileID: 8947003974207123663}
   - component: {fileID: 3506706092539984660}
+  - component: {fileID: 7116712923192237924}
   m_Layer: 0
   m_Name: 'HitSwitch_1SpikeDoor '
   m_TagString: Untagged
@@ -19576,6 +19579,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
+  _uniqueObjectID: {fileID: 0}
+--- !u!114 &7116712923192237924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7097426812845593640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55decd551be210d4fb3e9cb4a58cc2f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 179c55dd-7418-47a4-a046-6a039cab7490
 --- !u!1 &7104924678907462210
 GameObject:
   m_ObjectHideFlags: 0
@@ -23987,13 +24004,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1379112547673753751}
   - component: {fileID: 5687676146911723701}
+  - component: {fileID: 6294503956251959587}
   m_Layer: 0
   m_Name: Level_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1379112547673753751
 Transform:
   m_ObjectHideFlags: 0
@@ -24026,11 +24044,27 @@ MonoBehaviour:
   _shortcutDoors:
   - LinkedDoor: 0
     ShortCutDoor: {fileID: 5239637693440510707}
+  - LinkedDoor: 2
+    ShortCutDoor: {fileID: 6338533521251739027}
+  _introBossObject: {fileID: 858270714805134337}
   _triggers:
   - {fileID: 2460370971583035014}
   - {fileID: 2814395554489482236}
   - {fileID: 1548406712388649035}
   _bossDoor: {fileID: 8335617138119459561}
+--- !u!114 &6294503956251959587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8940488515871525616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55decd551be210d4fb3e9cb4a58cc2f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 82de7696-4371-4b82-aab2-60c6650f0802
 --- !u!1 &8954709205633059595
 GameObject:
   m_ObjectHideFlags: 0

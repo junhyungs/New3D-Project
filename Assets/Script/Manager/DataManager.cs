@@ -44,6 +44,17 @@ public class DataManager : Singleton<DataManager>
         }
     }
 
+    public T GetData<T>(DataKey key) where T : Data
+    {
+        var stringKey = key.ToString();
+        if (_dataDictionary.TryGetValue(stringKey, out Data data) &&
+            data is T tdata)
+            return tdata;
+
+        Debug.Log("Data Null");
+        return null;
+    }
+
     public Data GetData(string key)
     {
         if(_dataDictionary.TryGetValue(key, out Data data))

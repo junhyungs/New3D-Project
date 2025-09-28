@@ -7,11 +7,6 @@ using System;
 
 namespace EnemyComponent
 {
-    public class Enemy
-    {
-
-    }
-
     public abstract class Enemy<TProperty> : MonoBehaviour, ITakeDamage
         where TProperty : IPropertyBase
     {

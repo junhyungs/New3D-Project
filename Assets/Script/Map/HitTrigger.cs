@@ -5,9 +5,17 @@ using UnityEngine;
 
 namespace MapComponent
 {
-    public interface IHitTrigger
+    public interface IHitInteraction
     {
-        void HitTrigger();
+        UniqueObjectID UniqueObjectID { get; }
+        GameObject GameObject { get; }
+        void OnHit();
+        void ResetObject();
+    }
+
+    public interface IHitInteraction_Door : IHitInteraction
+    {
+        void CloseDoor();
     }
 
 
@@ -15,25 +23,33 @@ namespace MapComponent
     {
         [Header("GameObject")]
         [SerializeField] private GameObject[] _targetObjects;
+        private List<IHitInteraction> _hitInteractions = new List<IHitInteraction>();
 
         public event Action<HitTrigger> HitAction;
         public bool IsWeaponInteractable { get; set; } = true;
+        public List<IHitInteraction> HitInteractions => _hitInteractions;
+
+        private void Awake()
+        {
+            if (_targetObjects == null)
+                return;
+
+            foreach(var gameObject in _targetObjects)
+                if(gameObject != null &&
+                    gameObject.TryGetComponent(out IHitInteraction hitInteraction))
+                    _hitInteractions.Add(hitInteraction);
+        }
 
         public void Interact()
         {
             if (_targetObjects == null)
                 return;
 
-            foreach(var gameObject in _targetObjects)
-            {
-                if(gameObject != null &&
-                    gameObject.TryGetComponent(out IHitTrigger hitTrigger))
-                {
-                    hitTrigger.HitTrigger();
-                    HitAction?.Invoke(this);
-                }
-            }
+            foreach(var hitInteraction in _hitInteractions)
+                if (hitInteraction.GameObject.activeSelf)
+                    hitInteraction.OnHit();
 
+            HitAction?.Invoke(this);
             _collider.enabled = false;
         }
     }
