@@ -225,7 +225,7 @@ public class DataManager : Singleton<DataManager>
             TryAddData(key, mapData);
         else
         {
-            var progressDic = new Dictionary<string, MapProgress>();
+            var progressDic = new Dictionary<string, LevelData>();
             mapData = new MapData(progressDic);
             TryAddData(key, mapData);
         }

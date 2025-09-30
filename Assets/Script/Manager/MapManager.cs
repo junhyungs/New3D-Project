@@ -75,7 +75,7 @@ public class MapManager : Singleton_MonoBehaviour<MapManager>
 
             var mapObject = await handle.ToUniTask();
             if(mapObject.TryGetComponent(out mapComponent))
-                mapComponent.Init(mapData.ProgressDictionary);
+                mapComponent.Init(mapData.LevelDictionary);
             else
             {
                 LoadSceneManager.Instance.LoadSceneAndReportError("StartScene", "Map Error");

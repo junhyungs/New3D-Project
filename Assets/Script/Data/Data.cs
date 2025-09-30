@@ -36,14 +36,14 @@ namespace GameData
 
     public class MapData : Data
     {
-        public Dictionary<string, MapProgress> ProgressDictionary { get; set; }
+        public Dictionary<string, LevelData> LevelDictionary { get; set; }
         public bool SaveData { get; set; }
         public string MapAddressablesKey { get; set; }
         public SerializeVector3 SerializeVector3 { get; set; }
         public SerializeQuaternion SerializeQuaternion { get; set; }
-        public MapData(Dictionary<string, MapProgress> progressDictionary)
+        public MapData(Dictionary<string, LevelData> levelDictionary)
         {
-            ProgressDictionary = progressDictionary;
+            LevelDictionary = levelDictionary;
         }
 
         public MapData() { }
@@ -51,6 +51,7 @@ namespace GameData
 
     public class LevelData
     {
+        public bool Initialize { get; set; }
         public HashSet<string> ClearedObjects { get; set; }
         public List<LinkedDoor> OpenDoor { get; set; }
         public Dictionary<GameEvent, bool> MapEventDictionary { get; set; }
@@ -58,70 +59,7 @@ namespace GameData
         public LevelData() { }
     }
 
-    public class MapProgress
-    {
-        public List<LinkedDoor> OpenDoor { get; set; }
-        public Dictionary<GameEvent, bool> MapEventDictionary { get; set; }
-        public Dictionary<ItemType, bool> CollectedItemsDictionary{ get; set; }
-        public MapProgress() { }
-    }
-
-    public class Level_0_progress : MapProgress
-    {
-        public bool Initialize { get; set; }
-        public Level_0_progress() { }
-    }
-
-    public class Level_1_progress : MapProgress
-    {
-        public bool ClearBoss { get; set; }
-        public HashSet<string> ClearedObjects { get; set; }
-        public Level_1_progress() { }
-    }
-
-    public class Level_2_progress : MapProgress
-    {
-        public Level_2_progress() { }
-    }
-
-    public class DialogData : Data
-    {
-        private Dictionary<string, Dialog> _dialogDictionary;
-
-        public Dialog GetMyDialog(string npcName)
-        {
-            if(_dialogDictionary.TryGetValue(npcName, out var dialog))
-            {
-                return dialog;
-            }
-
-            return null;
-        }
-
-        public DialogData(Dictionary<string, Dialog> dialogDictionary)
-        {
-            _dialogDictionary = dialogDictionary;
-        }
-    }
-
-    public class Dialog
-    {
-        public string Name { get; }
-        public List<string> StoryList { get; }
-        public List<string> LoopList { get; }
-        public List<string> EndList { get; }
-        public Dialog(string name, List<string> storyList,
-            List<string> loopList, List<string> endList)
-        {
-            Name = name;
-            StoryList = storyList;
-            LoopList = loopList;
-            EndList = endList;
-        }
-    }
-
     public class ItemData : Data { }
-
     public class SkillData : ItemData
     {
         public float Speed { get; set; }

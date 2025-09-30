@@ -57,7 +57,7 @@ namespace TimeLineComponent
             var parentObject = transform.root.gameObject;
             var mapComponent = parentObject.GetComponent<Level_0>();
             if (mapComponent != null)
-                mapComponent.MapProgress.OpenDoor.Add(LinkedDoor.Level_0_Level_1);
+                mapComponent.MapLevelData.OpenDoor.Add(LinkedDoor.Level_0_Level_1);
 
             var key = ScriptableDataKey.HallCrow_2_DialogSO;
             StartCoroutine(StartHallCrowDialog(key));

@@ -6,6 +6,7 @@ using EnumCollection;
 using UnityEngine.Animations.Rigging;
 using System;
 using EventClass;
+using MapComponent;
 
 namespace EnemyComponent
 {
@@ -23,7 +24,7 @@ namespace EnemyComponent
         protected override void OnEnableEnemy()
         {
             GameEventManager.Instance.StartEvent(
-                new BossEvent<ForestMother, Level_1_progress>(this)
+                new BossEvent<ForestMother, Level_1>(this)
                 );
         }
 

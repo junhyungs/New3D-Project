@@ -8,7 +8,7 @@ using EnumCollection;
 
 namespace MapComponent
 {
-    public class Level_0 : MapBase<Level_0_progress>
+    public class Level_0 : MapBase<Level_0>
     {
         [Header("TimeLine")]
         [SerializeField] private TimeLine _intro;
@@ -16,12 +16,11 @@ namespace MapComponent
 
         private void Start()
         {
-            bool isStart = _myProgress.Initialize;
-            if (!isStart)
+            if (!_myLevelData.Initialize)
             {
                 _intro.PlayTimeLine();
                 _hallCrow.gameObject.SetActive(true);
-                _myProgress.Initialize = true;
+                _myLevelData.Initialize = true;
             }
         }
     }

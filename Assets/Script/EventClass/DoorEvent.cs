@@ -20,7 +20,7 @@ namespace EventClass
     }
 
     public class DoorEvent<TMapType>
-        where TMapType : MapProgress
+        where TMapType : IMap
     {
         public DoorEvent()
         {

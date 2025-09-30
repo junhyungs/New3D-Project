@@ -1,5 +1,6 @@
 using EnumCollection;
 using GameData;
+using MapComponent;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace EventClass
 {
     public class BossEvent<TComponent, TMapType> : IGameEvent
         where TComponent : ITakeDamage
-        where TMapType : MapProgress
+        where TMapType : IMap
     {
         public BossEvent(TComponent bossComponent)
         {
@@ -21,7 +22,7 @@ namespace EventClass
         public void Complete(GameEvent gameEvent)
         {
             var mapData = DataManager.Instance.GetData<MapData>(DataKey.Map_Data);
-            if(mapData.ProgressDictionary.TryGetValue(typeof(TMapType).Name, out var progress))
+            if(mapData.LevelDictionary.TryGetValue(typeof(TMapType).Name, out var progress))
             {
                 if (!progress.MapEventDictionary.ContainsKey(gameEvent))
                     progress.MapEventDictionary.Add(gameEvent, true);

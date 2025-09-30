@@ -106,9 +106,9 @@ public class SaveManager : Singleton<SaveManager>
 
         mapData.SaveData = true;
 
-        var setting = GetMapSetting();
+        //var setting = GetMapSetting();
         var path = Path.Combine(directoryPath, "MapData.json");
-        await WriteAllText(path, mapData, setting);
+        await WriteAllText(path, mapData);
     }
 
     public async UniTask SaveSkillUpgrade(string directoryPath)
@@ -189,8 +189,8 @@ public class SaveManager : Singleton<SaveManager>
 
         try
         {
-            var setting = GetMapSetting();
-            MapData mapData = await DeserializeObjectAsync<MapData>(filePath, setting);
+            //var setting = GetMapSetting();
+            MapData mapData = await DeserializeObjectAsync<MapData>(filePath);
             return mapData;
         }
         catch
@@ -247,22 +247,22 @@ public class SaveManager : Singleton<SaveManager>
         }
     }
 
-    private JsonSerializerSettings GetMapSetting()
-    {
-        var setting = new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.Auto,
-            SerializationBinder = new KnownTypesBinder
-            {
-                KnownTypes = new List<Type>
-                {
-                    typeof(Level_0_progress),
-                    typeof(Level_1_progress),
-                    typeof(Level_2_progress)
-                }
-            }
-        };
+    //private JsonSerializerSettings GetMapSetting()
+    //{
+    //    var setting = new JsonSerializerSettings
+    //    {
+    //        TypeNameHandling = TypeNameHandling.Auto,
+    //        SerializationBinder = new KnownTypesBinder
+    //        {
+    //            KnownTypes = new List<Type>
+    //            {
+    //                typeof(Level_0_progress),
+    //                typeof(Level_1_progress),
+    //                typeof(Level_2_progress)
+    //            }
+    //        }
+    //    };
 
-        return setting;
-    }
+    //    return setting;
+    //}
 }

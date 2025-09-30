@@ -7,7 +7,7 @@ using System;
 
 namespace MapComponent
 {
-    public class Level_1 : MapBase<Level_1_progress>
+    public class Level_1 : MapBase<Level_1>
     {
         [Header("IntroBossObject")]
         [SerializeField] private GameObject _introBossObject;
@@ -18,21 +18,24 @@ namespace MapComponent
 
         private HashSet<HitTrigger> _hitTriggerSet = new HashSet<HitTrigger>();
 
+        protected override void AdditionalInit(LevelData levelData)
+        {
+            levelData.MapEventDictionary[GameEvent.ForestMotherBoss] = false;
+        }
+
         protected override void OnStartMap()
         {
+            _myLevelData.Initialize = true;
+
             InitIntroBossObject();
             InitHitTrigger();
         }
 
-        protected override void AdditionalInit(Level_1_progress progress)
-        {
-            progress.ClearedObjects = new HashSet<string>();
-        }
-
         private void InitIntroBossObject()
         {
-            var isClear = _myProgress.ClearBoss;
-            _introBossObject.SetActive(!isClear);
+            var mapEventDic = _myLevelData.MapEventDictionary;
+            var clearBoss = mapEventDic[GameEvent.ForestMotherBoss];
+            _introBossObject.SetActive(!clearBoss);
         }
 
         private void InitHitTrigger()

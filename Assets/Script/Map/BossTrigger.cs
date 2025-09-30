@@ -18,9 +18,9 @@ namespace MapComponent
             if (_mapComponent == null)
                 return;
 
-            var progress = _mapComponent.MapProgress;
-            if (!progress.ClearBoss)
-                _collider.enabled = true;
+            var levelData = _mapComponent.MapLevelData;
+            if (levelData.MapEventDictionary.TryGetValue(GameEvent.ForestMotherBoss, out bool value))
+                _collider.enabled = !value;
         }
 
         protected override void Trigger(Collider other)
