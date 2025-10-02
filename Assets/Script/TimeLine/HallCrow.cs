@@ -54,8 +54,7 @@ namespace TimeLineComponent
         {
             CameraBlend(0f);
 
-            var parentObject = transform.root.gameObject;
-            var mapComponent = parentObject.GetComponent<Level_0>();
+            var mapComponent = GetMapComponent();
             if (mapComponent != null)
                 mapComponent.MapLevelData.OpenDoor.Add(LinkedDoor.Level_0_Level_1);
 
@@ -95,6 +94,20 @@ namespace TimeLineComponent
 
             yield return StartCoroutine(StartHallCrowDialog(key));
             playerManager.LockPlayer(false);
+
+            var mapComponent = GetMapComponent();
+            if (mapComponent != null)
+            {
+                var mapEventDic = mapComponent.MapLevelData.MapEventDictionary;
+                mapEventDic.TryAdd(GameEvent.HallCrow, true);
+            }
+        }
+
+        private Level_0 GetMapComponent()
+        {
+            var parentObject = transform.root.gameObject;
+            var mapComponent = parentObject.GetComponent<Level_0>();
+            return mapComponent;
         }
 
         private IEnumerator StartHallCrowDialog(ScriptableDataKey key)

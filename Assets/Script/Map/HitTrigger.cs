@@ -29,13 +29,14 @@ namespace MapComponent
         public bool IsWeaponInteractable { get; set; } = true;
         public List<IHitInteraction> HitInteractions => _hitInteractions;
 
-        private void Awake()
+        protected override void OnAwakeMapTrigger()
         {
+            base.OnAwakeMapTrigger();
             if (_targetObjects == null)
                 return;
 
-            foreach(var gameObject in _targetObjects)
-                if(gameObject != null &&
+            foreach (var gameObject in _targetObjects)
+                if (gameObject != null &&
                     gameObject.TryGetComponent(out IHitInteraction hitInteraction))
                     _hitInteractions.Add(hitInteraction);
         }

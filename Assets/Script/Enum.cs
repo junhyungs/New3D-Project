@@ -271,7 +271,7 @@ namespace EnumCollection
     public enum GameEvent
     {
         ForestMotherBoss,
-        SpikeDoor
+        HallCrow
     }
 
     public enum LinkedDoor

@@ -66,8 +66,14 @@ namespace MapComponent
             DoorTimeLine();
         }
 
+        private void OnDestroy()
+        {
+            OnDestroyMap();
+        }
+
         protected virtual void AdditionalInit(LevelData levelData) { }
         protected virtual void OnStartMap() { }
+        protected virtual void OnDestroyMap() { }
         protected virtual void DoorTimeLine()
         {
             if (!PlayTimeLine || LinkedDoor == LinkedDoor.Default)

@@ -4020,6 +4020,7 @@ GameObject:
   - component: {fileID: 8273764973312391083}
   - component: {fileID: 2499593837004934181}
   - component: {fileID: 1285243820216750095}
+  - component: {fileID: 5515802149868947692}
   m_Layer: 0
   m_Name: HitSwitch_3SpikeDoor(1)
   m_TagString: Untagged
@@ -4078,7 +4079,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
-  _uniqueObjectID: {fileID: 0}
+  _uniqueObjectID: {fileID: 5515802149868947692}
+--- !u!114 &5515802149868947692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523141199547976617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55decd551be210d4fb3e9cb4a58cc2f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: a7c2dea7-b2c9-4393-bfd6-e61a7d617448
 --- !u!1 &1537034849685576808
 GameObject:
   m_ObjectHideFlags: 0
@@ -9665,6 +9679,7 @@ GameObject:
   - component: {fileID: 8866264526995150279}
   - component: {fileID: 4683565456527884002}
   - component: {fileID: 8641465432942398289}
+  - component: {fileID: 1523267572480274213}
   m_Layer: 0
   m_Name: HitSwitch_3SpikeDoor(2)
   m_TagString: Untagged
@@ -9723,7 +9738,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
-  _uniqueObjectID: {fileID: 0}
+  _uniqueObjectID: {fileID: 1523267572480274213}
+--- !u!114 &1523267572480274213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3763481535652077690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55decd551be210d4fb3e9cb4a58cc2f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 18f37288-5736-4904-9979-397a51a874b5
 --- !u!1 &3809502267138502695
 GameObject:
   m_ObjectHideFlags: 0
@@ -9797,6 +9825,7 @@ GameObject:
   - component: {fileID: 5097051513354389745}
   - component: {fileID: 2368745771720497664}
   - component: {fileID: 750135306631158058}
+  - component: {fileID: 5650126598261504272}
   m_Layer: 0
   m_Name: HitSwitch_2SpikeDoor
   m_TagString: Untagged
@@ -9855,7 +9884,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
-  _uniqueObjectID: {fileID: 0}
+  _uniqueObjectID: {fileID: 5650126598261504272}
+--- !u!114 &5650126598261504272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3832651725104225628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55decd551be210d4fb3e9cb4a58cc2f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 2ca872b7-b4c1-4147-9b75-61bced5512cf
 --- !u!1 &3849356440076374280
 GameObject:
   m_ObjectHideFlags: 0
@@ -19579,7 +19621,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
-  _uniqueObjectID: {fileID: 0}
+  _uniqueObjectID: {fileID: 7116712923192237924}
 --- !u!114 &7116712923192237924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24004,14 +24046,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1379112547673753751}
   - component: {fileID: 5687676146911723701}
-  - component: {fileID: 6294503956251959587}
   m_Layer: 0
   m_Name: Level_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1379112547673753751
 Transform:
   m_ObjectHideFlags: 0
@@ -24047,24 +24088,12 @@ MonoBehaviour:
   - LinkedDoor: 2
     ShortCutDoor: {fileID: 6338533521251739027}
   _introBossObject: {fileID: 858270714805134337}
-  _triggers:
-  - {fileID: 2460370971583035014}
-  - {fileID: 2814395554489482236}
-  - {fileID: 1548406712388649035}
-  _bossDoor: {fileID: 8335617138119459561}
---- !u!114 &6294503956251959587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8940488515871525616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55decd551be210d4fb3e9cb4a58cc2f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _id: 82de7696-4371-4b82-aab2-60c6650f0802
+  _doorEventObjects:
+    HitObjects:
+    - {fileID: 2460370971583035014}
+    - {fileID: 2814395554489482236}
+    - {fileID: 1548406712388649035}
+    LastTargetObject: {fileID: 13120221429381517}
 --- !u!1 &8954709205633059595
 GameObject:
   m_ObjectHideFlags: 0
