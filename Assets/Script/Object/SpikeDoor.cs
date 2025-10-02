@@ -3,26 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using MapComponent;
 
-public class SpikeDoor : MonoBehaviour, IHitTrigger
+public class SpikeDoor : MonoBehaviour, IHitInteraction_Door
 {
     [Header("Speed")]
     [SerializeField] private float _speed;
     private Vector3 _startPos;
 
+    [Header("UniqueID")]
+    [SerializeField] private UniqueObjectID _uniqueObjectID;
+    public UniqueObjectID UniqueObjectID => _uniqueObjectID;
+    public GameObject GameObject => gameObject;
+
     private void Start()
     {
-        _startPos = transform.position;
+        _startPos = transform.localPosition;
     }
 
-    public void HitTrigger()
-    {
-        OpenDoor();
-    }
-
-    private void OpenDoor()
+    public void OnHit()
     {
         var targetPos = transform.localPosition + new Vector3(0f, -3.5f, 0f);
         StartCoroutine(MoveDoor(targetPos));
+    }
+
+    public void ResetObject()
+    {
+        transform.localPosition = _startPos;
     }
 
     public void CloseDoor()

@@ -10,7 +10,12 @@ namespace MapComponent
 
         private void Awake()
         {
-            _collider = GetComponent<TCollider>();
+            OnAwakeMapTrigger();
+        }
+
+        protected virtual void OnAwakeMapTrigger()
+        {
+            _collider = GetComponent<TCollider> ();
         }
 
         private void OnTriggerEnter(Collider other)

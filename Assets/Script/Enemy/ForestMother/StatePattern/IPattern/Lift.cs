@@ -13,10 +13,14 @@ namespace EnemyComponent
         private float _lastShootTime;
         private const float MaxTime = 10f;
 
+        private const string IgnoreHit = "IgnoreHit";
+        private const string Enemy = "Enemy";
+
         public override void Start()
         {
             IsRunning = true;
             ChangeVineMaterial(VineMaterial.Vine, true);
+            SetLayer(IgnoreHit);
 
             SetIsTrigger(true);
             _owner.StartCoroutine(WaitForAnimation());
@@ -27,6 +31,7 @@ namespace EnemyComponent
             _currentVine = VineType.Default;
             _currentTime = 0f;
 
+            SetLayer(Enemy);
             ChangeVineMaterial(VineMaterial.Body, false);
             SetIsTrigger(false);
         }
@@ -114,6 +119,9 @@ namespace EnemyComponent
                     vine.Register(VineDamage, value);
             }
         }
+
+        private void SetLayer(string LayerName) =>
+            _owner.gameObject.layer = LayerMask.NameToLayer(LayerName);
     }
 }
 

@@ -22,8 +22,8 @@ TagManager:
   - HitObject
   - Wall
   - ChargeDash
-  - 
-  - 
+  - Death
+  - IgnoreHit
   - 
   - 
   - 

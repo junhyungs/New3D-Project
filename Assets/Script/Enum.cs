@@ -268,6 +268,12 @@ namespace EnumCollection
         Level_2
     }
 
+    public enum GameEvent
+    {
+        ForestMotherBoss,
+        HallCrow
+    }
+
     public enum LinkedDoor
     {
         Level_0_Level_1,

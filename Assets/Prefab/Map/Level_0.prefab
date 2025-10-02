@@ -327,6 +327,7 @@ GameObject:
   m_Component:
   - component: {fileID: 328207240015490777}
   - component: {fileID: 9021389797506589462}
+  - component: {fileID: 6448907626144430744}
   m_Layer: 0
   m_Name: Level_0
   m_TagString: Untagged
@@ -372,6 +373,19 @@ MonoBehaviour:
     ShortCutDoor: {fileID: 6709356988785894883}
   _intro: {fileID: 229749453702835661}
   _hallCrow: {fileID: 3083887572901751665}
+--- !u!114 &6448907626144430744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 46821369039528859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55decd551be210d4fb3e9cb4a58cc2f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: f3be3868-1f13-4ee2-a540-bbd1c19b7fd0
 --- !u!1 &50279998956595609
 GameObject:
   m_ObjectHideFlags: 0
@@ -50192,7 +50206,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &342348557399599585
 Transform:
   m_ObjectHideFlags: 0

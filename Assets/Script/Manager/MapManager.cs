@@ -64,36 +64,41 @@ public class MapManager : Singleton_MonoBehaviour<MapManager>
 
         if(_currentMap != null)
             _currentMap.SetActive(false);
-        
-        if(!_mapDictionary.ContainsKey(addressableKey))
-        {        
-            var handle = Addressables.InstantiateAsync(addressableKey);
-            var mapIntance = await handle.ToUniTask();
-
-            _mapDictionary.Add(addressableKey, mapIntance);
-        }
-        
-        var nextMap = _mapDictionary[addressableKey];
 
         var dataKey = DataKey.Map_Data.ToString();
         var mapData = DataManager.Instance.GetData(dataKey) as MapData;
-        mapData.MapAddressablesKey = addressableKey;
 
-        if(nextMap.TryGetComponent(out IMap imap))
-        {
-            imap.Init(mapData.ProgressDictionary);
-            imap.LinkedDoor = linkedDoor;
-            imap.PlayTimeLine = playDoorTimeLine;
+        IMap mapComponent = null;
+        if (!_mapDictionary.ContainsKey(addressableKey))
+        {        
+            var handle = Addressables.InstantiateAsync(addressableKey);
+
+            var mapObject = await handle.ToUniTask();
+            if(mapObject.TryGetComponent(out mapComponent))
+                mapComponent.Init(mapData.LevelDictionary);
+            else
+            {
+                LoadSceneManager.Instance.LoadSceneAndReportError("StartScene", "Map Error");
+                return;
+            }
+
+            _mapDictionary.Add(addressableKey, mapObject);
         }
         else
         {
-            LoadSceneManager.Instance.LoadSceneAndReportError("StartScene", "Map Error");
-            return;
+            var mapObject = _mapDictionary[addressableKey];
+            mapComponent = mapObject.GetComponent<IMap>();
         }
 
-        nextMap.SetActive(true);
+        mapComponent.LinkedDoor = linkedDoor;
+        mapComponent.PlayTimeLine = playDoorTimeLine;
+        mapComponent.ActiveDoor();
 
+        var nextMap = _mapDictionary[addressableKey];
+        nextMap.SetActive(true);
         _currentMap = nextMap;
+
+        mapData.MapAddressablesKey = addressableKey;
         LoadSceneManager.Instance.StartLoadingUICoroutine(false);
     }
 }

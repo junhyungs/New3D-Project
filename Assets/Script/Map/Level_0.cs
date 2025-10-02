@@ -8,21 +8,23 @@ using EnumCollection;
 
 namespace MapComponent
 {
-    public class Level_0 : MapBase<Level_0_progress>
+    public class Level_0 : MapBase<Level_0>
     {
         [Header("TimeLine")]
         [SerializeField] private TimeLine _intro;
         [SerializeField] private TimeLine _hallCrow;
 
-        private void Start()
+        protected override void OnStartMap()
         {
-            bool isStart = _myProgress.Initialize;
-            if (!isStart)
+            if (!_myLevelData.Initialize)
             {
+                _myLevelData.Initialize = true;
                 _intro.PlayTimeLine();
-                _hallCrow.gameObject.SetActive(true);
-                _myProgress.Initialize = true;
             }
+
+            if (_myLevelData.MapEventDictionary.TryGetValue(GameEvent.HallCrow, out bool value)
+                && value)
+                _hallCrow.gameObject.SetActive(false);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EnumCollection;
+using System;
 
 namespace MapComponent
 {
@@ -10,48 +11,49 @@ namespace MapComponent
     {
         bool PlayTimeLine { get; set; }
         LinkedDoor LinkedDoor { get; set; }
-        void Init(Dictionary<string, MapProgress> progressDic);
+        void Init(Dictionary<string, LevelData> levelDictionary);
+        void ActiveDoor();
     }
 
-    public abstract class MapBase<TProgress> : MonoBehaviour , IMap
-        where TProgress : MapProgress, new()
+    public abstract class MapBase<TMapType> : MonoBehaviour , IMap
+        where TMapType : IMap, new()
     {
         [Header("ShortcutDoor"), SerializeField]
         protected ShortCutDoorInfo[] _shortcutDoors;
         protected Dictionary<LinkedDoor, ShortCutDoor> _doorDictionary;
-        protected TProgress _myProgress;
+        protected LevelData _myLevelData;
 
         public bool PlayTimeLine { get; set; }
         public LinkedDoor LinkedDoor { get; set; }
-        public TProgress MapProgress  => _myProgress;
+        public LevelData MapLevelData  => _myLevelData;
 
-        public void Init(Dictionary<string, MapProgress> progressDic)
+        public void Init(Dictionary<string, LevelData> levelDictionary)
         {
-            if (!progressDic.TryGetValue(typeof(TProgress).Name, out var progress))
+            string typeName = typeof(TMapType).Name;
+            if (!levelDictionary.TryGetValue(typeName, out var levelData))
             {
-                progress = new TProgress();
-                progress.OpenDoor = new List<LinkedDoor>();
-                progressDic.Add(typeof(TProgress).Name, progress);
+                levelData = new LevelData()
+                {
+                    OpenDoor = new List<LinkedDoor>(),
+                    MapEventDictionary = new Dictionary<GameEvent, bool>(),
+                    ClearedObjects = new HashSet<string>()
+                };
+                AdditionalInit(levelData);
+                levelDictionary.Add(typeName, levelData);
             }
 
-            _myProgress = progress as TProgress;
-            ActiveDoor(_myProgress.OpenDoor);
+            _myLevelData = levelData;
+            InitDoor();
         }
 
-        protected void ActiveDoor(List<LinkedDoor> list)
+        public void ActiveDoor()
         {
-            foreach(var item in list)
+            foreach(var item in _myLevelData.OpenDoor)
             {
                 var door = GetDoor(item);
                 if (door != null)
                     door.gameObject.SetActive(true);
             }
-        }
-
-        private void Awake()
-        {
-            InitDoor();
-            OnAwakeMap();
         }
 
         private void Start()
@@ -61,14 +63,17 @@ namespace MapComponent
 
         private void OnEnable()
         {
-            OnEnableMap();
             DoorTimeLine();
         }
 
-        protected virtual void OnAwakeMap() { }
-        protected virtual void OnEnableMap() { }
-        protected virtual void OnStartMap() { }
+        private void OnDestroy()
+        {
+            OnDestroyMap();
+        }
 
+        protected virtual void AdditionalInit(LevelData levelData) { }
+        protected virtual void OnStartMap() { }
+        protected virtual void OnDestroyMap() { }
         protected virtual void DoorTimeLine()
         {
             if (!PlayTimeLine || LinkedDoor == LinkedDoor.Default)

@@ -12,21 +12,6 @@ namespace GameData
     [System.Serializable]
     public class Data { }
 
-    public class MapData : Data
-    {
-        public Dictionary<string, MapProgress> ProgressDictionary { get; set; }
-        public bool SaveData { get; set; }
-        public string MapAddressablesKey { get; set; }
-        public SerializeVector3 SerializeVector3 { get; set; }
-        public SerializeQuaternion SerializeQuaternion { get; set; }
-        public MapData(Dictionary<string, MapProgress> progressDictionary)
-        {
-            ProgressDictionary = progressDictionary;
-        }
-
-        public MapData() { }
-    }
-
     [Serializable]
     public struct SerializeVector3
     {
@@ -49,69 +34,32 @@ namespace GameData
         public Quaternion ToQuaternion() => new Quaternion(x, y, z, w);
     }
 
-    public class MapProgress
+    public class MapData : Data
     {
-        public List<LinkedDoor> OpenDoor { get; set; }
-        public Dictionary<ItemType, bool> CollectedItemsDictionary{ get; set; }
-        public MapProgress() { }
+        public Dictionary<string, LevelData> LevelDictionary { get; set; }
+        public bool SaveData { get; set; }
+        public string MapAddressablesKey { get; set; }
+        public SerializeVector3 SerializeVector3 { get; set; }
+        public SerializeQuaternion SerializeQuaternion { get; set; }
+        public MapData(Dictionary<string, LevelData> levelDictionary)
+        {
+            LevelDictionary = levelDictionary;
+        }
+
+        public MapData() { }
     }
 
-    public class Level_0_progress : MapProgress
+    public class LevelData
     {
-        public bool HallCrowScene { get; set; }
         public bool Initialize { get; set; }
-        public Level_0_progress() { }
-    }
-
-    public class Level_1_progress : MapProgress
-    {
-        public bool ClearBoss { get; set; }
-        public Level_1_progress() { }
-    }
-
-    public class Level_2_progress : MapProgress
-    {
-        public Level_2_progress() { }
-    }
-
-    public class DialogData : Data
-    {
-        private Dictionary<string, Dialog> _dialogDictionary;
-
-        public Dialog GetMyDialog(string npcName)
-        {
-            if(_dialogDictionary.TryGetValue(npcName, out var dialog))
-            {
-                return dialog;
-            }
-
-            return null;
-        }
-
-        public DialogData(Dictionary<string, Dialog> dialogDictionary)
-        {
-            _dialogDictionary = dialogDictionary;
-        }
-    }
-
-    public class Dialog
-    {
-        public string Name { get; }
-        public List<string> StoryList { get; }
-        public List<string> LoopList { get; }
-        public List<string> EndList { get; }
-        public Dialog(string name, List<string> storyList,
-            List<string> loopList, List<string> endList)
-        {
-            Name = name;
-            StoryList = storyList;
-            LoopList = loopList;
-            EndList = endList;
-        }
+        public HashSet<string> ClearedObjects { get; set; }
+        public List<LinkedDoor> OpenDoor { get; set; }
+        public Dictionary<GameEvent, bool> MapEventDictionary { get; set; }
+        public Dictionary<ItemType, bool> CollectedItemsDictionary { get; set; }
+        public LevelData() { }
     }
 
     public class ItemData : Data { }
-
     public class SkillData : ItemData
     {
         public float Speed { get; set; }

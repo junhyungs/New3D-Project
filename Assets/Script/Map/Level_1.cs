@@ -4,53 +4,58 @@ using System.Collections.Generic;
 using UnityEngine;
 using EnumCollection;
 using System;
+using EventClass;
 
 namespace MapComponent
 {
-    public class Level_1 : MapBase<Level_1_progress>
+    public class Level_1 : MapBase<Level_1>
     {
-        [Header("HitTrigger")]
-        [SerializeField] private HitTrigger[] _triggers;
-        private HashSet<HitTrigger> _hitTriggerSet = new HashSet<HitTrigger>();
-        [SerializeField] private SpikeDoor _bossDoor;
+        [Header("IntroBossObject")]
+        [SerializeField] private GameObject _introBossObject;
+
+        [Header("HitObjects")]
+        [SerializeField] private DoorEventObjects _doorEventObjects;
+        private DoorEvent _doorEvent;
 
         protected override void OnStartMap()
         {
-            InitHitTrigger();
+            _myLevelData.Initialize = true;
+
+            InitIntroBossObject();
+            InitHitObjects();
         }
 
-        private void InitHitTrigger()
+        protected override void OnDestroyMap()
         {
-            if (_triggers == null)
-                return;
-
-            foreach (var trigger in _triggers)
-            {
-                if (trigger != null)
-                {
-                    trigger.HitAction += UnRegisterHitTriggerSet;
-                    _hitTriggerSet.Add(trigger);
-                }
-            }
+            _doorEvent.ExitDoorEvent();
         }
 
-        private void UnRegisterHitTriggerSet(HitTrigger hitTrigger)
+        private void InitIntroBossObject()
         {
-            if (!_hitTriggerSet.Contains(hitTrigger))
-                return;
+            var mapEventDic = _myLevelData.MapEventDictionary;
+            if (mapEventDic.TryGetValue(GameEvent.ForestMotherBoss, out bool value) &&
+                value)
+                _introBossObject.SetActive(false);
+        }
 
-            hitTrigger.HitAction -= UnRegisterHitTriggerSet;
-            _hitTriggerSet.Remove(hitTrigger);
-            if (_hitTriggerSet.Count <= 0)
-                BossDoor(true);
+        private void InitHitObjects()
+        {
+            _doorEventObjects.LevelData = _myLevelData;
+            _doorEvent = new DoorEvent(_doorEventObjects);
         }
 
         public void BossDoor(bool value)
         {
-            Action action = value ? _bossDoor.HitTrigger :
-                _bossDoor.CloseDoor;
-            
-            action.Invoke();
+            if (_doorEventObjects == null)
+                return;
+
+            var bossDoorObject = _doorEventObjects.LastTargetObject;
+            if(bossDoorObject.TryGetComponent(out IHitInteraction_Door component))
+            {
+                Action action = value ? component.OnHit :
+                    component.CloseDoor;
+                action?.Invoke();
+            }
         }
     }
 }
