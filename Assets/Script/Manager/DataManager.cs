@@ -10,9 +10,17 @@ using UnityEngine.AddressableAssets;
 
 public class DataManager : Singleton<DataManager>
 {
-    private Dictionary<string, Data> _dataDictionary = new Dictionary<string, Data>();
+    private Dictionary<string, Data> _dataDictionary
+        = new Dictionary<string, Data>();
+
     private Dictionary<ScriptableDataKey, ScriptableData> _scriptableDataDictionary
         = new Dictionary<ScriptableDataKey, ScriptableData>();
+
+    public void ResetDataManager()
+    {
+        _dataDictionary.Clear();
+        _scriptableDataDictionary.Clear();
+    }
 
     private bool TryAddData(string key, Data data)
     {

@@ -95,6 +95,7 @@ namespace InventoryUI
             {
                 try
                 {
+                    Time.timeScale = 1f;
                     await SaveManager.Instance.SaveAllData();
                     await UniTask.Delay(2000, true);
                 }
@@ -118,7 +119,10 @@ namespace InventoryUI
         public void Save_MainScene()
         {
             Action afterAction = () =>
-            LoadSceneManager.Instance.ChangeScene();
+            {
+                DataManager.Instance.ResetDataManager();
+                LoadSceneManager.Instance.ChangeScene();
+            };
             SaveAllData(afterAction);
         }
 
