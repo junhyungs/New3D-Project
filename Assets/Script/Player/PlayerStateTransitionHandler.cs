@@ -62,6 +62,23 @@ namespace PlayerComponent
             ChangeState(nextState);
         }
 
+        public void ToIdleState()
+        {
+            if (EqualsCurrentState<Idle>())
+                return;
+
+            SetVector2(Vector2.zero);
+            ChangeState(E_PlayerState.Idle);
+        }
+
+        public void ToLockState()
+        {
+            if (EqualsCurrentState<Lock>())
+                return;
+
+            ChangeState(E_PlayerState.Lock);
+        }
+
         public void ToRollState()
         {
             if (EqualsCurrentState<Roll>())

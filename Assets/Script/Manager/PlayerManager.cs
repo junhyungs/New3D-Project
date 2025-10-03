@@ -57,7 +57,15 @@ public class PlayerManager : Singleton_MonoBehaviour<PlayerManager>
 
     public void LockPlayer(bool isLocked)
     {
-        PlayerComponent.InputHandler.LockPlayer(!isLocked);
+        //TODO ¼öÁ¤Áß.
+        if (isLocked)
+        {
+            PlayerComponent.StateHandler.ToLockState();
+        }
+        else
+            PlayerComponent.StateHandler.ToIdleState();
+
+            //PlayerComponent.InputHandler.LockPlayer(!isLocked);
     }
 
     public void LoadPlayer(MapData mapData)

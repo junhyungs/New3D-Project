@@ -52,7 +52,9 @@ namespace PlayerComponent
                 E_PlayerState.Climbing,
                 E_PlayerState.Falling,
                 E_PlayerState.ChargeAttack,
-                E_PlayerState.Skill);
+                E_PlayerState.Skill,
+                E_PlayerState.Lock
+                );
 
             AddDictionary(E_PlayerState.Move,
                 E_PlayerState.Idle,
@@ -62,15 +64,21 @@ namespace PlayerComponent
                 E_PlayerState.Falling,
                 E_PlayerState.Climbing,
                 E_PlayerState.ChargeAttack,
-                E_PlayerState.Skill);
+                E_PlayerState.Skill,
+                E_PlayerState.Lock
+                );
 
             AddDictionary(E_PlayerState.Roll,
                 E_PlayerState.Idle,
-                E_PlayerState.Move);
+                E_PlayerState.Move,
+                E_PlayerState.Lock
+                );
 
             AddDictionary(E_PlayerState.RollSlash,
                 E_PlayerState.Idle,
-                E_PlayerState.Move);
+                E_PlayerState.Move,
+                E_PlayerState.Lock
+                );
 
             AddDictionary(E_PlayerState.Falling,
                 E_PlayerState.Idle,
@@ -78,23 +86,35 @@ namespace PlayerComponent
 
             AddDictionary(E_PlayerState.Climbing,
                 E_PlayerState.Idle,
-                E_PlayerState.Move);
+                E_PlayerState.Move,
+                E_PlayerState.Lock
+                );
 
             AddDictionary(E_PlayerState.Attack,
                 E_PlayerState.Idle,
                 E_PlayerState.Move,
                 E_PlayerState.Roll,
-                E_PlayerState.Attack);
+                E_PlayerState.Attack,
+                E_PlayerState.Lock
+                );
 
             AddDictionary(E_PlayerState.ChargeAttack,
                 E_PlayerState.Idle,
                 E_PlayerState.Move,
-                E_PlayerState.Roll);
+                E_PlayerState.Roll,
+                E_PlayerState.Lock
+                );
 
             AddDictionary(E_PlayerState.Skill,
                 E_PlayerState.Idle,
                 E_PlayerState.Move,
-                E_PlayerState.Roll);
+                E_PlayerState.Roll,
+                E_PlayerState.Lock
+                );
+
+            AddDictionary(E_PlayerState.Lock,
+                E_PlayerState.Idle
+                );
         }
     }
 }

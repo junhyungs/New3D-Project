@@ -2,20 +2,29 @@ using Cinemachine;
 using EnumCollection;
 using GameData;
 using MapComponent;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 namespace TimeLineComponent
 {
     public class HallCrow : TimeLine
     {
+        private readonly HashSet<string> _playableTrakNames = new HashSet<string>()
+        {
+            "PlayerWalkAnimationTrack"
+        };
+
         [Header("Camera"), SerializeField]
         private CinemachineVirtualCamera _lastCamera;
 
-        [Header("DummyPlayer"), SerializeField]
-        private GameObject _dummyPlayer;
+        [Header("TransformObject"), SerializeField]
+        private Transform _dummyTransform;
+
         private BoxCollider _collider;
+        private Action _afterAction;
 
         protected override void Init()
         {
@@ -38,9 +47,42 @@ namespace TimeLineComponent
 
             if (!canTimeLine)
                 return;
+            BindPlayer();
+        }
+
+        private void BindPlayer()
+        {
+            var uiKey = EnableUI.PlayerUI.ToString();
+            UIManager.Instance.DisableUI(uiKey);
 
             var playerManager = PlayerManager.Instance;
-            playerManager.PlayerObject.SetActive(false);
+            playerManager.LockPlayer(true);
+
+            var playerObject = playerManager.PlayerObject;
+            playerObject.transform.position = _dummyTransform.position;
+            playerObject.transform.rotation = _dummyTransform.rotation;  
+            playerObject.transform.SetParent(_dummyTransform);
+
+            var playerRigid = playerObject.GetComponent<Rigidbody>();
+            playerRigid.isKinematic = true;
+
+            Action afterAction = null;
+            afterAction = () =>
+            {
+                UIManager.Instance.EnableUI(uiKey);
+                playerObject.transform.SetParent(null, true);
+                playerRigid.isKinematic = false;
+                playerManager.LockPlayer(false);
+
+                _afterAction -= afterAction;
+            };
+            _afterAction += afterAction;
+
+            var playableAsset = _playableDirector.playableAsset;
+            foreach (var output in playableAsset.outputs)
+                if (_playableTrakNames.Contains(output.streamName))
+                    _playableDirector.SetGenericBinding(output.sourceObject, playerObject);
+
             PlayTimeLine();
         }
 
@@ -84,16 +126,15 @@ namespace TimeLineComponent
 
         private IEnumerator LastDialog(ScriptableDataKey key)
         {
-            var playerManager = PlayerManager.Instance;
-
-            var playerObject = playerManager.PlayerObject;
-            playerObject.transform.position = _dummyPlayer.transform.position;
-            playerObject.transform.rotation = _dummyPlayer.transform.rotation;
-            playerManager.PlayerObject.SetActive(true);
-            playerManager.LockPlayer(true);
+            Action<PlayableDirector> onStopped = null;
+            onStopped = (playableDirector) =>
+            {
+                _afterAction?.Invoke();
+                _playableDirector.stopped -= onStopped;
+            };
+            _playableDirector.stopped += onStopped;
 
             yield return StartCoroutine(StartHallCrowDialog(key));
-            playerManager.LockPlayer(false);
 
             var mapComponent = GetMapComponent();
             if (mapComponent != null)

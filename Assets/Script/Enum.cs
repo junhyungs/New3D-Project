@@ -103,7 +103,8 @@ namespace EnumCollection
         Climbing,
         Attack,
         ChargeAttack,
-        Skill
+        Skill,
+        Lock
     }
 
     public enum ScriptableDataKey
