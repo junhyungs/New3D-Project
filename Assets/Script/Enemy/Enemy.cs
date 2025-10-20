@@ -14,6 +14,9 @@ namespace EnemyComponent
         [SerializeField] protected Material _originalMaterial;
         [SerializeField] protected Renderer[] _renderers;
 
+        [Header("Soul")]
+        [SerializeField] private GameObject _soulObject;
+
         private WaitForSeconds _waitForIntensity = new WaitForSeconds(0.1f);
         public TProperty Property { get; private set; } 
 
@@ -107,7 +110,11 @@ namespace EnemyComponent
             Debug.Log("TakeDamage");
             Property.Health -= damage;
             if (Property.Health <= 0)
+            {
+                if (_soulObject != null)
+                    _soulObject.SetActive(true);
                 Death();
+            }
             else
                 StartCoroutine(IntensityChange(Property.CopyMaterial));
         }

@@ -266,7 +266,8 @@ namespace EnumCollection
     {
         Level_0,
         Level_1,
-        Level_2
+        Level_2,
+        Level_3
     }
 
     public enum GameEvent
@@ -279,7 +280,12 @@ namespace EnumCollection
     {
         Level_0_Level_1,
         Level_0_Level_2,
+        Level_0_Level_3,
+
         Level_1_Level_2,
+        Level_1_Level_3,
+
+        Level_2_Level_3,
         Default
     }
 }

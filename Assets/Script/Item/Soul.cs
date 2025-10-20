@@ -6,65 +6,63 @@ using UnityEngine;
 
 namespace ItemComponent
 {
-    public class Soul : Item, ICurrencyItem
+    public class Soul : MonoBehaviour, ICurrencyItem
     {
-        private bool _isMove;
-        public override ItemType SlotName => ItemType.Soul;
+        private Coroutine _coroutine;
+
+        public ItemType SlotName => ItemType.Soul;
+        public ItemDataSO ItemDataSO => 
+            DataManager.Instance.GetScriptableData(ScriptableDataKey.SoulItemDataSO) as ItemDataSO;
 
         private void OnEnable()
         {
-            ColliderANDMoveControl(true);
+            var playerObject = PlayerManager.Instance.PlayerObject;
+            if(playerObject != null)
+            {
+                var targetTransform = playerObject.transform;
+                _coroutine = StartCoroutine(MovementCoroutine(targetTransform));
+            }
+        }
+
+        private void OnDisable()
+        {
+            _coroutine = null;
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            bool collision = other.gameObject.layer == LayerMask.NameToLayer("Player");
-            if (!collision)
+            if (other.gameObject.layer != LayerMask.NameToLayer("Player"))
                 return;
 
-            ColliderANDMoveControl(false);
+            StopCoroutine(_coroutine);
             InventoryManager.Instance.SetItem(this);
+
             gameObject.SetActive(false);
+            transform.localPosition = Vector3.zero;
         }
 
-        private void ColliderANDMoveControl(bool isMove)
+        private IEnumerator MovementCoroutine(Transform targetTransform)
         {
-            _isMove = isMove;
-            _collider.enabled = isMove;
-        }
-
-        public override void Interact()
-        {
-            StartCoroutine(StartMovement());
-        }
-
-        private IEnumerator StartMovement()
-        {
-            var soulDataSO = ItemDataSO as SoulItemDataSO;
-            if (soulDataSO == null)
+            var soulData = ItemDataSO as SoulItemDataSO;
+            if (soulData == null)
                 yield break;
-            
-            var time = 0f;
-            var maxTime = soulDataSO.MaxTime;
-            var moveDirection = Vector3.up;
 
+            var time = 0f;
+            var maxTime = soulData.MaxTime;
+            var moveSpeed = soulData.MoveSpeed;
             while(time < maxTime)
             {
-                var moveVector = moveDirection * soulDataSO.MoveSpeed * Time.deltaTime;
-                transform.Translate(moveVector);
-
+                var translation = Vector3.up * moveSpeed * Time.deltaTime;
+                transform.Translate(translation);
                 time += Time.deltaTime;
                 yield return null;
             }
 
-            var playerObject = PlayerManager.Instance.PlayerObject;
-            var playerTransform = playerObject.transform;
-            var speed = soulDataSO.MoveSpeed * 2;
-
-            while (_isMove)
+            moveSpeed *= 2f;
+            while (true)
             {
-                var targetPosition = playerTransform.position + Vector3.up * 0.7f;
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+                var targetVector = targetTransform.position + Vector3.up * 0.7f;
+                transform.position = Vector3.MoveTowards(transform.position, targetVector, moveSpeed * Time.deltaTime);
                 yield return null;
             }
         }

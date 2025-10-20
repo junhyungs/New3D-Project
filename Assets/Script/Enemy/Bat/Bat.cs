@@ -21,11 +21,6 @@ namespace EnemyComponent
             Property.StateMachine.ChangeState(E_BatState.Death);
         }
 
-        public override void TakeDamage(int damage)
-        {
-            base.TakeDamage(damage);
-        }
-
         private void OnDrawGizmos()
         {
             if (!Application.isPlaying)

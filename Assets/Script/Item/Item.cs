@@ -20,23 +20,6 @@ namespace ItemComponent
     {
         int GetValue();
     }
-   
-    public abstract class CurrencyItem : MonoBehaviour, IInteractionItem
-    {
-        protected SphereCollider _collider;
-
-        private void Awake()
-        {
-            _collider = GetComponent<SphereCollider>();
-        }
-        protected void DisableObejct()
-        {
-            _collider.enabled = false;
-            gameObject.SetActive(false);
-        }
-
-        public abstract void Interact();
-    }
 
     public abstract class Item : MonoBehaviour, IInteractionItem, IInventoryItem
     {
